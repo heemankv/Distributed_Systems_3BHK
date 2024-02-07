@@ -115,14 +115,19 @@ class MarketServicer(market_pb2_grpc.MarketServicer):
         seller_address = request.seller_address
         seller_uuid = request.seller_uuid
 
+        print(f"Display Items request from {request.seller_address} with UUID {request.seller_uuid}")
+
+
         # Check if the seller is registered and has the correct UUID
         if seller_address not in self.sellers or self.sellers[seller_address] != seller_uuid:
-            return DisplaySellerItemsResponse(status=DisplaySellerItemsResponse.FAIL)
+            context.set_code(grpc.StatusCode.NOT_FOUND)
+            context.set_details("Seller not found.")
+            return DisplaySellerItemsResponse()  # Empty response indicating failure
 
         seller_items = []
         for item_id, details in self.items.items():
             if details['seller_address'] == seller_address:
-                item_info = DisplaySellerItemsResponse.ItemInfo(
+                item_info = DisplaySellerItemsResponse.ItemDetails(
                     item_id=item_id,
                     price=details['price_per_unit'],
                     name=details['product_name'],
@@ -134,17 +139,7 @@ class MarketServicer(market_pb2_grpc.MarketServicer):
                 )
                 seller_items.append(item_info)
 
-        print(f"Market prints: Display Items request from {seller_address}")
-        print("Seller prints: -")
-        for item_info in seller_items:
-            print(f"Item ID: {item_info.item_id}, Price: ${item_info.price}, "
-                  f"Name: {item_info.name}, Category: {item_info.category}, "
-                  f"Description: {item_info.description}")
-            print(f"Quantity Remaining: {item_info.quantity_remaining}")
-            print(f"Rating: {item_info.rating} / 5  |  Seller: {item_info.seller}")
-            print("–")
-
-        return DisplaySellerItemsResponse(status=DisplaySellerItemsResponse.SUCCESS)
+        return DisplaySellerItemsResponse(items=seller_items)
 
     def SearchItem(self, request, context):
         # Implement SearchItem functionality here
@@ -235,9 +230,10 @@ class MarketServicer(market_pb2_grpc.MarketServicer):
         return RateItemResponse(status=RateItemResponse.SUCCESS)
 
     # def NotifyClient(self, request_iterator, context):
-        for message in request_iterator:
+        # for message in request_iterator:
             # Implement NotifyClient functionality here
             # ...
+
 
 
 def serve():
@@ -251,6 +247,9 @@ def serve():
             time.sleep(86400)  # One day in seconds
     except KeyboardInterrupt:
         server.stop(0)
+
+
+
 
 
 if __name__ == '__main__':

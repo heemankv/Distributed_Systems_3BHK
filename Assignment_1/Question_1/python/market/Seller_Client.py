@@ -74,15 +74,19 @@ class SellerClient:
 
 
     def display_seller_items(self):
-        # Implement DisplaySellerItems functionality here
         with grpc.insecure_channel('localhost:50051') as channel:
             stub = market_pb2_grpc.MarketStub(channel)
             request = DisplaySellerItemsRequest(
                 seller_address=self.seller_address,
                 seller_uuid=self.seller_uuid
             )
-            response = stub.DisplaySellerItems(request)
-            if response.status == DisplaySellerItemsResponse.SUCCESS:
+            try:
+                response = stub.DisplaySellerItems(request)
+
+                if not response.items:
+                    print("Seller prints: Seller not found or has no items.")
+                    return
+
                 print("Seller prints: -")
                 for item_info in response.items:
                     print(f"Item ID: {item_info.item_id}, Price: ${item_info.price}, "
@@ -91,8 +95,11 @@ class SellerClient:
                     print(f"Quantity Remaining: {item_info.quantity_remaining}")
                     print(f"Rating: {item_info.rating} / 5  |  Seller: {item_info.seller}")
                     print("–")
-            else:
-                print("Seller prints: Failed to display items.")
+            except grpc.RpcError as e:
+                if e.code() == grpc.StatusCode.NOT_FOUND:
+                    print("Seller prints: Seller not found.")
+                else:
+                    print(f"Seller prints: gRPC error - {e}")
 
     # def notify_client(self, notification_message):
         # Implement NotifyClient functionality here
@@ -103,9 +110,22 @@ if __name__ == '__main__':
     seller_address = "192.13.188.178:50051"
     seller_uuid = "987a515c-a6e5-11ed-906b-76aef1e817c5"
 
+   
+    # Example: Seller can perform other operations like selling items, updating items, etc.
+    # Create a SellerClient instance
     seller_client = SellerClient(seller_address, seller_uuid)
+
+    # Register the seller
     seller_client.register_seller()
 
-    # Example: Seller can perform other operations like selling items, updating items, etc.
-    # ...
+    # Add items for sale
+    seller_client.sell_item("Laptop", Category.ELECTRONICS, 10, "High-performance laptop", 1200.0)
+    seller_client.sell_item("Smartphone", Category.ELECTRONICS, 20, "Latest smartphone model", 800.0)
+
+    # Update the price of an item
+    seller_client.update_item(item_id="1", new_price=1000.0, new_quantity=8)
+
+    # Display all uploaded items
+    seller_client.display_seller_items()
+
 

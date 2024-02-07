@@ -38,7 +38,7 @@ class RegisterSellerResponse(_message.Message):
     def __init__(self, status: _Optional[_Union[RegisterSellerResponse.Status, str]] = ...) -> None: ...
 
 class SellItemRequest(_message.Message):
-    __slots__ = ("product_name", "quantity", "description", "seller_address", "price_per_unit", "seller_uuid")
+    __slots__ = ("product_name", "quantity", "description", "seller_address", "price_per_unit", "seller_uuid", "category")
     class Category(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
         __slots__ = ()
         ELECTRONICS: _ClassVar[SellItemRequest.Category]
@@ -53,13 +53,15 @@ class SellItemRequest(_message.Message):
     SELLER_ADDRESS_FIELD_NUMBER: _ClassVar[int]
     PRICE_PER_UNIT_FIELD_NUMBER: _ClassVar[int]
     SELLER_UUID_FIELD_NUMBER: _ClassVar[int]
+    CATEGORY_FIELD_NUMBER: _ClassVar[int]
     product_name: str
     quantity: int
     description: str
     seller_address: str
     price_per_unit: float
     seller_uuid: str
-    def __init__(self, product_name: _Optional[str] = ..., quantity: _Optional[int] = ..., description: _Optional[str] = ..., seller_address: _Optional[str] = ..., price_per_unit: _Optional[float] = ..., seller_uuid: _Optional[str] = ...) -> None: ...
+    category: SellItemRequest.Category
+    def __init__(self, product_name: _Optional[str] = ..., quantity: _Optional[int] = ..., description: _Optional[str] = ..., seller_address: _Optional[str] = ..., price_per_unit: _Optional[float] = ..., seller_uuid: _Optional[str] = ..., category: _Optional[_Union[SellItemRequest.Category, str]] = ...) -> None: ...
 
 class SellItemResponse(_message.Message):
     __slots__ = ("status", "item_id")
