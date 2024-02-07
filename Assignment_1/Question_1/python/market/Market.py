@@ -148,24 +148,97 @@ class MarketServicer(market_pb2_grpc.MarketServicer):
 
     def SearchItem(self, request, context):
         # Implement SearchItem functionality here
-        # ...
+        item_name = request.item_name
+        category = request.category
 
+        matching_items = []
+        for item_id, details in self.items.items():
+            if (not item_name or item_name.lower() in details['product_name'].lower()) and (
+                    category == Category.ANY or details['category'] == category):
+                item_info = SearchItemResponse.ItemInfo(
+                    item_id=item_id,
+                    price=details['price_per_unit'],
+                    name=details['product_name'],
+                    category=details['category'],
+                    description=details['description'],
+                    quantity_remaining=details['quantity'],
+                    rating=sum(details['ratings']) / len(details['ratings']) if details['ratings'] else 0.0,
+                    seller=details['seller_address']
+                )
+                matching_items.append(item_info)
+
+        print(f"Market prints: Search request for Item name: {item_name}, Category: {category.name}.")
+        return SearchItemResponse(items=matching_items, status=SearchItemResponse.SUCCESS)
+    
     def BuyItem(self, request, context):
         # Implement BuyItem functionality here
-        # ...
+        item_id = request.item_id
+        quantity = request.quantity
+        buyer_address = request.buyer_address
+
+        # Check if the item exists
+        if item_id not in self.items:
+            return BuyItemResponse(status=BuyItemResponse.FAIL)
+
+        # Check if there is enough stock
+        if self.items[item_id]['quantity'] < quantity:
+            return BuyItemResponse(status=BuyItemResponse.FAIL)
+
+        # Update item quantity
+        self.items[item_id]['quantity'] -= quantity
+
+        # Notify the seller about the purchase (you can implement this based on your NotifyClient logic)
+
+        print(f"Market prints: Buy request {quantity} of item {item_id}, from {buyer_address}.")
+        print("Buyer prints: SUCCESS")
+
+        return BuyItemResponse(status=BuyItemResponse.SUCCESS)
 
     def AddToWishList(self, request, context):
         # Implement AddToWishList functionality here
-        # ...
+        item_id = request.item_id
+        buyer_address = request.buyer_address
+
+        # Check if the item exists
+        if item_id not in self.items:
+            return AddToWishListResponse(status=AddToWishListResponse.FAIL)
+
+        # Notify the buyer about adding to the wish list (you can implement this based on your NotifyClient logic)
+
+        print(f"Market prints: Wishlist request of item {item_id}, from {buyer_address}.")
+        print("Buyer prints: SUCCESS")
+
+        return AddToWishListResponse(status=AddToWishListResponse.SUCCESS)
 
     def RateItem(self, request, context):
         # Implement RateItem functionality here
-        # ...
+        item_id = request.item_id
+        buyer_address = request.buyer_address
+        rating = request.rating
 
-    def NotifyClient(self, request_iterator, context):
+        # Check if the item exists
+        if item_id not in self.items:
+            return RateItemResponse(status=RateItemResponse.FAIL)
+
+        # Check if the buyer has already rated the item
+        if buyer_address in self.items[item_id]['ratings']:
+            return RateItemResponse(status=RateItemResponse.FAIL)
+
+        # Add the rating to the item
+        self.items[item_id]['ratings'].append(rating)
+
+        # Notify the seller about the rating (you can implement this based on your NotifyClient logic)
+
+        print(f"Market prints: {buyer_address} rated item {item_id} with {rating} stars.")
+        print("Buyer prints: SUCCESS")
+
+        return RateItemResponse(status=RateItemResponse.SUCCESS)
+
+    # def NotifyClient(self, request_iterator, context):
         for message in request_iterator:
             # Implement NotifyClient functionality here
             # ...
+
 
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
@@ -178,6 +251,7 @@ def serve():
             time.sleep(86400)  # One day in seconds
     except KeyboardInterrupt:
         server.stop(0)
+
 
 if __name__ == '__main__':
     logging.basicConfig()

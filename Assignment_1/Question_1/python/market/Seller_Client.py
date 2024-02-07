@@ -3,7 +3,6 @@ import market_pb2_grpc
 from market_pb2 import *
 
 
-
 class SellerClient:
     def __init__(self, seller_address, seller_uuid):
         self.seller_address = seller_address
@@ -95,7 +94,7 @@ class SellerClient:
             else:
                 print("Seller prints: Failed to display items.")
 
-    def notify_client(self, notification_message):
+    # def notify_client(self, notification_message):
         # Implement NotifyClient functionality here
         # ...
 
