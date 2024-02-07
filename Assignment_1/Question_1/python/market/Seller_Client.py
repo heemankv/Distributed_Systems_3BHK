@@ -128,4 +128,13 @@ if __name__ == '__main__':
     # Display all uploaded items
     seller_client.display_seller_items()
 
+    # Delete an item
+    seller_client.delete_item(item_id="2")
+
+    # Display all uploaded items
+    seller_client.display_seller_items()
+
+
+
+
 
