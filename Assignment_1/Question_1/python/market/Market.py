@@ -150,7 +150,7 @@ class MarketServicer(market_pb2_grpc.MarketServicer):
         for item_id, details in self.items.items():
             if (not item_name or item_name.lower() in details['product_name'].lower()) and (
                     category == Category.ANY or details['category'] == category):
-                item_info = SearchItemResponse.ItemInfo(
+                item_info = SearchItemResponse.ItemDetails(
                     item_id=item_id,
                     price=details['price_per_unit'],
                     name=details['product_name'],
@@ -162,8 +162,9 @@ class MarketServicer(market_pb2_grpc.MarketServicer):
                 )
                 matching_items.append(item_info)
 
-        print(f"Market prints: Search request for Item name: {item_name}, Category: {category.name}.")
-        return SearchItemResponse(items=matching_items, status=SearchItemResponse.SUCCESS)
+        print(f"Market prints: Search request for Item name: {item_name}, Category: {category}")
+        print(matching_items)
+        return SearchItemResponse(items=matching_items)
     
     def BuyItem(self, request, context):
         # Implement BuyItem functionality here

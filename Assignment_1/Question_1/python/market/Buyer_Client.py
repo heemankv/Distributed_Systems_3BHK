@@ -71,7 +71,7 @@ class BuyerClient:
         print("Buyer prints:")
         for item in response.items:
             print("–")
-            print(f"Item ID: {item.item_id}, Price: ${item.price}, Name: {item.name}, Category: {item.category.name},")
+            print(f"Item ID: {item.item_id}, Price: ${item.price}, Name: {item.name}, Category: {item.category},")
             print(f"Description: {item.description}")
             print(f"Quantity Remaining: {item.quantity_remaining}")
             print(f"Rating: {item.rating} / 5  |  Seller: {item.seller}")
@@ -84,6 +84,15 @@ if __name__ == '__main__':
     buyer_client = BuyerClient(buyer_address)
 
     # Example: Buyer can perform operations like searching items, buying items, etc.
-    buyer_client.search_item()
-    # ...
+    buyer_client.search_item("Laptop", Category.ELECTRONICS)
+
+    # Example: Buyer can perform other operations like adding items to wishlist
+    buyer_client.add_to_wishlist("1")
+
+    # Example: Buyer can perform other operations like adding items to wishlist, rating items, etc.
+    buyer_client.rate_item("1", 5)
+
+    # Example : Buyer can perform other operations like buying items
+    buyer_client.buy_item("1", 2)
+    
 

@@ -9,3 +9,6 @@ https://grpc.io/docs/languages/python/quickstart/
 https://protobuf.dev/getting-started/pythontutorial/
 https://grpc.io/docs/what-is-grpc/introduction/
 https://protobuf.dev/overview/
+
+
+TODO: Fix issue of Category being shown as a number, rather it's equivalent string value.
