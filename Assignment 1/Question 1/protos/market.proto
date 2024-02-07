@@ -1,0 +1,223 @@
+syntax = "proto3";
+
+package market;  // This should match your actual package name
+
+
+enum Category {
+  ELECTRONICS = 0;
+  FASHION = 1;
+  OTHERS = 2;
+  ANY = 3;
+}
+
+// Define messages for communication between Seller and Market
+
+// Message for seller registration
+message RegisterSellerRequest {
+  string seller_address = 1; // IP:Port of the seller's notification server
+  string uuid = 2; // Unique identifier for the seller
+}
+
+message RegisterSellerResponse {
+  enum Status {
+    SUCCESS = 0;
+    FAIL = 1;
+  }
+  Status status = 1;
+}
+
+// Message for selling an item
+message SellItemRequest {
+  string product_name = 1;
+  enum Category {
+    ELECTRONICS = 0;
+    FASHION = 1;
+    OTHERS = 2;
+  }
+  int32 quantity = 3;
+  string description = 4;
+  string seller_address = 5; // IP:Port of the seller
+  float price_per_unit = 6;
+  string seller_uuid = 7; // Unique identifier for the seller
+}
+
+message SellItemResponse {
+  enum Status {
+    SUCCESS = 0;
+    FAIL = 1;
+  }
+  Status status = 1;
+  string item_id = 2; // Unique identifier assigned by the market for the item
+}
+
+// Message for updating an item
+message UpdateItemRequest {
+  string item_id = 1; // Unique identifier for the item
+  float new_price = 2;
+  int32 new_quantity = 3;
+  string seller_address = 4; // IP:Port of the seller
+  string seller_uuid = 5; // Unique identifier for the seller
+}
+
+message UpdateItemResponse {
+  enum Status {
+    SUCCESS = 0;
+    FAIL = 1;
+  }
+  Status status = 1;
+}
+
+// Message for deleting an item
+message DeleteItemRequest {
+  string item_id = 1; // Unique identifier for the item
+  string seller_address = 2; // IP:Port of the seller
+  string seller_uuid = 3; // Unique identifier for the seller
+}
+
+message DeleteItemResponse {
+  enum Status {
+    SUCCESS = 0;
+    FAIL = 1;
+  }
+  Status status = 1;
+}
+
+// Message for displaying seller items
+message DisplaySellerItemsRequest {
+  string seller_address = 1; // IP:Port of the seller
+  string seller_uuid = 2; // Unique identifier for the seller (optional)
+}
+
+message DisplaySellerItemsResponse {
+  message ItemDetails {
+    string item_id = 1;
+    float price = 2;
+    string name = 3;
+    enum Category {
+      ELECTRONICS = 0;
+      FASHION = 1;
+      OTHERS = 2;
+    }
+    Category category = 4;
+    string description = 5;
+    int32 quantity_remaining = 6;
+    string seller = 7; // Seller's address
+    float rating = 8;
+  }
+  repeated ItemDetails items = 1;
+}
+
+
+// Message for searching items
+message SearchItemRequest {
+  string item_name = 1; // Item name (can be empty)
+  enum Category {
+    ELECTRONICS = 0;
+    FASHION = 1;
+    OTHERS = 2;
+    ANY = 3;
+  }
+  Category category = 2; // Item category
+}
+
+message SearchItemResponse {
+  message ItemDetails {
+    string item_id = 1;
+    float price = 2;
+    string name = 3;
+    enum Category {
+      ELECTRONICS = 0;
+      FASHION = 1;
+      OTHERS = 2;
+    }
+    Category category = 4;
+    string description = 5;
+    int32 quantity_remaining = 6;
+    float rating = 7;
+    string seller = 8; // Seller's address
+  }
+  repeated ItemDetails items = 1;
+}
+
+// Message for buying an item
+message BuyItemRequest {
+  string item_id = 1; // Unique identifier for the item
+  int32 quantity = 2;
+  string buyer_address = 3; // IP:Port of the buyer's notification server
+}
+
+message BuyItemResponse {
+  enum Status {
+    SUCCESS = 0;
+    FAIL = 1;
+  }
+  Status status = 1;
+}
+
+// Message for adding to wish list
+message AddToWishListRequest {
+  string item_id = 1; // Unique identifier for the item
+  string buyer_address = 2; // IP:Port of the buyer's notification server
+}
+
+message AddToWishListResponse {
+  enum Status {
+    SUCCESS = 0;
+    FAIL = 1;
+  }
+  Status status = 1;
+}
+
+// Message for rating an item
+message RateItemRequest {
+  string item_id = 1; // Unique identifier for the item
+  string buyer_address = 2; // IP:Port of the buyer's notification server
+  int32 rating = 3; // Rating from 1 to 5
+}
+
+message RateItemResponse {
+  enum Status {
+    SUCCESS = 0;
+    FAIL = 1;
+  }
+  Status status = 1;
+}
+
+// Message for notification
+message NotificationMessage {
+  string notification = 1; // Notification message content
+}
+
+// Service definition for communication between Seller and Market
+service Market {
+  // RPC for seller registration
+  rpc RegisterSeller (RegisterSellerRequest) returns (RegisterSellerResponse);
+
+  // RPC for selling an item
+  rpc SellItem (SellItemRequest) returns (SellItemResponse);
+
+  // RPC for updating an item
+  rpc UpdateItem (UpdateItemRequest) returns (UpdateItemResponse);
+
+  // RPC for deleting an item
+  rpc DeleteItem (DeleteItemRequest) returns (DeleteItemResponse);
+
+  // RPC for displaying seller items
+  rpc DisplaySellerItems (DisplaySellerItemsRequest) returns (DisplaySellerItemsResponse);
+
+  // RPC for searching items
+  rpc SearchItem (SearchItemRequest) returns (SearchItemResponse);
+
+  // RPC for buying an item
+  rpc BuyItem (BuyItemRequest) returns (BuyItemResponse);
+
+  // RPC for adding to wish list
+  rpc AddToWishList (AddToWishListRequest) returns (AddToWishListResponse);
+
+  // RPC for rating an item
+  rpc RateItem (RateItemRequest) returns (RateItemResponse);
+
+  // Bidirectional streaming RPC for notifying clients
+  rpc NotifyClient (stream NotificationMessage) returns (stream NotificationMessage);
+
+}
