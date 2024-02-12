@@ -1,12 +1,11 @@
 import zmq
 from dotenv import load_dotenv
 import os
-import socket
-hostname = socket.gethostname()
-MESSAGE_SERVER_IP = socket.gethostbyname(hostname)+":3000"
 
 # Load environment variables from .env file
 load_dotenv()
+ 
+MESSAGE_SERVER_IP=os.getenv("MESSAGE_SERVER_IP")
 
 context = zmq.Context()
 socket = context.socket(zmq.REP)
@@ -16,7 +15,6 @@ groups={} #stores registered groups
 
 
 print("Socket Ready")
-print("IP ADDRESS: "+MESSAGE_SERVER_IP)
 while True:
     message = socket.recv_json()
 
