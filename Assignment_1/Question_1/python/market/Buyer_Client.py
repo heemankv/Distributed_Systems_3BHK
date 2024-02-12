@@ -27,10 +27,9 @@ class BuyerClient:
             )
             response = stub.BuyItem(request)
             if response.status == BuyItemResponse.SUCCESS:
-                print(f"Market prints: Buy request {quantity} of item {item_id}, from {self.buyer_address}.")
-                print("Buyer prints: SUCCESS")
+                print(" SUCCESS")
             else:
-                print("Buyer prints: Failed to buy item.")
+                print(" Failed to buy item.")
 
     def add_to_wishlist(self, item_id):
         # Implement AddToWishList functionality here
@@ -42,10 +41,9 @@ class BuyerClient:
             )
             response = stub.AddToWishList(request)
             if response.status == AddToWishListResponse.SUCCESS:
-                print(f"Market prints: Wishlist request of item {item_id}, from {self.buyer_address}.")
-                print("Buyer prints: SUCCESS")
+                print(" SUCCESS")
             else:
-                print("Buyer prints: Failed to add item to wishlist.")
+                print(" Failed to add item to wishlist.")
 
     def rate_item(self, item_id, rating):
         # Implement RateItem functionality here
@@ -58,17 +56,16 @@ class BuyerClient:
             )
             response = stub.RateItem(request)
             if response.status == RateItemResponse.SUCCESS:
-                print(f"Market prints: {self.buyer_address} rated item {item_id} with {rating} stars.")
-                print("Buyer prints: SUCCESS")
+                print(" SUCCESS")
             else:
-                print("Buyer prints: Failed to rate item.")
+                print(" Failed to rate item.")
 
     # def notify_client(self, notification_message):
         # Implement NotifyClient functionality here
         # ...
 
     def print_search_results(self, response):
-        print("Buyer prints:")
+        print("")
         for item in response.items:
             print("–")
             print(f"Item ID: {item.item_id}, Price: ${item.price}, Name: {item.name}, Category: {item.category},")

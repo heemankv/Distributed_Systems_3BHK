@@ -35,9 +35,9 @@ class SellerClient:
             )
             response = stub.SellItem(request)
             if response.status == SellItemResponse.SUCCESS:
-                print(f"Seller prints: Item successfully added - Item ID: {response.item_id}")
+                print(f" Item successfully added - Item ID: {response.item_id}")
             else:
-                print("Seller prints: Failed to add item.")
+                print(" Failed to add item.")
 
 
     def update_item(self, item_id, new_price, new_quantity):
@@ -53,9 +53,9 @@ class SellerClient:
             )
             response = stub.UpdateItem(request)
             if response.status == UpdateItemResponse.SUCCESS:
-                print(f"Seller prints: Item {item_id} updated successfully.")
+                print(f" Item {item_id} updated successfully.")
             else:
-                print("Seller prints: Failed to update item.")
+                print(" Failed to update item.")
 
     def delete_item(self, item_id):
         # Implement DeleteItem functionality here
@@ -68,9 +68,9 @@ class SellerClient:
             )
             response = stub.DeleteItem(request)
             if response.status == DeleteItemResponse.SUCCESS:
-                print(f"Seller prints: Item {item_id} deleted successfully.")
+                print(f" Item {item_id} deleted successfully.")
             else:
-                print("Seller prints: Failed to delete item.")
+                print(" Failed to delete item.")
 
 
     def display_seller_items(self):
@@ -84,10 +84,10 @@ class SellerClient:
                 response = stub.DisplaySellerItems(request)
 
                 if not response.items:
-                    print("Seller prints: Seller not found or has no items.")
+                    print(" Seller not found or has no items.")
                     return
 
-                print("Seller prints: -")
+                print(" -")
                 for item_info in response.items:
                     print(f"Item ID: {item_info.item_id}, Price: ${item_info.price}, "
                           f"Name: {item_info.name}, Category: {item_info.category}, "
@@ -97,9 +97,9 @@ class SellerClient:
                     print("–")
             except grpc.RpcError as e:
                 if e.code() == grpc.StatusCode.NOT_FOUND:
-                    print("Seller prints: Seller not found.")
+                    print(" Seller not found.")
                 else:
-                    print(f"Seller prints: gRPC error - {e}")
+                    print(f" gRPC error - {e}")
 
     # def notify_client(self, notification_message):
         # Implement NotifyClient functionality here

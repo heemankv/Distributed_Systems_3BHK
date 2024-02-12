@@ -21,8 +21,7 @@ class MarketServicer(market_pb2_grpc.MarketServicer):
             return RegisterSellerResponse(status=RegisterSellerResponse.FAIL)
 
         self.sellers[seller_address] = uuid
-        print(f"Market prints: Seller join request from {seller_address}, uuid = {uuid}")
-        print(f"Seller prints: SUCCESS")
+        print(f" Seller join request from {seller_address}, uuid = {uuid}")
 
         return RegisterSellerResponse(status=RegisterSellerResponse.SUCCESS)
 
@@ -57,7 +56,7 @@ class MarketServicer(market_pb2_grpc.MarketServicer):
         # Store item details
         self.items[item_id] = item_details
 
-        print(f"Market prints: Seller {seller_address} added new item - Item ID: {item_id}")
+        print(f" Seller {seller_address} added new item - Item ID: {item_id}")
 
         return SellItemResponse(status=SellItemResponse.SUCCESS, item_id=item_id)
 
@@ -83,8 +82,7 @@ class MarketServicer(market_pb2_grpc.MarketServicer):
 
         # Notify buyers about the update (you can implement this based on your NotifyClient logic)
 
-        print(f"Market prints: Update Item {item_id} request from {seller_address}")
-        print("Seller prints: SUCCESS")
+        print(f" Update Item {item_id} request from {seller_address}")
 
         return UpdateItemResponse(status=UpdateItemResponse.SUCCESS)
 
@@ -105,8 +103,7 @@ class MarketServicer(market_pb2_grpc.MarketServicer):
         # Delete the item
         del self.items[item_id]
 
-        print(f"Market prints: Delete Item {item_id} request from {seller_address}")
-        print("Seller prints: SUCCESS")
+        print(f" Delete Item {item_id} request from {seller_address}")
 
         return DeleteItemResponse(status=DeleteItemResponse.SUCCESS)
 
@@ -162,7 +159,7 @@ class MarketServicer(market_pb2_grpc.MarketServicer):
                 )
                 matching_items.append(item_info)
 
-        print(f"Market prints: Search request for Item name: {item_name}, Category: {category}")
+        print(f" Search request for Item name: {item_name}, Category: {category}")
         print(matching_items)
         return SearchItemResponse(items=matching_items)
     
@@ -185,8 +182,7 @@ class MarketServicer(market_pb2_grpc.MarketServicer):
 
         # Notify the seller about the purchase (you can implement this based on your NotifyClient logic)
 
-        print(f"Market prints: Buy request {quantity} of item {item_id}, from {buyer_address}.")
-        print("Buyer prints: SUCCESS")
+        print(f" Buy request {quantity} of item {item_id}, from {buyer_address}.")
 
         return BuyItemResponse(status=BuyItemResponse.SUCCESS)
 
@@ -201,8 +197,7 @@ class MarketServicer(market_pb2_grpc.MarketServicer):
 
         # Notify the buyer about adding to the wish list (you can implement this based on your NotifyClient logic)
 
-        print(f"Market prints: Wishlist request of item {item_id}, from {buyer_address}.")
-        print("Buyer prints: SUCCESS")
+        print(f" Wishlist request of item {item_id}, from {buyer_address}.")
 
         return AddToWishListResponse(status=AddToWishListResponse.SUCCESS)
 
@@ -225,8 +220,7 @@ class MarketServicer(market_pb2_grpc.MarketServicer):
 
         # Notify the seller about the rating (you can implement this based on your NotifyClient logic)
 
-        print(f"Market prints: {buyer_address} rated item {item_id} with {rating} stars.")
-        print("Buyer prints: SUCCESS")
+        print(f" {buyer_address} rated item {item_id} with {rating} stars.")
 
         return RateItemResponse(status=RateItemResponse.SUCCESS)
 
