@@ -2,12 +2,13 @@ import grpc
 import market_pb2_grpc
 from market_pb2 import *
 
+uri = '34.171.24.193'
 class BuyerClient:
     def __init__(self, buyer_address):
         self.buyer_address = buyer_address
 
     def search_item(self, item_name="", category=Category.ANY):
-        with grpc.insecure_channel('localhost:50051') as channel:
+        with grpc.insecure_channel(f'{uri}:50051') as channel:
             stub = market_pb2_grpc.MarketStub(channel)
             request = SearchItemRequest(
                 item_name=item_name,
@@ -18,7 +19,7 @@ class BuyerClient:
 
     def buy_item(self, item_id, quantity):
         # Implement BuyItem functionality here
-        with grpc.insecure_channel('localhost:50051') as channel:
+        with grpc.insecure_channel(f'{uri}:50051') as channel:
             stub = market_pb2_grpc.MarketStub(channel)
             request = BuyItemRequest(
                 item_id=item_id,
@@ -33,7 +34,7 @@ class BuyerClient:
 
     def add_to_wishlist(self, item_id):
         # Implement AddToWishList functionality here
-        with grpc.insecure_channel('localhost:50051') as channel:
+        with grpc.insecure_channel(f'{uri}:50051') as channel:
             stub = market_pb2_grpc.MarketStub(channel)
             request = AddToWishListRequest(
                 item_id=item_id,
@@ -47,7 +48,7 @@ class BuyerClient:
 
     def rate_item(self, item_id, rating):
         # Implement RateItem functionality here
-        with grpc.insecure_channel('localhost:50051') as channel:
+        with grpc.insecure_channel(f'{uri}:50051') as channel:
             stub = market_pb2_grpc.MarketStub(channel)
             request = RateItemRequest(
                 item_id=item_id,

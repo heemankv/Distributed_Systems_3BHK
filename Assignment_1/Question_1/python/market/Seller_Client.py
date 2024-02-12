@@ -2,14 +2,14 @@ import grpc
 import market_pb2_grpc
 from market_pb2 import *
 
-
+uri = '34.171.24.193'
 class SellerClient:
     def __init__(self, seller_address, seller_uuid):
         self.seller_address = seller_address
         self.seller_uuid = seller_uuid
 
     def register_seller(self):
-        with grpc.insecure_channel('localhost:50051') as channel:
+        with grpc.insecure_channel(f'{uri}:50051') as channel:
             stub = market_pb2_grpc.MarketStub(channel)
             request = RegisterSellerRequest(
                 seller_address=self.seller_address,
@@ -22,7 +22,7 @@ class SellerClient:
                 print("Registration failed.")
 
     def sell_item(self, product_name, category, quantity, description, price_per_unit):
-        with grpc.insecure_channel('localhost:50051') as channel:
+        with grpc.insecure_channel(f'{uri}:50051') as channel:
             stub = market_pb2_grpc.MarketStub(channel)
             request = SellItemRequest(
                 product_name=product_name,
@@ -42,7 +42,7 @@ class SellerClient:
 
     def update_item(self, item_id, new_price, new_quantity):
         # Implement UpdateItem functionality here
-         with grpc.insecure_channel('localhost:50051') as channel:
+         with grpc.insecure_channel(f'{uri}:50051') as channel:
             stub = market_pb2_grpc.MarketStub(channel)
             request = UpdateItemRequest(
                 item_id=item_id,
@@ -59,7 +59,7 @@ class SellerClient:
 
     def delete_item(self, item_id):
         # Implement DeleteItem functionality here
-        with grpc.insecure_channel('localhost:50051') as channel:
+        with grpc.insecure_channel(f'{uri}:50051') as channel:
             stub = market_pb2_grpc.MarketStub(channel)
             request = DeleteItemRequest(
                 item_id=item_id,
@@ -74,7 +74,7 @@ class SellerClient:
 
 
     def display_seller_items(self):
-        with grpc.insecure_channel('localhost:50051') as channel:
+        with grpc.insecure_channel(f'{uri}:50051') as channel:
             stub = market_pb2_grpc.MarketStub(channel)
             request = DisplaySellerItemsRequest(
                 seller_address=self.seller_address,
