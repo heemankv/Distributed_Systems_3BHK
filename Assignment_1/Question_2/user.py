@@ -3,7 +3,9 @@ import uuid
 import sys
 from dotenv import load_dotenv
 import os
-
+import socket
+hostname = socket.gethostname()
+IP_ADDR = socket.gethostbyname(hostname)
 # Load environment variables from .env file
 load_dotenv()
  
@@ -144,5 +146,5 @@ Press 6 to End
             else:
                 print("Enter Correct Input")
 
-user=User(str(uuid.uuid4()),"127.0.0.1:"+sys.argv[1])
+user=User(str(uuid.uuid4()),IP_ADDR+":"+sys.argv[1])
 user.handleInputs()
