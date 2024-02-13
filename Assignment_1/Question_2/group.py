@@ -7,29 +7,29 @@ import os
 import socket
 hostname = socket.gethostname()
 IP_ADDR = socket.gethostbyname(hostname)
-
 # Load environment variables from .env file
 load_dotenv()
  
-MESSAGE_SERVER_IP=os.getenv("MESSAGE_SERVER_IP")
+MESSAGE_SERVER_IP=os.getenv("MESSAGE_SERVER_IP_WITH_PORT")
+GROUP_IP=os.getenv("GROUP_IP")
 
 class Group:
-    def __init__(self, name, ip):
+    def __init__(self, name, port):
         self.name=name
-        self.ip=ip
+        self.ip=GROUP_IP+":"+port
         self.users=[]
         self.messages=[]
         self.context=zmq.Context()
         
         #Reply Socket
         self.rep_socket = self.context.socket(zmq.REP)
-        self.rep_socket.bind(f"tcp://{ip}")
+        self.rep_socket.bind(f"tcp://"+IP_ADDR+":"+port)
 
         #Request Socket
         self.req_socket=self.context.socket(zmq.REQ)
         self.req_socket.connect("tcp://"+MESSAGE_SERVER_IP)
-        print("GROUP ID: "+name)
-        print("IP: "+ip)
+        print("GROUP ID: "+self.name)
+        print("IP: "+self.ip)
         print("GROUP SERVER IS READY")
 
     def handle_requests(self):
@@ -91,7 +91,7 @@ class Group:
             sys.exit(1)
 
 groupid=str(uuid.uuid4())
-group = Group(groupid, IP_ADDR+":"+sys.argv[1])
+group = Group(groupid, sys.argv[1])
 group.register_group()
 group.handle_requests()
 

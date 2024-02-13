@@ -9,3 +9,5 @@
 2) Message_Server will use its own INTERNAL IP in its code to connect.
 3) Enter the External IP of groups from user side whenever connecting user to group.
 4) Group will use its own INTERNAL_IP in its code to connect.
+
+# Default Port Used for MESSAGE_SERVER: 3000

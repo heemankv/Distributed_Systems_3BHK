@@ -3,18 +3,16 @@ import uuid
 import sys
 from dotenv import load_dotenv
 import os
-import socket
-hostname = socket.gethostname()
-IP_ADDR = socket.gethostbyname(hostname)
+
 # Load environment variables from .env file
 load_dotenv()
  
-MESSAGE_SERVER_IP=os.getenv("MESSAGE_SERVER_IP")
+MESSAGE_SERVER_IP=os.getenv("MESSAGE_SERVER_IP_WITH_PORT")
 
 class User:
-    def __init__(self, name,ip):
+    def __init__(self, name,port):
         self.name=name
-        self.ip=ip
+        self.ip="127.0.0.1:"+port
         self.context=zmq.Context()
         self.groups=[]
         
@@ -25,13 +23,12 @@ class User:
         self.group_socket=self.context.socket(zmq.REQ)
 
         print("USER ID: "+name)
-        print("IP: "+ip)
         print("USER IS READY")
     
     def get_group_list(self):
         
         try:
-            self.server_socket.send_json({'action': 'get_group_list','user':self.name,'ip':self.ip})
+            self.server_socket.send_json({'action': 'get_group_list','user':self.name})
             response=self.server_socket.recv_json()
             print(response['status'])
             groups=response['groups']
@@ -146,5 +143,5 @@ Press 6 to End
             else:
                 print("Enter Correct Input")
 
-user=User(str(uuid.uuid4()),IP_ADDR+":"+sys.argv[1])
+user=User(str(uuid.uuid4()),sys.argv[1])
 user.handleInputs()

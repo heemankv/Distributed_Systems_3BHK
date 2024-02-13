@@ -1,20 +1,13 @@
 import zmq
-from dotenv import load_dotenv
-import os
 import socket
 hostname = socket.gethostname()
 MESSAGE_SERVER_IP = socket.gethostbyname(hostname)+":3000"
-
-# Load environment variables from .env file
-load_dotenv()
 
 context = zmq.Context()
 socket = context.socket(zmq.REP)
 socket.bind("tcp://"+MESSAGE_SERVER_IP)
 
 groups={} #stores registered groups
-
-print("IP ADDRESS: "+MESSAGE_SERVER_IP)
 print("Socket Ready")
 
 while True:
@@ -29,8 +22,8 @@ while True:
             socket.send_json({'status': 'SUCCESS'})
         
         elif message['action'] == "get_group_list":
-            user_ip=message["ip"]
-            print("GROUP LIST REQUEST FROM "+ user_ip)
+            user_id=message["user"]
+            print("GROUP LIST REQUEST FROM "+ user_id)
             socket.send_json({"status":"SUCCESS","groups": groups})
             print("SUCCESS")
 
@@ -40,9 +33,6 @@ while True:
 
 
 
-    except Exception:
+    except Exception as e:
+        print(e)
         socket.send_json({'status': 'FAILURE'})
-
-
-
-
