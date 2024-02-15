@@ -2,7 +2,7 @@
 """Client and server classes corresponding to protobuf-defined services."""
 import grpc
 
-import seller_pb2 as seller__pb2
+import Seller_grpc.seller_pb2 as seller__pb2
 
 
 class SellerStub(object):

@@ -2,7 +2,7 @@
 """Client and server classes corresponding to protobuf-defined services."""
 import grpc
 
-import market_pb2 as market__pb2
+import Market_grpc.market_pb2 as market__pb2
 
 
 class MarketStub(object):

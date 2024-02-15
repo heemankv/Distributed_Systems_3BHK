@@ -1,9 +1,11 @@
 import grpc
-import market_pb2_grpc
-from market_pb2 import *
+import Market_grpc.market_pb2_grpc as market_pb2_grpc
+from Market_grpc.market_pb2 import *
+ 
+from Seller_grpc.seller_pb2_grpc import SellerStub
+from Seller_grpc import seller_pb2
 
-import seller_pb2_grpc
-from seller_pb2 import *
+
 
 # uri = '34.171.24.193'
 uri = 'localhost'

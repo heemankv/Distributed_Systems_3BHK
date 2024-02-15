@@ -4,15 +4,14 @@ import logging
 
 import time
 
-import market_pb2_grpc
-from market_pb2 import *
-
+import Market_grpc.market_pb2_grpc as market_pb2_grpc
+from Market_grpc.market_pb2 import *
+ 
+from Seller_grpc.seller_pb2_grpc import SellerStub
 from Seller_grpc import seller_pb2
-from seller_pb2_grpc import SellerStub
 
+from Buyer_grpc.buyer_pb2_grpc import BuyerStub
 from Buyer_grpc import buyer_pb2
-from buyer_pb2_grpc import BuyerStub
-
 
 
 
