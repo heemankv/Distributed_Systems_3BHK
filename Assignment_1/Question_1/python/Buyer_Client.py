@@ -72,6 +72,8 @@ class BuyerClient(BuyerServicer):
 
     def Notify(self, request, context):
         print({request.message})
+        return NotifyResponse(status=NotifyResponse.SUCCESS)
+
     
 
     def print_search_results(self, response):
@@ -86,7 +88,7 @@ class BuyerClient(BuyerServicer):
 
 
 if __name__ == '__main__':
-    buyer_address = "120.13.188.178:50051"
+    buyer_address = f"{uri}:50051"
 
     buyer_client = BuyerClient(buyer_address)
 

@@ -1,6 +1,6 @@
 ### Command to generate protos file :
-run inside python/market folder
-python3 -m grpc_tools.protoc -I../../protos --python_out=. --pyi_out=. --grpc_python_out=. ../../protos/market.proto
+run inside pythonfolder
+python3 -m grpc_tools.protoc -I ../protos --python_out=. --pyi_out=. --grpc_python_out=. ../protos/buyer.proto 
 
 Proto banao, voh python code banaega using the above mentioned command, and use the generated code to create the server and client.
 

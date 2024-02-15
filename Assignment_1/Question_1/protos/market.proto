@@ -248,8 +248,4 @@ service Market {
 
   // RPC for rating an item
   rpc RateItem (RateItemRequest) returns (RateItemResponse);
-
-  // Bidirectional streaming RPC for notifying clients
-  rpc NotifyClient (stream NotificationMessage) returns (stream NotificationMessage);
-
 }

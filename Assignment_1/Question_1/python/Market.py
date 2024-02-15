@@ -96,7 +96,7 @@ class MarketServicer(market_pb2_grpc.MarketServicer):
             item_id = item_id,
             updated_item = self.items[item_id]
         )
-        self.NotifyClient(notificationRequest)
+        self.NotifyClient(notificationRequest, context)
 
         return UpdateItemResponse(status=UpdateItemResponse.SUCCESS)
 
@@ -203,7 +203,7 @@ class MarketServicer(market_pb2_grpc.MarketServicer):
             purchase_quantity = quantity,
             buyer_address = buyer_address
         )
-        self.NotifyClient(notificationRequest)
+        self.NotifyClient(notificationRequest, context)
 
         return BuyItemResponse(status=BuyItemResponse.SUCCESS)
 
@@ -215,6 +215,10 @@ class MarketServicer(market_pb2_grpc.MarketServicer):
         # Check if the item exists
         if item_id not in self.items:
             return AddToWishListResponse(status=AddToWishListResponse.FAIL)
+        
+
+        if buyer_address not in self.buyers:
+            self.buyers[buyer_address] = [item_id]
         
         self.buyers[buyer_address].append(item_id)
 
@@ -262,8 +266,8 @@ class MarketServicer(market_pb2_grpc.MarketServicer):
 
             with grpc.insecure_channel(seller_address) as channel:
                 seller_stub = SellerStub(channel)
-                seller_stub.Notify(
-                    NotifySellerRequest(
+                response = seller_stub.Notify(
+                    SellerNotifyRequest(
                         message = f"Item {item_id} purchased by {buyer_address} for {purchase_quantity} quantity."
                     )
                 )
@@ -279,12 +283,13 @@ class MarketServicer(market_pb2_grpc.MarketServicer):
                 if item_id in self.buyers[buyer_address]:
                     with grpc.insecure_channel(buyer_address) as channel:
                         buyer_stub = BuyerStub(channel)
-                        buyer_stub.Notify(
-                            NotifyBuyerRequest(
+                        response = buyer_stub.Notify(
+                            BuyerNotifyRequest(
                                 message = f"Item {item_id} in your wishlist has been updated: {updated_item}"
                             )
                         )
                         print(f"Notification sent to buyer {buyer_address} about update of item {item_id} in wishlist.")
+
 
 
 

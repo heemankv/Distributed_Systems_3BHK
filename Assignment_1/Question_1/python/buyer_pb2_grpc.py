@@ -6,8 +6,7 @@ import buyer_pb2 as buyer__pb2
 
 
 class BuyerStub(object):
-    """... (Other methods)
-    """
+    """Missing associated documentation comment in .proto file."""
 
     def __init__(self, channel):
         """Constructor.
@@ -23,8 +22,7 @@ class BuyerStub(object):
 
 
 class BuyerServicer(object):
-    """... (Other methods)
-    """
+    """Missing associated documentation comment in .proto file."""
 
     def Notify(self, request, context):
         """Missing associated documentation comment in .proto file."""
@@ -48,8 +46,7 @@ def add_BuyerServicer_to_server(servicer, server):
 
  # This class is part of an EXPERIMENTAL API.
 class Buyer(object):
-    """... (Other methods)
-    """
+    """Missing associated documentation comment in .proto file."""
 
     @staticmethod
     def Notify(request,

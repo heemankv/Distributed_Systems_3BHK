@@ -111,9 +111,11 @@ class SellerClient(SellerServicer):
 
     def Notify(self, request, context):
         print({request.message})
+        return NotifyResponse(status=NotifyResponse.SUCCESS)
+        
 
 if __name__ == '__main__':
-    seller_address = "192.13.188.178:50051"
+    seller_address = f"{uri}:50051"
     seller_uuid = "987a515c-a6e5-11ed-906b-76aef1e817c5"
 
     # Example: Seller can perform other operations like selling items, updating items, etc.

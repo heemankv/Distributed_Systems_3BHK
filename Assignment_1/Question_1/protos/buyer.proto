@@ -3,7 +3,6 @@ syntax = "proto3";
 package buyer;
 
 service Buyer {
-    // ... (Other methods)
 
     rpc Notify (NotifyRequest) returns (NotifyResponse);
 }
@@ -12,4 +11,11 @@ message NotifyRequest {
     string message = 1;
 }
 
-message NotifyResponse {}
+message NotifyResponse {
+    enum Status {
+      SUCCESS = 0;
+      FAIL = 1;
+    }
+    Status status = 1;
+  }
+  

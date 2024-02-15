@@ -14,7 +14,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0b\x62uyer.proto\x12\x05\x62uyer\" \n\rNotifyRequest\x12\x0f\n\x07message\x18\x01 \x01(\t\"\x10\n\x0eNotifyResponse2>\n\x05\x42uyer\x12\x35\n\x06Notify\x12\x14.buyer.NotifyRequest\x1a\x15.buyer.NotifyResponseb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0b\x62uyer.proto\x12\x05\x62uyer\" \n\rNotifyRequest\x12\x0f\n\x07message\x18\x01 \x01(\t\"_\n\x0eNotifyResponse\x12,\n\x06status\x18\x01 \x01(\x0e\x32\x1c.buyer.NotifyResponse.Status\"\x1f\n\x06Status\x12\x0b\n\x07SUCCESS\x10\x00\x12\x08\n\x04\x46\x41IL\x10\x01\x32>\n\x05\x42uyer\x12\x35\n\x06Notify\x12\x14.buyer.NotifyRequest\x1a\x15.buyer.NotifyResponseb\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -24,7 +24,9 @@ if _descriptor._USE_C_DESCRIPTORS == False:
   _globals['_NOTIFYREQUEST']._serialized_start=22
   _globals['_NOTIFYREQUEST']._serialized_end=54
   _globals['_NOTIFYRESPONSE']._serialized_start=56
-  _globals['_NOTIFYRESPONSE']._serialized_end=72
-  _globals['_BUYER']._serialized_start=74
-  _globals['_BUYER']._serialized_end=136
+  _globals['_NOTIFYRESPONSE']._serialized_end=151
+  _globals['_NOTIFYRESPONSE_STATUS']._serialized_start=120
+  _globals['_NOTIFYRESPONSE_STATUS']._serialized_end=151
+  _globals['_BUYER']._serialized_start=153
+  _globals['_BUYER']._serialized_end=215
 # @@protoc_insertion_point(module_scope)

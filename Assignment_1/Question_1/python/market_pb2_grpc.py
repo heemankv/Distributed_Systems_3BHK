@@ -60,11 +60,6 @@ class MarketStub(object):
                 request_serializer=market__pb2.RateItemRequest.SerializeToString,
                 response_deserializer=market__pb2.RateItemResponse.FromString,
                 )
-        self.NotifyClient = channel.stream_stream(
-                '/market.Market/NotifyClient',
-                request_serializer=market__pb2.NotificationMessage.SerializeToString,
-                response_deserializer=market__pb2.NotificationMessage.FromString,
-                )
 
 
 class MarketServicer(object):
@@ -134,13 +129,6 @@ class MarketServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def NotifyClient(self, request_iterator, context):
-        """Bidirectional streaming RPC for notifying clients
-        """
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
 
 def add_MarketServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -188,11 +176,6 @@ def add_MarketServicer_to_server(servicer, server):
                     servicer.RateItem,
                     request_deserializer=market__pb2.RateItemRequest.FromString,
                     response_serializer=market__pb2.RateItemResponse.SerializeToString,
-            ),
-            'NotifyClient': grpc.stream_stream_rpc_method_handler(
-                    servicer.NotifyClient,
-                    request_deserializer=market__pb2.NotificationMessage.FromString,
-                    response_serializer=market__pb2.NotificationMessage.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -355,22 +338,5 @@ class Market(object):
         return grpc.experimental.unary_unary(request, target, '/market.Market/RateItem',
             market__pb2.RateItemRequest.SerializeToString,
             market__pb2.RateItemResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
-
-    @staticmethod
-    def NotifyClient(request_iterator,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.stream_stream(request_iterator, target, '/market.Market/NotifyClient',
-            market__pb2.NotificationMessage.SerializeToString,
-            market__pb2.NotificationMessage.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
