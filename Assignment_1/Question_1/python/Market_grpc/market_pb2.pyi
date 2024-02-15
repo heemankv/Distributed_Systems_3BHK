@@ -281,8 +281,59 @@ class RateItemResponse(_message.Message):
     status: RateItemResponse.Status
     def __init__(self, status: _Optional[_Union[RateItemResponse.Status, str]] = ...) -> None: ...
 
+class NotifyBuyerRequest(_message.Message):
+    __slots__ = ("type", "item_id", "updated_item")
+    class ItemDetails(_message.Message):
+        __slots__ = ("item_id", "price", "name", "category", "description", "quantity_remaining", "rating", "seller")
+        class Category(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
+            __slots__ = ()
+            ELECTRONICS: _ClassVar[NotifyBuyerRequest.ItemDetails.Category]
+            FASHION: _ClassVar[NotifyBuyerRequest.ItemDetails.Category]
+            OTHERS: _ClassVar[NotifyBuyerRequest.ItemDetails.Category]
+        ELECTRONICS: NotifyBuyerRequest.ItemDetails.Category
+        FASHION: NotifyBuyerRequest.ItemDetails.Category
+        OTHERS: NotifyBuyerRequest.ItemDetails.Category
+        ITEM_ID_FIELD_NUMBER: _ClassVar[int]
+        PRICE_FIELD_NUMBER: _ClassVar[int]
+        NAME_FIELD_NUMBER: _ClassVar[int]
+        CATEGORY_FIELD_NUMBER: _ClassVar[int]
+        DESCRIPTION_FIELD_NUMBER: _ClassVar[int]
+        QUANTITY_REMAINING_FIELD_NUMBER: _ClassVar[int]
+        RATING_FIELD_NUMBER: _ClassVar[int]
+        SELLER_FIELD_NUMBER: _ClassVar[int]
+        item_id: str
+        price: float
+        name: str
+        category: NotifyBuyerRequest.ItemDetails.Category
+        description: str
+        quantity_remaining: int
+        rating: float
+        seller: str
+        def __init__(self, item_id: _Optional[str] = ..., price: _Optional[float] = ..., name: _Optional[str] = ..., category: _Optional[_Union[NotifyBuyerRequest.ItemDetails.Category, str]] = ..., description: _Optional[str] = ..., quantity_remaining: _Optional[int] = ..., rating: _Optional[float] = ..., seller: _Optional[str] = ...) -> None: ...
+    TYPE_FIELD_NUMBER: _ClassVar[int]
+    ITEM_ID_FIELD_NUMBER: _ClassVar[int]
+    UPDATED_ITEM_FIELD_NUMBER: _ClassVar[int]
+    type: str
+    item_id: str
+    updated_item: NotifyBuyerRequest.ItemDetails
+    def __init__(self, type: _Optional[str] = ..., item_id: _Optional[str] = ..., updated_item: _Optional[_Union[NotifyBuyerRequest.ItemDetails, _Mapping]] = ...) -> None: ...
+
+class NotifySellerRequest(_message.Message):
+    __slots__ = ("type", "item_id", "purchase_quantity", "buyer_address")
+    TYPE_FIELD_NUMBER: _ClassVar[int]
+    ITEM_ID_FIELD_NUMBER: _ClassVar[int]
+    PURCHASE_QUANTITY_FIELD_NUMBER: _ClassVar[int]
+    BUYER_ADDRESS_FIELD_NUMBER: _ClassVar[int]
+    type: str
+    item_id: str
+    purchase_quantity: int
+    buyer_address: str
+    def __init__(self, type: _Optional[str] = ..., item_id: _Optional[str] = ..., purchase_quantity: _Optional[int] = ..., buyer_address: _Optional[str] = ...) -> None: ...
+
 class NotificationMessage(_message.Message):
-    __slots__ = ("notification",)
-    NOTIFICATION_FIELD_NUMBER: _ClassVar[int]
-    notification: str
-    def __init__(self, notification: _Optional[str] = ...) -> None: ...
+    __slots__ = ("notify_buyer", "notify_seller")
+    NOTIFY_BUYER_FIELD_NUMBER: _ClassVar[int]
+    NOTIFY_SELLER_FIELD_NUMBER: _ClassVar[int]
+    notify_buyer: NotifyBuyerRequest
+    notify_seller: NotifySellerRequest
+    def __init__(self, notify_buyer: _Optional[_Union[NotifyBuyerRequest, _Mapping]] = ..., notify_seller: _Optional[_Union[NotifySellerRequest, _Mapping]] = ...) -> None: ...

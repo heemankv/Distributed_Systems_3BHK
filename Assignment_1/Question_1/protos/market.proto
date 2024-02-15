@@ -2,7 +2,6 @@ syntax = "proto3";
 
 package market;  // This should match your actual package name
 
-
 enum Category {
   ELECTRONICS = 0;
   FASHION = 1;
@@ -186,9 +185,39 @@ message RateItemResponse {
   Status status = 1;
 }
 
-// Message for notification
+message NotifyBuyerRequest {
+  string type = 1; // Type of notification
+  string item_id = 2; // Unique identifier for the item
+  message ItemDetails {
+    string item_id = 1;
+    float price = 2;
+    string name = 3;
+    enum Category {
+      ELECTRONICS = 0;
+      FASHION = 1;
+      OTHERS = 2;
+    }
+    Category category = 4;
+    string description = 5;
+    int32 quantity_remaining = 6;
+    float rating = 7;
+    string seller = 8; // Seller's address
+  }
+  ItemDetails updated_item = 3; // Updated item details
+}
+
+message NotifySellerRequest {
+  string type = 1; // Type of notification
+  string item_id = 2; // Unique identifier for the item
+  int32 purchase_quantity = 3; // Quantity purchased
+  string buyer_address = 4; // IP:Port of the buyer's notification server
+}
+
 message NotificationMessage {
-  string notification = 1; // Notification message content
+  oneof notification {
+    NotifyBuyerRequest notify_buyer = 1;
+    NotifySellerRequest notify_seller = 2;
+  }
 }
 
 // Service definition for communication between Seller and Market

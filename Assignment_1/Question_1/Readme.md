@@ -12,3 +12,5 @@ https://protobuf.dev/overview/
 
 
 TODO: Fix issue of Category being shown as a number, rather it's equivalent string value.
+
+# seller updates Items, buyers gets notified

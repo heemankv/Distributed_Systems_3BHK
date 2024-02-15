@@ -3,8 +3,17 @@ from concurrent import futures
 import logging
 
 import time
+
 import market_pb2_grpc
 from market_pb2 import *
+
+from Seller_grpc import seller_pb2
+from seller_pb2_grpc import SellerStub
+
+from Buyer_grpc import buyer_pb2
+from buyer_pb2_grpc import BuyerStub
+
+
 
 
 class MarketServicer(market_pb2_grpc.MarketServicer):
@@ -68,6 +77,8 @@ class MarketServicer(market_pb2_grpc.MarketServicer):
         seller_address = request.seller_address
         seller_uuid = request.seller_uuid
 
+        print(f" Update Item {item_id} request from {seller_address}")
+
         # Check if the seller is registered and has the correct UUID
         if seller_address not in self.sellers or self.sellers[seller_address] != seller_uuid:
             return UpdateItemResponse(status=UpdateItemResponse.FAIL)
@@ -81,8 +92,12 @@ class MarketServicer(market_pb2_grpc.MarketServicer):
         self.items[item_id]['quantity'] = new_quantity
 
         # Notify buyers about the update (you can implement this based on your NotifyClient logic)
-
-        print(f" Update Item {item_id} request from {seller_address}")
+        notificationRequest = NotifyBuyerRequest(
+            type = 'UpdateItem',
+            item_id = item_id,
+            updated_item = self.items[item_id]
+        )
+        self.NotifyClient(notificationRequest)
 
         return UpdateItemResponse(status=UpdateItemResponse.SUCCESS)
 
@@ -169,6 +184,8 @@ class MarketServicer(market_pb2_grpc.MarketServicer):
         quantity = request.quantity
         buyer_address = request.buyer_address
 
+        print(f" Buy request {quantity} of item {item_id}, from {buyer_address}.")
+
         # Check if the item exists
         if item_id not in self.items:
             return BuyItemResponse(status=BuyItemResponse.FAIL)
@@ -181,8 +198,13 @@ class MarketServicer(market_pb2_grpc.MarketServicer):
         self.items[item_id]['quantity'] -= quantity
 
         # Notify the seller about the purchase (you can implement this based on your NotifyClient logic)
-
-        print(f" Buy request {quantity} of item {item_id}, from {buyer_address}.")
+        notificationRequest = NotifySellerRequest(
+            type = 'BuyItem',
+            item_id = item_id,
+            purchase_quantity = quantity,
+            buyer_address = buyer_address
+        )
+        self.NotifyClient(notificationRequest)
 
         return BuyItemResponse(status=BuyItemResponse.SUCCESS)
 
@@ -194,8 +216,8 @@ class MarketServicer(market_pb2_grpc.MarketServicer):
         # Check if the item exists
         if item_id not in self.items:
             return AddToWishListResponse(status=AddToWishListResponse.FAIL)
-
-        # Notify the buyer about adding to the wish list (you can implement this based on your NotifyClient logic)
+        
+        self.buyers[buyer_address].append(item_id)
 
         print(f" Wishlist request of item {item_id}, from {buyer_address}.")
 
@@ -224,10 +246,46 @@ class MarketServicer(market_pb2_grpc.MarketServicer):
 
         return RateItemResponse(status=RateItemResponse.SUCCESS)
 
-    # def NotifyClient(self, request_iterator, context):
-        # for message in request_iterator:
-            # Implement NotifyClient functionality here
-            # ...
+    # write a fn NotifyClient to :
+    # 1. Notify the seller about the purchases from the buyers
+    # 2. Notify the buyers about update made to product theu have added to wishlist
+    def NotifyClient(self, request, context):
+        # Implement NotifyClient functionality here
+        type_of_notification = request.type
+
+        if type_of_notification == 'BuyItem':
+            # send out notification to seller about the purchase
+            item_id = request.item_id
+            purchase_quantity = request.purchase_quantity
+            buyer_address = request.buyer_address
+            seller_address = self.items[item_id]['seller_address']
+            seller_uuid = self.sellers[seller_address]
+
+            with grpc.insecure_channel(seller_address) as channel:
+                seller_stub = SellerStub(channel)
+                seller_stub.Notify(
+                    seller_pb2.NotifyRequest(
+                        message = f"Item {item_id} purchased by {buyer_address} for {purchase_quantity} quantity."
+                    )
+                )
+                print(f"Notification sent to seller {seller_address} about purchase of item {item_id} by {buyer_address} for {purchase_quantity} quantity.")
+
+        elif type_of_notification == 'UpdateItem':
+            # send out notification to multiple buyers about the update made to the product they have added to wishlist
+            item_id = request.item_id
+            updated_item = request.updated_item
+
+            for buyer_address in self.buyers:
+                # if buyer has item in wishlist
+                if item_id in self.buyers[buyer_address]:
+                    with grpc.insecure_channel(buyer_address) as channel:
+                        buyer_stub = BuyerStub(channel)
+                        buyer_stub.Notify(
+                            buyer_pb2.NotifyRequest(
+                                message = f"Item {item_id} in your wishlist has been updated: {updated_item}"
+                            )
+                        )
+                        print(f"Notification sent to buyer {buyer_address} about update of item {item_id} in wishlist.")
 
 
 

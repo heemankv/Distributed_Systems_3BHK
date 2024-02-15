@@ -2,8 +2,13 @@ import grpc
 import market_pb2_grpc
 from market_pb2 import *
 
-uri = '34.171.24.193'
-class BuyerClient:
+import buyer_pb2_grpc
+from buyer_pb2 import *
+
+# uri = '34.171.24.193'
+uri = 'localhost'
+
+class BuyerClient(buyer_pb2_grpc.BuyerServicer):
     def __init__(self, buyer_address):
         self.buyer_address = buyer_address
 
@@ -61,9 +66,10 @@ class BuyerClient:
             else:
                 print(" Failed to rate item.")
 
-    # def notify_client(self, notification_message):
-        # Implement NotifyClient functionality here
-        # ...
+
+    def Notify(self, request, context):
+        print({request.message})
+    
 
     def print_search_results(self, response):
         print("")

@@ -2,8 +2,13 @@ import grpc
 import market_pb2_grpc
 from market_pb2 import *
 
-uri = '34.171.24.193'
-class SellerClient:
+import seller_pb2_grpc
+from seller_pb2 import *
+
+# uri = '34.171.24.193'
+uri = 'localhost'
+
+class SellerClient(seller_pb2_grpc.SellerServicer):
     def __init__(self, seller_address, seller_uuid):
         self.seller_address = seller_address
         self.seller_uuid = seller_uuid
@@ -101,16 +106,13 @@ class SellerClient:
                 else:
                     print(f" gRPC error - {e}")
 
-    # def notify_client(self, notification_message):
-        # Implement NotifyClient functionality here
-        # ...
-
+    def Notify(self, request, context):
+        print({request.message})
 
 if __name__ == '__main__':
     seller_address = "192.13.188.178:50051"
     seller_uuid = "987a515c-a6e5-11ed-906b-76aef1e817c5"
 
-   
     # Example: Seller can perform other operations like selling items, updating items, etc.
     # Create a SellerClient instance
     seller_client = SellerClient(seller_address, seller_uuid)
@@ -122,6 +124,10 @@ if __name__ == '__main__':
     seller_client.sell_item("Laptop", Category.ELECTRONICS, 10, "High-performance laptop", 1200.0)
     seller_client.sell_item("Smartphone", Category.ELECTRONICS, 20, "Latest smartphone model", 800.0)
 
+    # stall for 5 seconds
+    import time
+    time.sleep(5)
+    
     # Update the price of an item
     seller_client.update_item(item_id="1", new_price=1000.0, new_quantity=8)
 
