@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+service Buyer {
+    // ... (Other methods)
+
+    rpc Notify (NotifyRequest) returns (NotifyResponse);
+}
+
+message NotifyRequest {
+    string message = 1;
+}
+
+message NotifyResponse {}
