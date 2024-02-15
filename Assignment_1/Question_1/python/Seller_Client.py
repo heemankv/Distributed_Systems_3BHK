@@ -1,16 +1,17 @@
 import grpc
-import Market_grpc.market_pb2_grpc as market_pb2_grpc
-from Market_grpc.market_pb2 import *
- 
-from Seller_grpc.seller_pb2_grpc import SellerStub
-from Seller_grpc import seller_pb2
 
+
+import market_pb2_grpc as market_pb2_grpc
+from market_pb2 import *
+ 
+from seller_pb2_grpc import SellerStub, SellerServicer
+from seller_pb2 import *
 
 
 # uri = '34.171.24.193'
 uri = 'localhost'
 
-class SellerClient(seller_pb2_grpc.SellerServicer):
+class SellerClient(SellerServicer):
     def __init__(self, seller_address, seller_uuid):
         self.seller_address = seller_address
         self.seller_uuid = seller_uuid

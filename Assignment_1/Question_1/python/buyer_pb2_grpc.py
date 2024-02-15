@@ -2,7 +2,7 @@
 """Client and server classes corresponding to protobuf-defined services."""
 import grpc
 
-import Buyer_grpc.buyer_pb2 as buyer__pb2
+import buyer_pb2 as buyer__pb2
 
 
 class BuyerStub(object):
@@ -16,7 +16,7 @@ class BuyerStub(object):
             channel: A grpc.Channel.
         """
         self.Notify = channel.unary_unary(
-                '/Buyer/Notify',
+                '/buyer.Buyer/Notify',
                 request_serializer=buyer__pb2.NotifyRequest.SerializeToString,
                 response_deserializer=buyer__pb2.NotifyResponse.FromString,
                 )
@@ -42,7 +42,7 @@ def add_BuyerServicer_to_server(servicer, server):
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-            'Buyer', rpc_method_handlers)
+            'buyer.Buyer', rpc_method_handlers)
     server.add_generic_rpc_handlers((generic_handler,))
 
 
@@ -62,7 +62,7 @@ class Buyer(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/Buyer/Notify',
+        return grpc.experimental.unary_unary(request, target, '/buyer.Buyer/Notify',
             buyer__pb2.NotifyRequest.SerializeToString,
             buyer__pb2.NotifyResponse.FromString,
             options, channel_credentials,

@@ -14,17 +14,17 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0b\x62uyer.proto\" \n\rNotifyRequest\x12\x0f\n\x07message\x18\x01 \x01(\t\"\x10\n\x0eNotifyResponse22\n\x05\x42uyer\x12)\n\x06Notify\x12\x0e.NotifyRequest\x1a\x0f.NotifyResponseb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0b\x62uyer.proto\x12\x05\x62uyer\" \n\rNotifyRequest\x12\x0f\n\x07message\x18\x01 \x01(\t\"\x10\n\x0eNotifyResponse2>\n\x05\x42uyer\x12\x35\n\x06Notify\x12\x14.buyer.NotifyRequest\x1a\x15.buyer.NotifyResponseb\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'buyer_pb2', _globals)
 if _descriptor._USE_C_DESCRIPTORS == False:
   DESCRIPTOR._options = None
-  _globals['_NOTIFYREQUEST']._serialized_start=15
-  _globals['_NOTIFYREQUEST']._serialized_end=47
-  _globals['_NOTIFYRESPONSE']._serialized_start=49
-  _globals['_NOTIFYRESPONSE']._serialized_end=65
-  _globals['_BUYER']._serialized_start=67
-  _globals['_BUYER']._serialized_end=117
+  _globals['_NOTIFYREQUEST']._serialized_start=22
+  _globals['_NOTIFYREQUEST']._serialized_end=54
+  _globals['_NOTIFYRESPONSE']._serialized_start=56
+  _globals['_NOTIFYRESPONSE']._serialized_end=72
+  _globals['_BUYER']._serialized_start=74
+  _globals['_BUYER']._serialized_end=136
 # @@protoc_insertion_point(module_scope)
