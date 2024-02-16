@@ -6,6 +6,7 @@ import time
 
 import market_pb2_grpc as market_pb2_grpc
 from market_pb2 import *
+from utils import getCategory
  
 from seller_pb2_grpc import SellerStub
 from seller_pb2 import NotifyRequest as SellerNotifyRequest
@@ -17,7 +18,8 @@ from buyer_pb2 import NotifyRequest as BuyerNotifyRequest
 market_URI = '127.0.0.1'
 market_port = 50051
 
-class MarketServicer(market_pb2_grpc.MarketServicer):
+
+class MarketClient(market_pb2_grpc.MarketServicer):
     def __init__(self):
         self.sellers = {}
         self.items = {}
@@ -31,7 +33,7 @@ class MarketServicer(market_pb2_grpc.MarketServicer):
             return RegisterSellerResponse(status=Status.FAIL)
 
         self.sellers[seller_address] = uuid
-        print(f" Seller join request from {seller_address}, uuid = {uuid}")
+        print(f"Seller join request from {seller_address}, uuid = {uuid}")
 
         return RegisterSellerResponse(status=Status.SUCCESS)
 
@@ -66,7 +68,7 @@ class MarketServicer(market_pb2_grpc.MarketServicer):
         # Store item details
         self.items[item_id] = item_details
 
-        print(f" Seller {seller_address} added new item - Item ID: {item_id}")
+        print(f"Sell Item Request form {seller_address} - Item ID: {item_id}")
 
         return SellItemResponse(status=Status.SUCCESS, item_id=item_id)
 
@@ -77,8 +79,6 @@ class MarketServicer(market_pb2_grpc.MarketServicer):
         new_quantity = request.new_quantity
         seller_address = request.seller_address
         seller_uuid = request.seller_uuid
-
-        print(f" Update Item {item_id} request from {seller_address}")
 
         # Check if the seller is registered and has the correct UUID
         if seller_address not in self.sellers or self.sellers[seller_address] != seller_uuid:
@@ -92,8 +92,6 @@ class MarketServicer(market_pb2_grpc.MarketServicer):
         self.items[item_id]['price_per_unit'] = new_price
         self.items[item_id]['quantity'] = new_quantity
 
-        print(f" Item {item_id} updated successfully.")
-        print(item_id, self.items[item_id] , " check this ourr")
         #deepcopy
         updated_item = ItemDetails(
             item_id = item_id,
@@ -107,13 +105,16 @@ class MarketServicer(market_pb2_grpc.MarketServicer):
 
         )
 
+        print(f"SUCCESS: Update Item {item_id} request from {seller_address}")
+
+
         # Notify buyers about the update (you can implement this based on your NotifyClient logic)
         notificationRequest = NotifyBuyerRequest(
             type = 'UpdateItem',
             item_id = item_id,
             updated_item = updated_item
         )
-        self.NotifyClients(notificationRequest, context)
+        self.Notify_Clients(notificationRequest)
 
         return UpdateItemResponse(status=Status.SUCCESS)
 
@@ -134,7 +135,7 @@ class MarketServicer(market_pb2_grpc.MarketServicer):
         # Delete the item
         del self.items[item_id]
 
-        print(f" Delete Item {item_id} request from {seller_address}")
+        print(f"Delete Item {item_id} request from {seller_address}")
 
         return DeleteItemResponse(status=Status.SUCCESS)
 
@@ -142,9 +143,6 @@ class MarketServicer(market_pb2_grpc.MarketServicer):
         # Implement DisplaySellerItems functionality here
         seller_address = request.seller_address
         seller_uuid = request.seller_uuid
-
-        print(f"Display Items request from {request.seller_address} with UUID {request.seller_uuid}")
-
 
         # Check if the seller is registered and has the correct UUID
         if seller_address not in self.sellers or self.sellers[seller_address] != seller_uuid:
@@ -166,6 +164,8 @@ class MarketServicer(market_pb2_grpc.MarketServicer):
                     rating=sum(details['ratings']) / len(details['ratings']) if details['ratings'] else 0.0
                 )
                 seller_items.append(item_info)
+
+        print(f"Display Items request from {request.seller_address} with UUID {request.seller_uuid}")
 
         return DisplaySellerItemsResponse(items=seller_items)
 
@@ -190,8 +190,7 @@ class MarketServicer(market_pb2_grpc.MarketServicer):
                 )
                 matching_items.append(item_info)
 
-        print(f" Search request for Item name: {item_name}, Category: {category}")
-        print(matching_items)
+        print(f"Search request for Item name: {item_name}, Category: {getCategory(category)}")
         return SearchItemResponse(items=matching_items)
     
     def BuyItem(self, request, context):
@@ -200,7 +199,7 @@ class MarketServicer(market_pb2_grpc.MarketServicer):
         quantity = request.quantity
         buyer_address = request.buyer_address
 
-        print(f" Buy request {quantity} of item {item_id}, from {buyer_address}.")
+        print(f"Buy request {quantity} of item {item_id}, from {buyer_address}.")
 
         # Check if the item exists
         if item_id not in self.items:
@@ -220,7 +219,7 @@ class MarketServicer(market_pb2_grpc.MarketServicer):
             quantity = quantity,
             buyer_address = buyer_address
         )
-        self.NotifyClients(notificationRequest, context)
+        self.Notify_Clients(notificationRequest)
 
         return BuyItemResponse(status=Status.SUCCESS)
 
@@ -239,7 +238,7 @@ class MarketServicer(market_pb2_grpc.MarketServicer):
         
         self.buyers[buyer_address].append(item_id)
 
-        print(f" Wishlist request of item {item_id}, from {buyer_address}.")
+        print(f"Wishlist request of item {item_id}, from {buyer_address}.")
 
         return AddToWishListResponse(status=Status.SUCCESS)
 
@@ -262,21 +261,21 @@ class MarketServicer(market_pb2_grpc.MarketServicer):
 
         # Notify the seller about the rating (you can implement this based on your NotifyClient logic)
 
-        print(f" {buyer_address} rated item {item_id} with {rating} stars.")
+        print(f"{buyer_address} rated item {item_id} with {rating} stars.")
 
         return RateItemResponse(status=Status.SUCCESS)
 
     # write a fn NotifyClient to :
     # 1. Notify the seller about the purchases from the buyers
     # 2. Notify the buyers about update made to product theu have added to wishlist
-    def NotifyClients(self, request, context):
+    def Notify_Clients(self, request):
         # Implement NotifyClient functionality here
         type_of_notification = request.type
 
         if type_of_notification == 'BuyItem':
             # send out notification to seller about the purchase
             item_id = request.item_id
-            purchase_quantity = request.purchase_quantity
+            quantity = request.quantity
             buyer_address = request.buyer_address
             seller_address = self.items[item_id]['seller_address']
             seller_uuid = self.sellers[seller_address]
@@ -285,10 +284,10 @@ class MarketServicer(market_pb2_grpc.MarketServicer):
                 seller_stub = SellerStub(channel)
                 response = seller_stub.Notify(
                     SellerNotifyRequest(
-                        message = f"Item {item_id} purchased by {buyer_address} for {purchase_quantity} quantity."
+                        message = f"Item {item_id} purchased by {buyer_address} for {quantity} quantity."
                     )
                 )
-                print(f"Notification sent to seller {seller_address} about purchase of item {item_id} by {buyer_address} for {purchase_quantity} quantity.")
+                print(f"Notification sent to seller {seller_address} about purchase of item {item_id} by {buyer_address} for {quantity} quantity.")
 
         elif type_of_notification == 'UpdateItem':
             # send out notification to multiple buyers about the update made to the product they have added to wishlist
@@ -305,7 +304,7 @@ class MarketServicer(market_pb2_grpc.MarketServicer):
                         buyer_stub = BuyerStub(channel)
                         response = buyer_stub.Notify(
                             BuyerNotifyRequest(
-                                message = f"Item {item_id} in your wishlist has been updated: {updated_item}"
+                                message = f"Item {item_id} in your wishlist has been updated"
                             )
                         )
                         if response.status == Status.SUCCESS:
@@ -319,7 +318,7 @@ class MarketServicer(market_pb2_grpc.MarketServicer):
 
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
-    market_pb2_grpc.add_MarketServicer_to_server(MarketServicer(), server)
+    market_pb2_grpc.add_MarketServicer_to_server(MarketClient(), server)
     server.add_insecure_port(f'{market_URI}:{market_port}')
     server.start()
     print(f"Market Server started on {market_URI}:{market_port}") 

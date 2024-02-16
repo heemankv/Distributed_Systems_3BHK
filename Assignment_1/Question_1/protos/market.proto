@@ -182,9 +182,4 @@ service Market {
   // RPC for rating an item
   rpc RateItem (RateItemRequest) returns (RateItemResponse);
 
-  // RPC for notifying clients
-  rpc NotifyClients (stream NotificationMessage) returns (Status);
-  // what is stream 
-  // https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.MethodDescriptor#isClientStreaming
-
 }

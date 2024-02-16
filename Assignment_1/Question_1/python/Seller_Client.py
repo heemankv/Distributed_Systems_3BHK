@@ -5,6 +5,7 @@ import logging
 import time
 import market_pb2_grpc as market_pb2_grpc
 from market_pb2 import *
+from utils import getCategory
  
 import seller_pb2_grpc as seller_pb2_grpc
 from seller_pb2_grpc import SellerStub, SellerServicer
@@ -22,12 +23,12 @@ market_port = 50051
 
 class SellerClient(SellerServicer):
     def __init__(self, seller_address, seller_uuid):
-        print(self.__dict__, " kjnsdkjvbsbjk")
         self.seller_address = seller_address
         self.seller_uuid = seller_uuid
 
     def Notify(self, request, context):
-        print({request.message})
+        msg = request.message
+        print(msg)
         return NotifyResponse(status=Status.SUCCESS)
 
     def register_seller(self):
@@ -38,11 +39,10 @@ class SellerClient(SellerServicer):
                 uuid=self.seller_uuid
             )
             response = stub.RegisterSeller(request)
-            print(response, " kjnsdkjvbsbjk")
             if response.status == Status.SUCCESS:
-                print("Registration successful.")
+                print("SUCCESS: Registration successful.")
             else:
-                print("Registration failed.")
+                print("FAIL: Registration failed.")
 
     def sell_item(self, name, category, quantity, description, price_per_unit):
         with grpc.insecure_channel(f'{market_URI}:{market_port}') as channel:
@@ -58,9 +58,9 @@ class SellerClient(SellerServicer):
             )
             response = stub.SellItem(request)
             if response.status == Status.SUCCESS:
-                print(f" Item successfully added - Item ID: {response.item_id}")
+                print(f"SUCCESS: Item successfully added - Item ID: {response.item_id}")
             else:
-                print(" Failed to add item.")
+                print("FAIL: Failed to add item.")
 
 
     def update_item(self, item_id, new_price, new_quantity):
@@ -76,9 +76,9 @@ class SellerClient(SellerServicer):
             )
             response = stub.UpdateItem(request)
             if response.status == Status.SUCCESS:
-                print(f" Item {item_id} updated successfully.")
+                print(f"SUCCESS: Item {item_id} updated successfully.")
             else:
-                print(" Failed to update item.")
+                print(f"FAIL: Failed to update item {item_id}.")
 
     def delete_item(self, item_id):
         # Implement DeleteItem functionality here
@@ -91,9 +91,9 @@ class SellerClient(SellerServicer):
             )
             response = stub.DeleteItem(request)
             if response.status == Status.SUCCESS:
-                print(f" Item {item_id} deleted successfully.")
+                print(f"SUCCESS: Item {item_id} deleted successfully.")
             else:
-                print(" Failed to delete item.")
+                print("FAIL: Failed to delete item.")
 
 
     def display_seller_items(self):
@@ -110,13 +110,14 @@ class SellerClient(SellerServicer):
                     print(" Seller not found or has no items.")
                     return
 
-                print(" -")
+                print("-")
                 for itemVals in response.items:
                     print(f"Item ID: {itemVals.item_id}, Price: ${itemVals.price_per_unit}, "
-                          f"Name: {itemVals.name}, Category: {itemVals.category}, "
+                          f"Name: {itemVals.name}, Category: {getCategory(itemVals.category)}, "
                           f"Description: {itemVals.description}")
                     print(f"Quantity Remaining: {itemVals.quantity}")
-                    print(f"Rating: {itemVals.rating} / 5  |  Seller: {itemVals.seller_address}")
+                    print(f"Seller: {itemVals.seller_address}")
+                    print(f"Rating: {itemVals.rating} / 5 ")
                     print("–")
             except grpc.RpcError as e:
                 if e.code() == grpc.StatusCode.NOT_FOUND:
@@ -127,19 +128,17 @@ class SellerClient(SellerServicer):
         
 
 if __name__ == '__main__':
-
+    seller_address = f"{seller_URI}:{seller_port}"
+    seller_uuid = "987a515c-a6e5-11ed-906b-76aef1e817c5"
+  
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
-    seller_pb2_grpc.add_SellerServicer_to_server(SellerServicer(), server)
+    seller_pb2_grpc.add_SellerServicer_to_server(SellerClient(seller_address, seller_uuid), server)
     server.add_insecure_port(f'{seller_URI}:{seller_port}')
     server.start()
     print(f"Seller Server started on port {seller_port}")
     
 
     time.sleep(3)
-
-
-    seller_address = f"{seller_URI}:{seller_port}"
-    seller_uuid = "987a515c-a6e5-11ed-906b-76aef1e817c5"
 
     # Example: Seller can perform other operations like selling items, updating items, etc.
     # Create a SellerClient instance
@@ -153,8 +152,7 @@ if __name__ == '__main__':
     seller_client.sell_item("Smartphone", Category.ELECTRONICS, 20, "Latest smartphone model", 800.0)
 
     # stall for 5 seconds
-    import time
-    time.sleep(5)
+    time.sleep(1)
     
     # print("Updating seller item")
     # Update the price of an item
@@ -163,11 +161,13 @@ if __name__ == '__main__':
     # Display all uploaded items
     seller_client.display_seller_items()
 
-    # # Delete an item
-    # seller_client.delete_item(item_id="2")
+    # Delete an item
+    seller_client.delete_item(item_id="2")
 
-    # # Display all uploaded items
-    # seller_client.display_seller_items()
+    time.sleep(4)
+
+    # Display all uploaded items
+    seller_client.display_seller_items()
 
 
     try:

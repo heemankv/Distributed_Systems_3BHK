@@ -10,6 +10,7 @@ from market_pb2 import *
 import buyer_pb2_grpc as buyer_pb2_grpc
 from buyer_pb2_grpc import BuyerServicer
 from buyer_pb2 import *
+from utils import getCategory
 
 
 # uri = '34.171.24.193'
@@ -24,7 +25,9 @@ class BuyerClient(BuyerServicer):
         self.buyer_address = buyer_address
 
     def Notify(self, request, context):
-        print({request.message})
+        msg = request.message
+        print(msg)
+        self.print_search_results(request)
         return NotifyResponse(status=Status.SUCCESS)
 
     def search_item(self, item_name="", category=Category.ANY):
@@ -48,9 +51,9 @@ class BuyerClient(BuyerServicer):
             )
             response = stub.BuyItem(request)
             if response.status == Status.SUCCESS:
-                print(" SUCCESS")
+                print(f"SUCCESS: Bought {quantity} items of ID {item_id}.")
             else:
-                print(" Failed to buy item.")
+                print(f"FAIL: Failed to buy item of ID {item_id}.")
 
     def add_to_wishlist(self, item_id):
         # Implement AddToWishList functionality here
@@ -62,9 +65,9 @@ class BuyerClient(BuyerServicer):
             )
             response = stub.AddToWishList(request)
             if response.status == Status.SUCCESS:
-                print(" Item added to wishlist.")
+                print(f"SUCCESS: Item {item_id} added to wishlist.")
             else:
-                print(" Failed to add item to wishlist.")
+                print(f"FAIL: Failed to add item {item_id} to wishlist.")
 
     def rate_item(self, item_id, rating):
         # Implement RateItem functionality here
@@ -77,16 +80,16 @@ class BuyerClient(BuyerServicer):
             )
             response = stub.RateItem(request)
             if response.status == Status.SUCCESS:
-                print(" SUCCESS")
+                print(f"SUCCESS: Raiting added to item {item_id}.")
             else:
-                print(" Failed to rate item.")
+                print(f"FAIL: Failed to rate item {item_id}.")
 
 
     def print_search_results(self, response):
         print("")
         for itemVals in response.items:
             print(f"Item ID: {itemVals.item_id}, Price: ${itemVals.price_per_unit}, "
-                          f"Name: {itemVals.name}, Category: {itemVals.category}, "
+                          f"Name: {itemVals.name}, Category: {getCategory(itemVals.category)}, "
                           f"Description: {itemVals.description}")
             print(f"Quantity Remaining: {itemVals.quantity}")
             print(f"Rating: {itemVals.rating} / 5  |  Seller: {itemVals.seller_address}")
@@ -95,9 +98,10 @@ class BuyerClient(BuyerServicer):
 
 
 if __name__ == '__main__':
+    buyer_address = f"{buyer_URI}:{buyer_port}"
 
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
-    buyer_pb2_grpc.add_BuyerServicer_to_server(BuyerServicer(), server)
+    buyer_pb2_grpc.add_BuyerServicer_to_server(BuyerClient(buyer_address), server)
     server.add_insecure_port(f'{buyer_URI}:{buyer_port}')
 
     server.start()
@@ -105,7 +109,6 @@ if __name__ == '__main__':
 
     time.sleep(3)
 
-    buyer_address = f"{buyer_URI}:{buyer_port}"
     buyer_client = BuyerClient(buyer_address)
 
     # Example: Buyer can perform operations like searching items, buying items, etc.
@@ -115,10 +118,12 @@ if __name__ == '__main__':
     buyer_client.add_to_wishlist("1")
 
     # Example: Buyer can perform other operations like adding items to wishlist, rating items, etc.
-    # buyer_client.rate_item("1", 5)
+    buyer_client.rate_item("1", 5)
+
+    time.sleep(3)
 
     # Example : Buyer can perform other operations like buying items
-    # buyer_client.buy_item("1", 2)
+    buyer_client.buy_item("1", 2)
 
     try:
         while True:
