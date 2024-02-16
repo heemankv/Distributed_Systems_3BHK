@@ -3,7 +3,7 @@ from concurrent import futures
 import logging
 
 import time
-
+import sys
 import market_pb2_grpc as market_pb2_grpc
 from market_pb2 import *
  
@@ -14,11 +14,8 @@ from utils import getCategory
 from dotenv import load_dotenv
 import os
 
-
-# uri = '34.171.24.193'
 load_dotenv()
 buyer_URI = os.getenv('buyer_URI')
-buyer_port = os.getenv('buyer_port')
 
 market_URI = os.getenv('market_URI')
 market_port = os.getenv('market_port')
@@ -31,7 +28,6 @@ class BuyerClient(BuyerServicer):
         msg = request.message
         print()
         print(msg)
-        # self.print_search_results(request)
         return NotifyResponse(status=Status.SUCCESS)
 
     def search_item(self, item_name="", category=Category.OTHERS):
@@ -45,7 +41,6 @@ class BuyerClient(BuyerServicer):
             self.print_search_results(response)
 
     def buy_item(self, item_id, quantity):
-        # Implement BuyItem functionality here
         with grpc.insecure_channel(f'{market_URI}:{market_port}') as channel:
             stub = market_pb2_grpc.MarketStub(channel)
             request = BuyItemRequest(
@@ -60,7 +55,6 @@ class BuyerClient(BuyerServicer):
                 print(f"FAIL: Failed to buy item of ID {item_id}.")
 
     def add_to_wishlist(self, item_id):
-        # Implement AddToWishList functionality here
         with grpc.insecure_channel(f'{market_URI}:{market_port}') as channel:
             stub = market_pb2_grpc.MarketStub(channel)
             request = AddToWishListRequest(
@@ -74,7 +68,6 @@ class BuyerClient(BuyerServicer):
                 print(f"FAIL: Failed to add item {item_id} to wishlist.")
 
     def rate_item(self, item_id, rating):
-        # Implement RateItem functionality here
         with grpc.insecure_channel(f'{market_URI}:{market_port}') as channel:
             stub = market_pb2_grpc.MarketStub(channel)
             request = RateItemRequest(
@@ -102,6 +95,8 @@ class BuyerClient(BuyerServicer):
 
 
 if __name__ == '__main__':    
+    buyer_port = sys.argv[1]
+
     buyer_address = f"{buyer_URI}:{buyer_port}"
 
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
@@ -111,25 +106,10 @@ if __name__ == '__main__':
     server.start()
     print(f"Buyer Server started on port {buyer_port}")
 
-    time.sleep(3)
+    time.sleep(1)
 
     buyer_client = BuyerClient(buyer_address)
 
-    # # Example: Buyer can perform operations like searching items, buying items, etc.
-    # buyer_client.search_item("Laptop", Category.ELECTRONICS)
-
-    # # Example: Buyer can perform other operations like adding items to wishlist
-    # buyer_client.add_to_wishlist("1")
-
-    # # Example: Buyer can perform other operations like adding items to wishlist, rating items, etc.
-    # buyer_client.rate_item("1", 5)
-
-    # time.sleep(3)
-
-    # # Example : Buyer can perform other operations like buying items
-    # buyer_client.buy_item("1", 2)
-
-    # Make a menu for the buyer to perform operations
     print("Welcome to the Buyer Client!")
     print("You can perform the following operations:")
     print("1. Search Item")
@@ -175,13 +155,14 @@ if __name__ == '__main__':
             rating = int(input("Enter the rating you want to give to the item: "))
             buyer_client.rate_item(item_id, rating)
         elif choice == 6:
-            break
+            print("Exiting...")
+            exit(0)
         else:
             print("Invalid choice. Please enter a valid choice.")
 
     try:
         while True:
-            time.sleep(86400)  # One day in seconds
+            time.sleep(86400)  
     except KeyboardInterrupt:
         server.stop(0)
     
