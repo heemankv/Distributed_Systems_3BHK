@@ -24,16 +24,17 @@ class SellerClient(SellerServicer):
                 uuid=self.seller_uuid
             )
             response = stub.RegisterSeller(request)
-            if response.status == RegisterSellerResponse.SUCCESS:
+            print(response, " kjnsdkjvbsbjk")
+            if response.status == Status.SUCCESS:
                 print("Registration successful.")
             else:
                 print("Registration failed.")
 
-    def sell_item(self, product_name, category, quantity, description, price_per_unit):
+    def sell_item(self, name, category, quantity, description, price_per_unit):
         with grpc.insecure_channel(f'{uri}:50051') as channel:
             stub = market_pb2_grpc.MarketStub(channel)
             request = SellItemRequest(
-                product_name=product_name,
+                name=name,
                 category=category,
                 quantity=quantity,
                 description=description,
@@ -42,7 +43,7 @@ class SellerClient(SellerServicer):
                 seller_uuid=self.seller_uuid
             )
             response = stub.SellItem(request)
-            if response.status == SellItemResponse.SUCCESS:
+            if response.status == Status.SUCCESS:
                 print(f" Item successfully added - Item ID: {response.item_id}")
             else:
                 print(" Failed to add item.")
@@ -60,7 +61,7 @@ class SellerClient(SellerServicer):
                 seller_uuid=self.seller_uuid
             )
             response = stub.UpdateItem(request)
-            if response.status == UpdateItemResponse.SUCCESS:
+            if response.status == Status.SUCCESS:
                 print(f" Item {item_id} updated successfully.")
             else:
                 print(" Failed to update item.")
@@ -75,7 +76,7 @@ class SellerClient(SellerServicer):
                 seller_uuid=self.seller_uuid
             )
             response = stub.DeleteItem(request)
-            if response.status == DeleteItemResponse.SUCCESS:
+            if response.status == Status.SUCCESS:
                 print(f" Item {item_id} deleted successfully.")
             else:
                 print(" Failed to delete item.")
@@ -96,12 +97,12 @@ class SellerClient(SellerServicer):
                     return
 
                 print(" -")
-                for item_info in response.items:
-                    print(f"Item ID: {item_info.item_id}, Price: ${item_info.price}, "
-                          f"Name: {item_info.name}, Category: {item_info.category}, "
-                          f"Description: {item_info.description}")
-                    print(f"Quantity Remaining: {item_info.quantity_remaining}")
-                    print(f"Rating: {item_info.rating} / 5  |  Seller: {item_info.seller}")
+                for itemVals in response.items:
+                    print(f"Item ID: {itemVals.item_id}, Price: ${itemVals.price_per_unit}, "
+                          f"Name: {itemVals.name}, Category: {itemVals.category}, "
+                          f"Description: {itemVals.description}")
+                    print(f"Quantity Remaining: {itemVals.quantity}")
+                    print(f"Rating: {itemVals.rating} / 5  |  Seller: {itemVals.seller_address}")
                     print("–")
             except grpc.RpcError as e:
                 if e.code() == grpc.StatusCode.NOT_FOUND:
@@ -111,7 +112,7 @@ class SellerClient(SellerServicer):
 
     def Notify(self, request, context):
         print({request.message})
-        return NotifyResponse(status=NotifyResponse.SUCCESS)
+        return NotifyResponse(status=Status.SUCCESS)
         
 
 if __name__ == '__main__':
@@ -139,11 +140,11 @@ if __name__ == '__main__':
     # Display all uploaded items
     seller_client.display_seller_items()
 
-    # Delete an item
-    seller_client.delete_item(item_id="2")
+    # # Delete an item
+    # seller_client.delete_item(item_id="2")
 
-    # Display all uploaded items
-    seller_client.display_seller_items()
+    # # Display all uploaded items
+    # seller_client.display_seller_items()
 
 
 

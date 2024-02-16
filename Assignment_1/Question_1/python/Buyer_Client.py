@@ -35,7 +35,7 @@ class BuyerClient(BuyerServicer):
                 buyer_address=self.buyer_address
             )
             response = stub.BuyItem(request)
-            if response.status == BuyItemResponse.SUCCESS:
+            if response.status == Status.SUCCESS:
                 print(" SUCCESS")
             else:
                 print(" Failed to buy item.")
@@ -49,7 +49,7 @@ class BuyerClient(BuyerServicer):
                 buyer_address=self.buyer_address
             )
             response = stub.AddToWishList(request)
-            if response.status == AddToWishListResponse.SUCCESS:
+            if response.status == Status.SUCCESS:
                 print(" SUCCESS")
             else:
                 print(" Failed to add item to wishlist.")
@@ -64,7 +64,7 @@ class BuyerClient(BuyerServicer):
                 rating=rating
             )
             response = stub.RateItem(request)
-            if response.status == RateItemResponse.SUCCESS:
+            if response.status == Status.SUCCESS:
                 print(" SUCCESS")
             else:
                 print(" Failed to rate item.")
@@ -72,23 +72,24 @@ class BuyerClient(BuyerServicer):
 
     def Notify(self, request, context):
         print({request.message})
-        return NotifyResponse(status=NotifyResponse.SUCCESS)
+        return NotifyResponse(status=Status.SUCCESS)
 
     
 
     def print_search_results(self, response):
         print("")
-        for item in response.items:
+        for itemVals in response.items:
+            print(f"Item ID: {itemVals.item_id}, Price: ${itemVals.price_per_unit}, "
+                          f"Name: {itemVals.name}, Category: {itemVals.category}, "
+                          f"Description: {itemVals.description}")
+            print(f"Quantity Remaining: {itemVals.quantity}")
+            print(f"Rating: {itemVals.rating} / 5  |  Seller: {itemVals.seller_address}")
             print("–")
-            print(f"Item ID: {item.item_id}, Price: ${item.price}, Name: {item.name}, Category: {item.category},")
-            print(f"Description: {item.description}")
-            print(f"Quantity Remaining: {item.quantity_remaining}")
-            print(f"Rating: {item.rating} / 5  |  Seller: {item.seller}")
         print("–")
 
 
 if __name__ == '__main__':
-    buyer_address = f"{uri}:50051"
+    buyer_address = f"{uri}:50052"
 
     buyer_client = BuyerClient(buyer_address)
 
@@ -98,10 +99,10 @@ if __name__ == '__main__':
     # Example: Buyer can perform other operations like adding items to wishlist
     buyer_client.add_to_wishlist("1")
 
-    # Example: Buyer can perform other operations like adding items to wishlist, rating items, etc.
-    buyer_client.rate_item("1", 5)
+    # # Example: Buyer can perform other operations like adding items to wishlist, rating items, etc.
+    # buyer_client.rate_item("1", 5)
 
-    # Example : Buyer can perform other operations like buying items
-    buyer_client.buy_item("1", 2)
+    # # Example : Buyer can perform other operations like buying items
+    # buyer_client.buy_item("1", 2)
     
 

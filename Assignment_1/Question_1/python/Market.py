@@ -26,15 +26,15 @@ class MarketServicer(market_pb2_grpc.MarketServicer):
         uuid = request.uuid
 
         if seller_address in self.sellers:
-            return RegisterSellerResponse(status=RegisterSellerResponse.FAIL)
+            return RegisterSellerResponse(status=Status.FAIL)
 
         self.sellers[seller_address] = uuid
         print(f" Seller join request from {seller_address}, uuid = {uuid}")
 
-        return RegisterSellerResponse(status=RegisterSellerResponse.SUCCESS)
+        return RegisterSellerResponse(status=Status.SUCCESS)
 
     def SellItem(self, request, context):
-        product_name = request.product_name
+        name = request.name
         category = request.category
         quantity = request.quantity
         description = request.description
@@ -44,7 +44,7 @@ class MarketServicer(market_pb2_grpc.MarketServicer):
 
         # Check if the seller is registered
         if seller_address not in self.sellers or self.sellers[seller_address] != seller_uuid:
-            return SellItemResponse(status=SellItemResponse.FAIL)
+            return SellItemResponse(status=Status.FAIL)
 
         # TODO: Use a more robust method to generate item ID
         item_id = str(len(self.items) + 1)
@@ -52,7 +52,7 @@ class MarketServicer(market_pb2_grpc.MarketServicer):
         # Create item details
         item_details = {
             "item_id": item_id,
-            "product_name": product_name,
+            "name": name,
             "category": category,
             "quantity": quantity,
             "description": description,
@@ -66,7 +66,7 @@ class MarketServicer(market_pb2_grpc.MarketServicer):
 
         print(f" Seller {seller_address} added new item - Item ID: {item_id}")
 
-        return SellItemResponse(status=SellItemResponse.SUCCESS, item_id=item_id)
+        return SellItemResponse(status=Status.SUCCESS, item_id=item_id)
 
     def UpdateItem(self, request, context):
         # Implement UpdateItem functionality here
@@ -80,25 +80,40 @@ class MarketServicer(market_pb2_grpc.MarketServicer):
 
         # Check if the seller is registered and has the correct UUID
         if seller_address not in self.sellers or self.sellers[seller_address] != seller_uuid:
-            return UpdateItemResponse(status=UpdateItemResponse.FAIL)
+            return UpdateItemResponse(status=Status.FAIL)
 
         # Check if the item exists
         if item_id not in self.items:
-            return UpdateItemResponse(status=UpdateItemResponse.FAIL)
+            return UpdateItemResponse(status=Status.FAIL)
 
         # Update item details
         self.items[item_id]['price_per_unit'] = new_price
         self.items[item_id]['quantity'] = new_quantity
 
+        print(f" Item {item_id} updated successfully.")
+        print(item_id, self.items[item_id] , " check this ourr")
+        #deepcopy
+        updated_item = ItemDetails(
+            item_id = item_id,
+            name = self.items[item_id]['name'],
+            category = self.items[item_id]['category'],
+            quantity = self.items[item_id]['quantity'],
+            description = self.items[item_id]['description'],
+            seller_address = self.items[item_id]['seller_address'],
+            price_per_unit = self.items[item_id]['price_per_unit'],
+            rating=sum(self.items[item_id]['ratings']) / len(self.items[item_id]['ratings']) if self.items[item_id]['ratings'] else 0.0,
+
+        )
+
         # Notify buyers about the update (you can implement this based on your NotifyClient logic)
         notificationRequest = NotifyBuyerRequest(
             type = 'UpdateItem',
             item_id = item_id,
-            updated_item = self.items[item_id]
+            updated_item = updated_item
         )
         self.NotifyClient(notificationRequest, context)
 
-        return UpdateItemResponse(status=UpdateItemResponse.SUCCESS)
+        return UpdateItemResponse(status=Status.SUCCESS)
 
     def DeleteItem(self, request, context):
         # Implement DeleteItem functionality here
@@ -108,18 +123,18 @@ class MarketServicer(market_pb2_grpc.MarketServicer):
 
         # Check if the seller is registered and has the correct UUID
         if seller_address not in self.sellers or self.sellers[seller_address] != seller_uuid:
-            return DeleteItemResponse(status=DeleteItemResponse.FAIL)
+            return DeleteItemResponse(status=Status.FAIL)
 
         # Check if the item exists
         if item_id not in self.items:
-            return DeleteItemResponse(status=DeleteItemResponse.FAIL)
+            return DeleteItemResponse(status=Status.FAIL)
 
         # Delete the item
         del self.items[item_id]
 
         print(f" Delete Item {item_id} request from {seller_address}")
 
-        return DeleteItemResponse(status=DeleteItemResponse.SUCCESS)
+        return DeleteItemResponse(status=Status.SUCCESS)
 
     def DisplaySellerItems(self, request, context):
         # Implement DisplaySellerItems functionality here
@@ -138,14 +153,14 @@ class MarketServicer(market_pb2_grpc.MarketServicer):
         seller_items = []
         for item_id, details in self.items.items():
             if details['seller_address'] == seller_address:
-                item_info = DisplaySellerItemsResponse.ItemDetails(
+                item_info = ItemDetails(
                     item_id=item_id,
-                    price=details['price_per_unit'],
-                    name=details['product_name'],
+                    price_per_unit=details['price_per_unit'],
+                    name=details['name'],
                     category=details['category'],
                     description=details['description'],
-                    quantity_remaining=details['quantity'],
-                    seller=seller_address,
+                    quantity=details['quantity'],
+                    seller_address=seller_address,
                     rating=sum(details['ratings']) / len(details['ratings']) if details['ratings'] else 0.0
                 )
                 seller_items.append(item_info)
@@ -159,17 +174,17 @@ class MarketServicer(market_pb2_grpc.MarketServicer):
 
         matching_items = []
         for item_id, details in self.items.items():
-            if (not item_name or item_name.lower() in details['product_name'].lower()) and (
+            if (not item_name or item_name.lower() in details['name'].lower()) and (
                     category == Category.ANY or details['category'] == category):
-                item_info = SearchItemResponse.ItemDetails(
+                item_info = ItemDetails(
                     item_id=item_id,
-                    price=details['price_per_unit'],
-                    name=details['product_name'],
+                    price_per_unit=details['price_per_unit'],
+                    name=details['name'],
                     category=details['category'],
                     description=details['description'],
-                    quantity_remaining=details['quantity'],
+                    quantity=details['quantity'],
                     rating=sum(details['ratings']) / len(details['ratings']) if details['ratings'] else 0.0,
-                    seller=details['seller_address']
+                    seller_address=details['seller_address']
                 )
                 matching_items.append(item_info)
 
@@ -187,11 +202,11 @@ class MarketServicer(market_pb2_grpc.MarketServicer):
 
         # Check if the item exists
         if item_id not in self.items:
-            return BuyItemResponse(status=BuyItemResponse.FAIL)
+            return BuyItemResponse(status=Status.FAIL)
 
         # Check if there is enough stock
         if self.items[item_id]['quantity'] < quantity:
-            return BuyItemResponse(status=BuyItemResponse.FAIL)
+            return BuyItemResponse(status=Status.FAIL)
 
         # Update item quantity
         self.items[item_id]['quantity'] -= quantity
@@ -200,12 +215,12 @@ class MarketServicer(market_pb2_grpc.MarketServicer):
         notificationRequest = NotifySellerRequest(
             type = 'BuyItem',
             item_id = item_id,
-            purchase_quantity = quantity,
+            quantity = quantity,
             buyer_address = buyer_address
         )
         self.NotifyClient(notificationRequest, context)
 
-        return BuyItemResponse(status=BuyItemResponse.SUCCESS)
+        return BuyItemResponse(status=Status.SUCCESS)
 
     def AddToWishList(self, request, context):
         # Implement AddToWishList functionality here
@@ -214,7 +229,7 @@ class MarketServicer(market_pb2_grpc.MarketServicer):
 
         # Check if the item exists
         if item_id not in self.items:
-            return AddToWishListResponse(status=AddToWishListResponse.FAIL)
+            return AddToWishListResponse(status=Status.FAIL)
         
 
         if buyer_address not in self.buyers:
@@ -224,7 +239,7 @@ class MarketServicer(market_pb2_grpc.MarketServicer):
 
         print(f" Wishlist request of item {item_id}, from {buyer_address}.")
 
-        return AddToWishListResponse(status=AddToWishListResponse.SUCCESS)
+        return AddToWishListResponse(status=Status.SUCCESS)
 
     def RateItem(self, request, context):
         # Implement RateItem functionality here
@@ -234,11 +249,11 @@ class MarketServicer(market_pb2_grpc.MarketServicer):
 
         # Check if the item exists
         if item_id not in self.items:
-            return RateItemResponse(status=RateItemResponse.FAIL)
+            return RateItemResponse(status=Status.FAIL)
 
         # Check if the buyer has already rated the item
         if buyer_address in self.items[item_id]['ratings']:
-            return RateItemResponse(status=RateItemResponse.FAIL)
+            return RateItemResponse(status=Status.FAIL)
 
         # Add the rating to the item
         self.items[item_id]['ratings'].append(rating)
@@ -247,7 +262,7 @@ class MarketServicer(market_pb2_grpc.MarketServicer):
 
         print(f" {buyer_address} rated item {item_id} with {rating} stars.")
 
-        return RateItemResponse(status=RateItemResponse.SUCCESS)
+        return RateItemResponse(status=Status.SUCCESS)
 
     # write a fn NotifyClient to :
     # 1. Notify the seller about the purchases from the buyers

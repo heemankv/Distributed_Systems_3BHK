@@ -5,6 +5,13 @@ from typing import ClassVar as _ClassVar, Optional as _Optional, Union as _Union
 
 DESCRIPTOR: _descriptor.FileDescriptor
 
+class Status(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
+    __slots__ = ()
+    SUCCESS: _ClassVar[Status]
+    FAIL: _ClassVar[Status]
+SUCCESS: Status
+FAIL: Status
+
 class NotifyRequest(_message.Message):
     __slots__ = ("message",)
     MESSAGE_FIELD_NUMBER: _ClassVar[int]
@@ -13,12 +20,6 @@ class NotifyRequest(_message.Message):
 
 class NotifyResponse(_message.Message):
     __slots__ = ("status",)
-    class Status(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
-        __slots__ = ()
-        SUCCESS: _ClassVar[NotifyResponse.Status]
-        FAIL: _ClassVar[NotifyResponse.Status]
-    SUCCESS: NotifyResponse.Status
-    FAIL: NotifyResponse.Status
     STATUS_FIELD_NUMBER: _ClassVar[int]
-    status: NotifyResponse.Status
-    def __init__(self, status: _Optional[_Union[NotifyResponse.Status, str]] = ...) -> None: ...
+    status: Status
+    def __init__(self, status: _Optional[_Union[Status, str]] = ...) -> None: ...

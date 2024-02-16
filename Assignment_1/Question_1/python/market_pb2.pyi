@@ -12,10 +12,17 @@ class Category(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     FASHION: _ClassVar[Category]
     OTHERS: _ClassVar[Category]
     ANY: _ClassVar[Category]
+
+class Status(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
+    __slots__ = ()
+    SUCCESS: _ClassVar[Status]
+    FAIL: _ClassVar[Status]
 ELECTRONICS: Category
 FASHION: Category
 OTHERS: Category
 ANY: Category
+SUCCESS: Status
+FAIL: Status
 
 class RegisterSellerRequest(_message.Message):
     __slots__ = ("seller_address", "uuid")
@@ -27,55 +34,35 @@ class RegisterSellerRequest(_message.Message):
 
 class RegisterSellerResponse(_message.Message):
     __slots__ = ("status",)
-    class Status(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
-        __slots__ = ()
-        SUCCESS: _ClassVar[RegisterSellerResponse.Status]
-        FAIL: _ClassVar[RegisterSellerResponse.Status]
-    SUCCESS: RegisterSellerResponse.Status
-    FAIL: RegisterSellerResponse.Status
     STATUS_FIELD_NUMBER: _ClassVar[int]
-    status: RegisterSellerResponse.Status
-    def __init__(self, status: _Optional[_Union[RegisterSellerResponse.Status, str]] = ...) -> None: ...
+    status: Status
+    def __init__(self, status: _Optional[_Union[Status, str]] = ...) -> None: ...
 
 class SellItemRequest(_message.Message):
-    __slots__ = ("product_name", "quantity", "description", "seller_address", "price_per_unit", "seller_uuid", "category")
-    class Category(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
-        __slots__ = ()
-        ELECTRONICS: _ClassVar[SellItemRequest.Category]
-        FASHION: _ClassVar[SellItemRequest.Category]
-        OTHERS: _ClassVar[SellItemRequest.Category]
-    ELECTRONICS: SellItemRequest.Category
-    FASHION: SellItemRequest.Category
-    OTHERS: SellItemRequest.Category
-    PRODUCT_NAME_FIELD_NUMBER: _ClassVar[int]
+    __slots__ = ("name", "quantity", "description", "seller_address", "price_per_unit", "seller_uuid", "category")
+    NAME_FIELD_NUMBER: _ClassVar[int]
     QUANTITY_FIELD_NUMBER: _ClassVar[int]
     DESCRIPTION_FIELD_NUMBER: _ClassVar[int]
     SELLER_ADDRESS_FIELD_NUMBER: _ClassVar[int]
     PRICE_PER_UNIT_FIELD_NUMBER: _ClassVar[int]
     SELLER_UUID_FIELD_NUMBER: _ClassVar[int]
     CATEGORY_FIELD_NUMBER: _ClassVar[int]
-    product_name: str
+    name: str
     quantity: int
     description: str
     seller_address: str
     price_per_unit: float
     seller_uuid: str
-    category: SellItemRequest.Category
-    def __init__(self, product_name: _Optional[str] = ..., quantity: _Optional[int] = ..., description: _Optional[str] = ..., seller_address: _Optional[str] = ..., price_per_unit: _Optional[float] = ..., seller_uuid: _Optional[str] = ..., category: _Optional[_Union[SellItemRequest.Category, str]] = ...) -> None: ...
+    category: Category
+    def __init__(self, name: _Optional[str] = ..., quantity: _Optional[int] = ..., description: _Optional[str] = ..., seller_address: _Optional[str] = ..., price_per_unit: _Optional[float] = ..., seller_uuid: _Optional[str] = ..., category: _Optional[_Union[Category, str]] = ...) -> None: ...
 
 class SellItemResponse(_message.Message):
     __slots__ = ("status", "item_id")
-    class Status(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
-        __slots__ = ()
-        SUCCESS: _ClassVar[SellItemResponse.Status]
-        FAIL: _ClassVar[SellItemResponse.Status]
-    SUCCESS: SellItemResponse.Status
-    FAIL: SellItemResponse.Status
     STATUS_FIELD_NUMBER: _ClassVar[int]
     ITEM_ID_FIELD_NUMBER: _ClassVar[int]
-    status: SellItemResponse.Status
+    status: Status
     item_id: str
-    def __init__(self, status: _Optional[_Union[SellItemResponse.Status, str]] = ..., item_id: _Optional[str] = ...) -> None: ...
+    def __init__(self, status: _Optional[_Union[Status, str]] = ..., item_id: _Optional[str] = ...) -> None: ...
 
 class UpdateItemRequest(_message.Message):
     __slots__ = ("item_id", "new_price", "new_quantity", "seller_address", "seller_uuid")
@@ -93,15 +80,9 @@ class UpdateItemRequest(_message.Message):
 
 class UpdateItemResponse(_message.Message):
     __slots__ = ("status",)
-    class Status(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
-        __slots__ = ()
-        SUCCESS: _ClassVar[UpdateItemResponse.Status]
-        FAIL: _ClassVar[UpdateItemResponse.Status]
-    SUCCESS: UpdateItemResponse.Status
-    FAIL: UpdateItemResponse.Status
     STATUS_FIELD_NUMBER: _ClassVar[int]
-    status: UpdateItemResponse.Status
-    def __init__(self, status: _Optional[_Union[UpdateItemResponse.Status, str]] = ...) -> None: ...
+    status: Status
+    def __init__(self, status: _Optional[_Union[Status, str]] = ...) -> None: ...
 
 class DeleteItemRequest(_message.Message):
     __slots__ = ("item_id", "seller_address", "seller_uuid")
@@ -115,15 +96,9 @@ class DeleteItemRequest(_message.Message):
 
 class DeleteItemResponse(_message.Message):
     __slots__ = ("status",)
-    class Status(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
-        __slots__ = ()
-        SUCCESS: _ClassVar[DeleteItemResponse.Status]
-        FAIL: _ClassVar[DeleteItemResponse.Status]
-    SUCCESS: DeleteItemResponse.Status
-    FAIL: DeleteItemResponse.Status
     STATUS_FIELD_NUMBER: _ClassVar[int]
-    status: DeleteItemResponse.Status
-    def __init__(self, status: _Optional[_Union[DeleteItemResponse.Status, str]] = ...) -> None: ...
+    status: Status
+    def __init__(self, status: _Optional[_Union[Status, str]] = ...) -> None: ...
 
 class DisplaySellerItemsRequest(_message.Message):
     __slots__ = ("seller_address", "seller_uuid")
@@ -133,89 +108,45 @@ class DisplaySellerItemsRequest(_message.Message):
     seller_uuid: str
     def __init__(self, seller_address: _Optional[str] = ..., seller_uuid: _Optional[str] = ...) -> None: ...
 
+class ItemDetails(_message.Message):
+    __slots__ = ("item_id", "price_per_unit", "name", "category", "description", "quantity", "seller_address", "rating")
+    ITEM_ID_FIELD_NUMBER: _ClassVar[int]
+    PRICE_PER_UNIT_FIELD_NUMBER: _ClassVar[int]
+    NAME_FIELD_NUMBER: _ClassVar[int]
+    CATEGORY_FIELD_NUMBER: _ClassVar[int]
+    DESCRIPTION_FIELD_NUMBER: _ClassVar[int]
+    QUANTITY_FIELD_NUMBER: _ClassVar[int]
+    SELLER_ADDRESS_FIELD_NUMBER: _ClassVar[int]
+    RATING_FIELD_NUMBER: _ClassVar[int]
+    item_id: str
+    price_per_unit: float
+    name: str
+    category: Category
+    description: str
+    quantity: int
+    seller_address: str
+    rating: float
+    def __init__(self, item_id: _Optional[str] = ..., price_per_unit: _Optional[float] = ..., name: _Optional[str] = ..., category: _Optional[_Union[Category, str]] = ..., description: _Optional[str] = ..., quantity: _Optional[int] = ..., seller_address: _Optional[str] = ..., rating: _Optional[float] = ...) -> None: ...
+
 class DisplaySellerItemsResponse(_message.Message):
     __slots__ = ("items",)
-    class ItemDetails(_message.Message):
-        __slots__ = ("item_id", "price", "name", "category", "description", "quantity_remaining", "seller", "rating")
-        class Category(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
-            __slots__ = ()
-            ELECTRONICS: _ClassVar[DisplaySellerItemsResponse.ItemDetails.Category]
-            FASHION: _ClassVar[DisplaySellerItemsResponse.ItemDetails.Category]
-            OTHERS: _ClassVar[DisplaySellerItemsResponse.ItemDetails.Category]
-        ELECTRONICS: DisplaySellerItemsResponse.ItemDetails.Category
-        FASHION: DisplaySellerItemsResponse.ItemDetails.Category
-        OTHERS: DisplaySellerItemsResponse.ItemDetails.Category
-        ITEM_ID_FIELD_NUMBER: _ClassVar[int]
-        PRICE_FIELD_NUMBER: _ClassVar[int]
-        NAME_FIELD_NUMBER: _ClassVar[int]
-        CATEGORY_FIELD_NUMBER: _ClassVar[int]
-        DESCRIPTION_FIELD_NUMBER: _ClassVar[int]
-        QUANTITY_REMAINING_FIELD_NUMBER: _ClassVar[int]
-        SELLER_FIELD_NUMBER: _ClassVar[int]
-        RATING_FIELD_NUMBER: _ClassVar[int]
-        item_id: str
-        price: float
-        name: str
-        category: DisplaySellerItemsResponse.ItemDetails.Category
-        description: str
-        quantity_remaining: int
-        seller: str
-        rating: float
-        def __init__(self, item_id: _Optional[str] = ..., price: _Optional[float] = ..., name: _Optional[str] = ..., category: _Optional[_Union[DisplaySellerItemsResponse.ItemDetails.Category, str]] = ..., description: _Optional[str] = ..., quantity_remaining: _Optional[int] = ..., seller: _Optional[str] = ..., rating: _Optional[float] = ...) -> None: ...
     ITEMS_FIELD_NUMBER: _ClassVar[int]
-    items: _containers.RepeatedCompositeFieldContainer[DisplaySellerItemsResponse.ItemDetails]
-    def __init__(self, items: _Optional[_Iterable[_Union[DisplaySellerItemsResponse.ItemDetails, _Mapping]]] = ...) -> None: ...
+    items: _containers.RepeatedCompositeFieldContainer[ItemDetails]
+    def __init__(self, items: _Optional[_Iterable[_Union[ItemDetails, _Mapping]]] = ...) -> None: ...
 
 class SearchItemRequest(_message.Message):
     __slots__ = ("item_name", "category")
-    class Category(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
-        __slots__ = ()
-        ELECTRONICS: _ClassVar[SearchItemRequest.Category]
-        FASHION: _ClassVar[SearchItemRequest.Category]
-        OTHERS: _ClassVar[SearchItemRequest.Category]
-        ANY: _ClassVar[SearchItemRequest.Category]
-    ELECTRONICS: SearchItemRequest.Category
-    FASHION: SearchItemRequest.Category
-    OTHERS: SearchItemRequest.Category
-    ANY: SearchItemRequest.Category
     ITEM_NAME_FIELD_NUMBER: _ClassVar[int]
     CATEGORY_FIELD_NUMBER: _ClassVar[int]
     item_name: str
-    category: SearchItemRequest.Category
-    def __init__(self, item_name: _Optional[str] = ..., category: _Optional[_Union[SearchItemRequest.Category, str]] = ...) -> None: ...
+    category: Category
+    def __init__(self, item_name: _Optional[str] = ..., category: _Optional[_Union[Category, str]] = ...) -> None: ...
 
 class SearchItemResponse(_message.Message):
     __slots__ = ("items",)
-    class ItemDetails(_message.Message):
-        __slots__ = ("item_id", "price", "name", "category", "description", "quantity_remaining", "rating", "seller")
-        class Category(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
-            __slots__ = ()
-            ELECTRONICS: _ClassVar[SearchItemResponse.ItemDetails.Category]
-            FASHION: _ClassVar[SearchItemResponse.ItemDetails.Category]
-            OTHERS: _ClassVar[SearchItemResponse.ItemDetails.Category]
-        ELECTRONICS: SearchItemResponse.ItemDetails.Category
-        FASHION: SearchItemResponse.ItemDetails.Category
-        OTHERS: SearchItemResponse.ItemDetails.Category
-        ITEM_ID_FIELD_NUMBER: _ClassVar[int]
-        PRICE_FIELD_NUMBER: _ClassVar[int]
-        NAME_FIELD_NUMBER: _ClassVar[int]
-        CATEGORY_FIELD_NUMBER: _ClassVar[int]
-        DESCRIPTION_FIELD_NUMBER: _ClassVar[int]
-        QUANTITY_REMAINING_FIELD_NUMBER: _ClassVar[int]
-        RATING_FIELD_NUMBER: _ClassVar[int]
-        SELLER_FIELD_NUMBER: _ClassVar[int]
-        item_id: str
-        price: float
-        name: str
-        category: SearchItemResponse.ItemDetails.Category
-        description: str
-        quantity_remaining: int
-        rating: float
-        seller: str
-        def __init__(self, item_id: _Optional[str] = ..., price: _Optional[float] = ..., name: _Optional[str] = ..., category: _Optional[_Union[SearchItemResponse.ItemDetails.Category, str]] = ..., description: _Optional[str] = ..., quantity_remaining: _Optional[int] = ..., rating: _Optional[float] = ..., seller: _Optional[str] = ...) -> None: ...
     ITEMS_FIELD_NUMBER: _ClassVar[int]
-    items: _containers.RepeatedCompositeFieldContainer[SearchItemResponse.ItemDetails]
-    def __init__(self, items: _Optional[_Iterable[_Union[SearchItemResponse.ItemDetails, _Mapping]]] = ...) -> None: ...
+    items: _containers.RepeatedCompositeFieldContainer[ItemDetails]
+    def __init__(self, items: _Optional[_Iterable[_Union[ItemDetails, _Mapping]]] = ...) -> None: ...
 
 class BuyItemRequest(_message.Message):
     __slots__ = ("item_id", "quantity", "buyer_address")
@@ -229,15 +160,9 @@ class BuyItemRequest(_message.Message):
 
 class BuyItemResponse(_message.Message):
     __slots__ = ("status",)
-    class Status(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
-        __slots__ = ()
-        SUCCESS: _ClassVar[BuyItemResponse.Status]
-        FAIL: _ClassVar[BuyItemResponse.Status]
-    SUCCESS: BuyItemResponse.Status
-    FAIL: BuyItemResponse.Status
     STATUS_FIELD_NUMBER: _ClassVar[int]
-    status: BuyItemResponse.Status
-    def __init__(self, status: _Optional[_Union[BuyItemResponse.Status, str]] = ...) -> None: ...
+    status: Status
+    def __init__(self, status: _Optional[_Union[Status, str]] = ...) -> None: ...
 
 class AddToWishListRequest(_message.Message):
     __slots__ = ("item_id", "buyer_address")
@@ -249,15 +174,9 @@ class AddToWishListRequest(_message.Message):
 
 class AddToWishListResponse(_message.Message):
     __slots__ = ("status",)
-    class Status(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
-        __slots__ = ()
-        SUCCESS: _ClassVar[AddToWishListResponse.Status]
-        FAIL: _ClassVar[AddToWishListResponse.Status]
-    SUCCESS: AddToWishListResponse.Status
-    FAIL: AddToWishListResponse.Status
     STATUS_FIELD_NUMBER: _ClassVar[int]
-    status: AddToWishListResponse.Status
-    def __init__(self, status: _Optional[_Union[AddToWishListResponse.Status, str]] = ...) -> None: ...
+    status: Status
+    def __init__(self, status: _Optional[_Union[Status, str]] = ...) -> None: ...
 
 class RateItemRequest(_message.Message):
     __slots__ = ("item_id", "buyer_address", "rating")
@@ -271,64 +190,31 @@ class RateItemRequest(_message.Message):
 
 class RateItemResponse(_message.Message):
     __slots__ = ("status",)
-    class Status(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
-        __slots__ = ()
-        SUCCESS: _ClassVar[RateItemResponse.Status]
-        FAIL: _ClassVar[RateItemResponse.Status]
-    SUCCESS: RateItemResponse.Status
-    FAIL: RateItemResponse.Status
     STATUS_FIELD_NUMBER: _ClassVar[int]
-    status: RateItemResponse.Status
-    def __init__(self, status: _Optional[_Union[RateItemResponse.Status, str]] = ...) -> None: ...
+    status: Status
+    def __init__(self, status: _Optional[_Union[Status, str]] = ...) -> None: ...
 
 class NotifyBuyerRequest(_message.Message):
     __slots__ = ("type", "item_id", "updated_item")
-    class ItemDetails(_message.Message):
-        __slots__ = ("item_id", "price", "name", "category", "description", "quantity_remaining", "rating", "seller")
-        class Category(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
-            __slots__ = ()
-            ELECTRONICS: _ClassVar[NotifyBuyerRequest.ItemDetails.Category]
-            FASHION: _ClassVar[NotifyBuyerRequest.ItemDetails.Category]
-            OTHERS: _ClassVar[NotifyBuyerRequest.ItemDetails.Category]
-        ELECTRONICS: NotifyBuyerRequest.ItemDetails.Category
-        FASHION: NotifyBuyerRequest.ItemDetails.Category
-        OTHERS: NotifyBuyerRequest.ItemDetails.Category
-        ITEM_ID_FIELD_NUMBER: _ClassVar[int]
-        PRICE_FIELD_NUMBER: _ClassVar[int]
-        NAME_FIELD_NUMBER: _ClassVar[int]
-        CATEGORY_FIELD_NUMBER: _ClassVar[int]
-        DESCRIPTION_FIELD_NUMBER: _ClassVar[int]
-        QUANTITY_REMAINING_FIELD_NUMBER: _ClassVar[int]
-        RATING_FIELD_NUMBER: _ClassVar[int]
-        SELLER_FIELD_NUMBER: _ClassVar[int]
-        item_id: str
-        price: float
-        name: str
-        category: NotifyBuyerRequest.ItemDetails.Category
-        description: str
-        quantity_remaining: int
-        rating: float
-        seller: str
-        def __init__(self, item_id: _Optional[str] = ..., price: _Optional[float] = ..., name: _Optional[str] = ..., category: _Optional[_Union[NotifyBuyerRequest.ItemDetails.Category, str]] = ..., description: _Optional[str] = ..., quantity_remaining: _Optional[int] = ..., rating: _Optional[float] = ..., seller: _Optional[str] = ...) -> None: ...
     TYPE_FIELD_NUMBER: _ClassVar[int]
     ITEM_ID_FIELD_NUMBER: _ClassVar[int]
     UPDATED_ITEM_FIELD_NUMBER: _ClassVar[int]
     type: str
     item_id: str
-    updated_item: NotifyBuyerRequest.ItemDetails
-    def __init__(self, type: _Optional[str] = ..., item_id: _Optional[str] = ..., updated_item: _Optional[_Union[NotifyBuyerRequest.ItemDetails, _Mapping]] = ...) -> None: ...
+    updated_item: ItemDetails
+    def __init__(self, type: _Optional[str] = ..., item_id: _Optional[str] = ..., updated_item: _Optional[_Union[ItemDetails, _Mapping]] = ...) -> None: ...
 
 class NotifySellerRequest(_message.Message):
-    __slots__ = ("type", "item_id", "purchase_quantity", "buyer_address")
+    __slots__ = ("type", "item_id", "quantity", "buyer_address")
     TYPE_FIELD_NUMBER: _ClassVar[int]
     ITEM_ID_FIELD_NUMBER: _ClassVar[int]
-    PURCHASE_QUANTITY_FIELD_NUMBER: _ClassVar[int]
+    QUANTITY_FIELD_NUMBER: _ClassVar[int]
     BUYER_ADDRESS_FIELD_NUMBER: _ClassVar[int]
     type: str
     item_id: str
-    purchase_quantity: int
+    quantity: int
     buyer_address: str
-    def __init__(self, type: _Optional[str] = ..., item_id: _Optional[str] = ..., purchase_quantity: _Optional[int] = ..., buyer_address: _Optional[str] = ...) -> None: ...
+    def __init__(self, type: _Optional[str] = ..., item_id: _Optional[str] = ..., quantity: _Optional[int] = ..., buyer_address: _Optional[str] = ...) -> None: ...
 
 class NotificationMessage(_message.Message):
     __slots__ = ("notify_buyer", "notify_seller")
