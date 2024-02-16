@@ -6,7 +6,8 @@ import buyer_pb2 as buyer__pb2
 
 
 class BuyerStub(object):
-    """Missing associated documentation comment in .proto file."""
+    """Service definition for communication between Seller, Buyer and Market
+    """
 
     def __init__(self, channel):
         """Constructor.
@@ -22,10 +23,12 @@ class BuyerStub(object):
 
 
 class BuyerServicer(object):
-    """Missing associated documentation comment in .proto file."""
+    """Service definition for communication between Seller, Buyer and Market
+    """
 
     def Notify(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """RPC method to notify the buyer
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
@@ -46,7 +49,8 @@ def add_BuyerServicer_to_server(servicer, server):
 
  # This class is part of an EXPERIMENTAL API.
 class Buyer(object):
-    """Missing associated documentation comment in .proto file."""
+    """Service definition for communication between Seller, Buyer and Market
+    """
 
     @staticmethod
     def Notify(request,

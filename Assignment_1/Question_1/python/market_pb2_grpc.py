@@ -6,7 +6,7 @@ import market_pb2 as market__pb2
 
 
 class MarketStub(object):
-    """Service definition for communication between Seller and Market
+    """Service definition for communication between Seller, Buyer and Market
     """
 
     def __init__(self, channel):
@@ -63,7 +63,7 @@ class MarketStub(object):
 
 
 class MarketServicer(object):
-    """Service definition for communication between Seller and Market
+    """Service definition for communication between Seller, Buyer and Market
     """
 
     def RegisterSeller(self, request, context):
@@ -185,7 +185,7 @@ def add_MarketServicer_to_server(servicer, server):
 
  # This class is part of an EXPERIMENTAL API.
 class Market(object):
-    """Service definition for communication between Seller and Market
+    """Service definition for communication between Seller, Buyer and Market
     """
 
     @staticmethod

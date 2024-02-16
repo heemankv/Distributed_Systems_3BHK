@@ -1,23 +1,37 @@
 import grpc
+from concurrent import futures
+import logging
 
-
+import time
 import market_pb2_grpc as market_pb2_grpc
 from market_pb2 import *
  
+import seller_pb2_grpc as seller_pb2_grpc
 from seller_pb2_grpc import SellerStub, SellerServicer
 from seller_pb2 import *
 
 
 # uri = '34.171.24.193'
-uri = 'localhost'
+seller_URI = '127.0.0.1'
+seller_port = 50052
+
+market_URI = '127.0.0.1'
+market_port = 50051
+
+
 
 class SellerClient(SellerServicer):
     def __init__(self, seller_address, seller_uuid):
+        print(self.__dict__, " kjnsdkjvbsbjk")
         self.seller_address = seller_address
         self.seller_uuid = seller_uuid
 
+    def Notify(self, request, context):
+        print({request.message})
+        return NotifyResponse(status=Status.SUCCESS)
+
     def register_seller(self):
-        with grpc.insecure_channel(f'{uri}:50051') as channel:
+        with grpc.insecure_channel(f'{market_URI}:{market_port}') as channel:
             stub = market_pb2_grpc.MarketStub(channel)
             request = RegisterSellerRequest(
                 seller_address=self.seller_address,
@@ -31,7 +45,7 @@ class SellerClient(SellerServicer):
                 print("Registration failed.")
 
     def sell_item(self, name, category, quantity, description, price_per_unit):
-        with grpc.insecure_channel(f'{uri}:50051') as channel:
+        with grpc.insecure_channel(f'{market_URI}:{market_port}') as channel:
             stub = market_pb2_grpc.MarketStub(channel)
             request = SellItemRequest(
                 name=name,
@@ -51,7 +65,7 @@ class SellerClient(SellerServicer):
 
     def update_item(self, item_id, new_price, new_quantity):
         # Implement UpdateItem functionality here
-         with grpc.insecure_channel(f'{uri}:50051') as channel:
+         with grpc.insecure_channel(f'{market_URI}:{market_port}') as channel:
             stub = market_pb2_grpc.MarketStub(channel)
             request = UpdateItemRequest(
                 item_id=item_id,
@@ -68,7 +82,7 @@ class SellerClient(SellerServicer):
 
     def delete_item(self, item_id):
         # Implement DeleteItem functionality here
-        with grpc.insecure_channel(f'{uri}:50051') as channel:
+        with grpc.insecure_channel(f'{market_URI}:{market_port}') as channel:
             stub = market_pb2_grpc.MarketStub(channel)
             request = DeleteItemRequest(
                 item_id=item_id,
@@ -83,7 +97,7 @@ class SellerClient(SellerServicer):
 
 
     def display_seller_items(self):
-        with grpc.insecure_channel(f'{uri}:50051') as channel:
+        with grpc.insecure_channel(f'{market_URI}:{market_port}') as channel:
             stub = market_pb2_grpc.MarketStub(channel)
             request = DisplaySellerItemsRequest(
                 seller_address=self.seller_address,
@@ -110,13 +124,21 @@ class SellerClient(SellerServicer):
                 else:
                     print(f" gRPC error - {e}")
 
-    def Notify(self, request, context):
-        print({request.message})
-        return NotifyResponse(status=Status.SUCCESS)
         
 
 if __name__ == '__main__':
-    seller_address = f"{uri}:50051"
+
+    server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
+    seller_pb2_grpc.add_SellerServicer_to_server(SellerServicer(), server)
+    server.add_insecure_port(f'{seller_URI}:{seller_port}')
+    server.start()
+    print(f"Seller Server started on port {seller_port}")
+    
+
+    time.sleep(3)
+
+
+    seller_address = f"{seller_URI}:{seller_port}"
     seller_uuid = "987a515c-a6e5-11ed-906b-76aef1e817c5"
 
     # Example: Seller can perform other operations like selling items, updating items, etc.
@@ -134,6 +156,7 @@ if __name__ == '__main__':
     import time
     time.sleep(5)
     
+    # print("Updating seller item")
     # Update the price of an item
     seller_client.update_item(item_id="1", new_price=1000.0, new_quantity=8)
 
@@ -145,6 +168,13 @@ if __name__ == '__main__':
 
     # # Display all uploaded items
     # seller_client.display_seller_items()
+
+
+    try:
+        while True:
+            time.sleep(86400)  # One day in seconds
+    except KeyboardInterrupt:
+        server.stop(0)
 
 
 

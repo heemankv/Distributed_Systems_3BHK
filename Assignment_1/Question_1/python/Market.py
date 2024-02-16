@@ -14,6 +14,8 @@ from buyer_pb2_grpc import BuyerStub
 from buyer_pb2 import NotifyRequest as BuyerNotifyRequest
 
 
+market_URI = '127.0.0.1'
+market_port = 50051
 
 class MarketServicer(market_pb2_grpc.MarketServicer):
     def __init__(self):
@@ -111,7 +113,7 @@ class MarketServicer(market_pb2_grpc.MarketServicer):
             item_id = item_id,
             updated_item = updated_item
         )
-        self.NotifyClient(notificationRequest, context)
+        self.NotifyClients(notificationRequest, context)
 
         return UpdateItemResponse(status=Status.SUCCESS)
 
@@ -218,7 +220,7 @@ class MarketServicer(market_pb2_grpc.MarketServicer):
             quantity = quantity,
             buyer_address = buyer_address
         )
-        self.NotifyClient(notificationRequest, context)
+        self.NotifyClients(notificationRequest, context)
 
         return BuyItemResponse(status=Status.SUCCESS)
 
@@ -267,7 +269,7 @@ class MarketServicer(market_pb2_grpc.MarketServicer):
     # write a fn NotifyClient to :
     # 1. Notify the seller about the purchases from the buyers
     # 2. Notify the buyers about update made to product theu have added to wishlist
-    def NotifyClient(self, request, context):
+    def NotifyClients(self, request, context):
         # Implement NotifyClient functionality here
         type_of_notification = request.type
 
@@ -294,15 +296,22 @@ class MarketServicer(market_pb2_grpc.MarketServicer):
             updated_item = request.updated_item
 
             for buyer_address in self.buyers:
+                print(f"Checking buyer {buyer_address} wishlist")
                 # if buyer has item in wishlist
                 if item_id in self.buyers[buyer_address]:
+                    print(f"Item {item_id} found in buyer {buyer_address} wishlist")
                     with grpc.insecure_channel(buyer_address) as channel:
+                        print(f"Sending notification to buyer {buyer_address} about update of item {item_id} in wishlist.", channel)
                         buyer_stub = BuyerStub(channel)
                         response = buyer_stub.Notify(
                             BuyerNotifyRequest(
                                 message = f"Item {item_id} in your wishlist has been updated: {updated_item}"
                             )
                         )
+                        if response.status == Status.SUCCESS:
+                            print(" SUCCESS")
+                        else:
+                            print(" Failed to rate item.")
                         print(f"Notification sent to buyer {buyer_address} about update of item {item_id} in wishlist.")
 
 
@@ -311,17 +320,14 @@ class MarketServicer(market_pb2_grpc.MarketServicer):
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     market_pb2_grpc.add_MarketServicer_to_server(MarketServicer(), server)
-    server.add_insecure_port('[::]:50051')
+    server.add_insecure_port(f'{market_URI}:{market_port}')
     server.start()
-    print("Market Server started on port 50051")
+    print(f"Market Server started on {market_URI}:{market_port}") 
     try:
         while True:
             time.sleep(86400)  # One day in seconds
     except KeyboardInterrupt:
         server.stop(0)
-
-
-
 
 
 if __name__ == '__main__':

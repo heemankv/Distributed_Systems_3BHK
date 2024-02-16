@@ -1,22 +1,23 @@
 syntax = "proto3";
 
-package buyer;
+package buyer;  // This should match your actual package name
 
 enum Status {
   SUCCESS = 0;
   FAIL = 1;
 }
 
-service Buyer {
-
-    rpc Notify (NotifyRequest) returns (NotifyResponse);
-}
-
 message NotifyRequest {
-    string message = 1;
+  string message = 1;
 }
 
 message NotifyResponse {
-    Status status = 1;
-  }
-  
+  Status status = 1;
+}
+
+// Service definition for communication between Seller, Buyer and Market
+service Buyer {
+  // RPC method to notify the buyer
+  rpc Notify (NotifyRequest) returns (NotifyResponse);
+}
+
