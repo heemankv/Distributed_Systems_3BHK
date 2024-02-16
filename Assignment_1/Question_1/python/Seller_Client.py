@@ -10,14 +10,16 @@ from utils import getCategory
 import seller_pb2_grpc as seller_pb2_grpc
 from seller_pb2_grpc import SellerStub, SellerServicer
 from seller_pb2 import *
-
+from dotenv import load_dotenv
+import os
 
 # uri = '34.171.24.193'
-seller_URI = '127.0.0.1'
-seller_port = 50052
+load_dotenv()
+seller_URI = os.getenv('seller_URI')
+seller_port = os.getenv('seller_port')
 
-market_URI = '127.0.0.1'
-market_port = 50051
+market_URI = os.getenv('market_URI')
+market_port = os.getenv('market_port')
 
 
 

@@ -11,14 +11,17 @@ import buyer_pb2_grpc as buyer_pb2_grpc
 from buyer_pb2_grpc import BuyerServicer
 from buyer_pb2 import *
 from utils import getCategory
+from dotenv import load_dotenv
+import os
 
 
 # uri = '34.171.24.193'
-buyer_URI = '127.0.0.1'
-buyer_port = 50053
+load_dotenv()
+buyer_URI = os.getenv('buyer_URI')
+buyer_port = os.getenv('buyer_port')
 
-market_URI = '127.0.0.1'
-market_port = 50051
+market_URI = os.getenv('market_URI')
+market_port = os.getenv('market_port')
 
 class BuyerClient(BuyerServicer):
     def __init__(self, buyer_address):
@@ -97,7 +100,7 @@ class BuyerClient(BuyerServicer):
         print("–")
 
 
-if __name__ == '__main__':
+if __name__ == '__main__':    
     buyer_address = f"{buyer_URI}:{buyer_port}"
 
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))

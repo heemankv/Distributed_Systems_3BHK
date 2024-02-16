@@ -13,10 +13,12 @@ from seller_pb2 import NotifyRequest as SellerNotifyRequest
 
 from buyer_pb2_grpc import BuyerStub
 from buyer_pb2 import NotifyRequest as BuyerNotifyRequest
+from dotenv import load_dotenv
+import os
 
-
-market_URI = '127.0.0.1'
-market_port = 50051
+load_dotenv()
+market_URI = os.getenv('market_URI')
+market_port = os.getenv('market_port')
 
 
 class MarketClient(market_pb2_grpc.MarketServicer):
@@ -329,6 +331,6 @@ def serve():
         server.stop(0)
 
 
-if __name__ == '__main__':
+if __name__ == '__main__':    
     logging.basicConfig()
     serve()
