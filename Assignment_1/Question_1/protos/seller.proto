@@ -9,10 +9,10 @@ enum Status {
 
 message NotifyRequest {
     string message = 1;
+    string item_id = 2; // Unique identifier for the item
 }
 
 message NotifyResponse {
-  
     Status status = 1;
 }
 

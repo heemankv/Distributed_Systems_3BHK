@@ -13,10 +13,12 @@ SUCCESS: Status
 FAIL: Status
 
 class NotifyRequest(_message.Message):
-    __slots__ = ("message",)
+    __slots__ = ("message", "item_id")
     MESSAGE_FIELD_NUMBER: _ClassVar[int]
+    ITEM_ID_FIELD_NUMBER: _ClassVar[int]
     message: str
-    def __init__(self, message: _Optional[str] = ...) -> None: ...
+    item_id: str
+    def __init__(self, message: _Optional[str] = ..., item_id: _Optional[str] = ...) -> None: ...
 
 class NotifyResponse(_message.Message):
     __slots__ = ("status",)

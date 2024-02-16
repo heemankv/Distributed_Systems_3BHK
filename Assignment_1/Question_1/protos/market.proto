@@ -6,7 +6,6 @@ enum Category {
   ELECTRONICS = 0;
   FASHION = 1;
   OTHERS = 2;
-  ANY = 3;
 }
 
 enum Status {

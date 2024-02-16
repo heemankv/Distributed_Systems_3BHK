@@ -6,6 +6,6 @@ def getCategory(category):
         return "Fashion"
     elif category == 2:
         return "Others"
-    else:
-        return "Any"
+    else :
+        return "Unknown"
 

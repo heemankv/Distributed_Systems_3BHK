@@ -1,12 +1,11 @@
 import grpc
 from concurrent import futures
 import logging
-
+import uuid
 import time
 import market_pb2_grpc as market_pb2_grpc
 from market_pb2 import *
 from utils import getCategory
- 
 import seller_pb2_grpc as seller_pb2_grpc
 from seller_pb2_grpc import SellerStub, SellerServicer
 from seller_pb2 import *
@@ -30,6 +29,7 @@ class SellerClient(SellerServicer):
 
     def Notify(self, request, context):
         msg = request.message
+        print()
         print(msg)
         return NotifyResponse(status=Status.SUCCESS)
 
@@ -130,8 +130,12 @@ class SellerClient(SellerServicer):
         
 
 if __name__ == '__main__':
+
+
+
+    
     seller_address = f"{seller_URI}:{seller_port}"
-    seller_uuid = "987a515c-a6e5-11ed-906b-76aef1e817c5"
+    seller_uuid = str(uuid.uuid4())
   
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     seller_pb2_grpc.add_SellerServicer_to_server(SellerClient(seller_address, seller_uuid), server)
@@ -146,39 +150,118 @@ if __name__ == '__main__':
     # Create a SellerClient instance
     seller_client = SellerClient(seller_address, seller_uuid)
 
-    # Register the seller
-    seller_client.register_seller()
+    # Make a menu for the seller to perform operations
+    print("Welcome to the Seller Client!")
+    print("You can perform the following operations:")
+    print("1. Register Seller")
+    print("2. Sell Item")
+    print("3. Update Item")
+    print("4. Delete Item") 
+    print("5. Display Seller Items")
+    print("6. Exit")
 
-    # Add items for sale
-    seller_client.sell_item("Laptop", Category.ELECTRONICS, 10, "High-performance laptop", 1200.0)
-    seller_client.sell_item("Smartphone", Category.ELECTRONICS, 20, "Latest smartphone model", 800.0)
+    # Ask for the seller's choice in a loop till the seller presses 6 to exit
 
-    # stall for 5 seconds
-    time.sleep(1)
+    choice = 0
+    while choice != 6:
+        choice = int(input("Enter your choice: "))
+        if choice == 1:
+            seller_client.register_seller()
+        elif choice == 2:
+            default_item_1 = {
+                "name": "Laptop",
+                "category": Category.ELECTRONICS,
+                "quantity": 10,
+                "description": "High-performance laptop",
+                "price_per_unit": 1200.0
+            }
+            default_item_2 = {
+                "name": "Smartphone",
+                "category": Category.ELECTRONICS,
+                "quantity": 20,
+                "description": "Latest smartphone model",
+                "price_per_unit": 800.0
+            }
+            # ask the user whether they want to go with default values or enter their own
+            print("Do you want to go with default values or enter your own?")
+            print("1. Default")
+            print("2. Enter your own")
+            choice = int(input("Enter your choice: "))
+            if choice == 1:
+                seller_client.sell_item(default_item_1["name"], default_item_1["category"], default_item_1["quantity"], default_item_1["description"], default_item_1["price_per_unit"])
+                seller_client.sell_item(default_item_2["name"], default_item_2["category"], default_item_2["quantity"], default_item_2["description"], default_item_2["price_per_unit"])
+                continue
+            elif choice == 2:
+                pass
+            else:
+                print("Invalid choice. Please try again.")
+                continue
+
+            name = input("Enter the name of the item: ")
+            category = int(input("Enter the category of the item: "))
+            quantity = int(input("Enter the quantity of the item: "))
+            description = input("Enter the description of the item: ")
+            price_per_unit = float(input("Enter the price per unit of the item: "))
+            seller_client.sell_item(name, category, quantity, description, price_per_unit)
+        elif choice == 3:
+            item_id = input("Enter the item ID: ")
+
+            # ask the user whether they want to go with default values or enter their own
+            print("Do you want to go with default values or enter your own?, Can update Price and Quantity")
+            print("1. Default")
+            print("2. Enter your own")
+            choice = int(input("Enter your choice: "))
+            if choice == 1:
+                new_price = 1000.0
+                new_quantity = 8
+                seller_client.update_item(item_id, new_price, new_quantity)
+                continue
+            elif choice == 2:
+                pass
+            else:
+                print("Invalid choice. Please try again.")
+                continue
+
+            new_price = float(input("Enter the new price: "))
+            new_quantity = int(input("Enter the new quantity: "))
+            seller_client.update_item(item_id, new_price, new_quantity)
+        elif choice == 4:
+            item_id = input("Enter the item ID: ")
+            seller_client.delete_item(item_id)
+        elif choice == 5:
+            seller_client.display_seller_items()
+        elif choice == 6:
+            print("Exiting...")
+            break
+        else:
+            print("Invalid choice. Please try again.")
+
+    # seller_client.register_seller()
+
+    # # Add items for sale
+    # seller_client.sell_item("Laptop", Category.ELECTRONICS, 10, "High-performance laptop", 1200.0)
+    # seller_client.sell_item("Smartphone", Category.ELECTRONICS, 20, "Latest smartphone model", 800.0)
+
+    # # stall for 5 seconds
+    # time.sleep(1)
     
-    # print("Updating seller item")
-    # Update the price of an item
-    seller_client.update_item(item_id="1", new_price=1000.0, new_quantity=8)
+    # # print("Updating seller item")
+    # # Update the price of an item
+    # seller_client.update_item(item_id="1", new_price=1000.0, new_quantity=8)
 
-    # Display all uploaded items
-    seller_client.display_seller_items()
+    # # Display all uploaded items
+    # seller_client.display_seller_items()
 
-    # Delete an item
-    seller_client.delete_item(item_id="2")
+    # # Delete an item
+    # seller_client.delete_item(item_id="2")
 
-    time.sleep(4)
+    # time.sleep(4)
 
-    # Display all uploaded items
-    seller_client.display_seller_items()
-
+    # # Display all uploaded items
+    # seller_client.display_seller_items()
 
     try:
         while True:
             time.sleep(86400)  # One day in seconds
     except KeyboardInterrupt:
         server.stop(0)
-
-
-
-
-

@@ -11,7 +11,6 @@ class Category(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     ELECTRONICS: _ClassVar[Category]
     FASHION: _ClassVar[Category]
     OTHERS: _ClassVar[Category]
-    ANY: _ClassVar[Category]
 
 class Status(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     __slots__ = ()
@@ -20,7 +19,6 @@ class Status(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
 ELECTRONICS: Category
 FASHION: Category
 OTHERS: Category
-ANY: Category
 SUCCESS: Status
 FAIL: Status
 

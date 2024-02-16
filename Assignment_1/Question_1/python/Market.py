@@ -179,7 +179,7 @@ class MarketClient(market_pb2_grpc.MarketServicer):
         matching_items = []
         for item_id, details in self.items.items():
             if (not item_name or item_name.lower() in details['name'].lower()) and (
-                    category == Category.ANY or details['category'] == category):
+                    category == Category.OTHERS or details['category'] == category):
                 item_info = ItemDetails(
                     item_id=item_id,
                     price_per_unit=details['price_per_unit'],
@@ -286,7 +286,8 @@ class MarketClient(market_pb2_grpc.MarketServicer):
                 seller_stub = SellerStub(channel)
                 response = seller_stub.Notify(
                     SellerNotifyRequest(
-                        message = f"Item {item_id} purchased by {buyer_address} for {quantity} quantity."
+                        message = f"Item {item_id} purchased by {buyer_address} for {quantity} quantity.",
+                        item_id=item_id,
                     )
                 )
                 print(f"Notification sent to seller {seller_address} about purchase of item {item_id} by {buyer_address} for {quantity} quantity.")
@@ -306,7 +307,8 @@ class MarketClient(market_pb2_grpc.MarketServicer):
                         buyer_stub = BuyerStub(channel)
                         response = buyer_stub.Notify(
                             BuyerNotifyRequest(
-                                message = f"Item {item_id} in your wishlist has been updated"
+                                message = f"Item {item_id} in your wishlist has been updated",
+                                item_id=item_id,
                             )
                         )
                         if response.status == Status.SUCCESS:
