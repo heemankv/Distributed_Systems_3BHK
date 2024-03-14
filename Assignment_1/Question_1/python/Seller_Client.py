@@ -11,16 +11,13 @@ from seller_pb2_grpc import SellerStub, SellerServicer
 from seller_pb2 import *
 from dotenv import load_dotenv
 import os
+import sys
 
-# uri = '34.171.24.193'
 load_dotenv()
 seller_URI = os.getenv('seller_URI')
-seller_port = os.getenv('seller_port')
 
 market_URI = os.getenv('market_URI')
 market_port = os.getenv('market_port')
-
-
 
 class SellerClient(SellerServicer):
     def __init__(self, seller_address, seller_uuid):
@@ -66,7 +63,6 @@ class SellerClient(SellerServicer):
 
 
     def update_item(self, item_id, new_price, new_quantity):
-        # Implement UpdateItem functionality here
          with grpc.insecure_channel(f'{market_URI}:{market_port}') as channel:
             stub = market_pb2_grpc.MarketStub(channel)
             request = UpdateItemRequest(
@@ -83,7 +79,6 @@ class SellerClient(SellerServicer):
                 print(f"FAIL: Failed to update item {item_id}.")
 
     def delete_item(self, item_id):
-        # Implement DeleteItem functionality here
         with grpc.insecure_channel(f'{market_URI}:{market_port}') as channel:
             stub = market_pb2_grpc.MarketStub(channel)
             request = DeleteItemRequest(
@@ -128,12 +123,9 @@ class SellerClient(SellerServicer):
                     print(f" gRPC error - {e}")
 
         
-
 if __name__ == '__main__':
 
-
-
-    
+    seller_port = sys.argv[1]
     seller_address = f"{seller_URI}:{seller_port}"
     seller_uuid = str(uuid.uuid4())
   
@@ -144,13 +136,10 @@ if __name__ == '__main__':
     print(f"Seller Server started on port {seller_port}")
     
 
-    time.sleep(3)
+    time.sleep(1)
 
-    # Example: Seller can perform other operations like selling items, updating items, etc.
-    # Create a SellerClient instance
     seller_client = SellerClient(seller_address, seller_uuid)
 
-    # Make a menu for the seller to perform operations
     print("Welcome to the Seller Client!")
     print("You can perform the following operations:")
     print("1. Register Seller")
@@ -161,7 +150,6 @@ if __name__ == '__main__':
     print("6. Exit")
 
     # Ask for the seller's choice in a loop till the seller presses 6 to exit
-
     choice = 0
     while choice != 6:
         choice = int(input("Enter your choice: "))
@@ -182,7 +170,6 @@ if __name__ == '__main__':
                 "description": "Latest smartphone model",
                 "price_per_unit": 800.0
             }
-            # ask the user whether they want to go with default values or enter their own
             print("Do you want to go with default values or enter your own?")
             print("1. Default")
             print("2. Enter your own")
@@ -206,7 +193,6 @@ if __name__ == '__main__':
         elif choice == 3:
             item_id = input("Enter the item ID: ")
 
-            # ask the user whether they want to go with default values or enter their own
             print("Do you want to go with default values or enter your own?, Can update Price and Quantity")
             print("1. Default")
             print("2. Enter your own")
@@ -232,33 +218,9 @@ if __name__ == '__main__':
             seller_client.display_seller_items()
         elif choice == 6:
             print("Exiting...")
-            break
+            exit(0)
         else:
             print("Invalid choice. Please try again.")
-
-    # seller_client.register_seller()
-
-    # # Add items for sale
-    # seller_client.sell_item("Laptop", Category.ELECTRONICS, 10, "High-performance laptop", 1200.0)
-    # seller_client.sell_item("Smartphone", Category.ELECTRONICS, 20, "Latest smartphone model", 800.0)
-
-    # # stall for 5 seconds
-    # time.sleep(1)
-    
-    # # print("Updating seller item")
-    # # Update the price of an item
-    # seller_client.update_item(item_id="1", new_price=1000.0, new_quantity=8)
-
-    # # Display all uploaded items
-    # seller_client.display_seller_items()
-
-    # # Delete an item
-    # seller_client.delete_item(item_id="2")
-
-    # time.sleep(4)
-
-    # # Display all uploaded items
-    # seller_client.display_seller_items()
 
     try:
         while True:
