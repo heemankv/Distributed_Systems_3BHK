@@ -5,7 +5,7 @@ import raft_pb2_grpc
 def client_request(command):
     for node_id in range(5):
         try:
-            with grpc.insecure_channel(f'localhost:{50051 + node_id}') as channel:
+            with grpc.insecure_channel(f'localhost:{5005 + node_id}') as channel:
                 stub = raft_pb2_grpc.RaftServiceStub(channel)
                 response = stub.ClientRequest(raft_pb2.ClientRequest(command=command))
                 print(f'Response from node {node_id}: {response.result}')
