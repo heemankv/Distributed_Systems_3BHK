@@ -52,7 +52,7 @@ class RaftNode(raft_pb2_grpc.RaftServiceServicer):
             except Exception as e:
                 print(e)
         
-        if votes_received > len(self.peers) // 2:
+        if votes_received > len(self.peers) // 2 and self.status !="leader":
             self.become_leader()
             print(str(self.node_id)+" became leader")
             
