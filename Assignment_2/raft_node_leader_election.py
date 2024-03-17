@@ -32,8 +32,8 @@ class RaftNode(raft_pb2_grpc.RaftServiceServicer):
     # Contesting elections in case of timeout
     def start_election(self):
         self.term += 1
-        print(str(self.node_id)+" has started election for term "+ str(self.term))
-        self.become_follower()
+        print(f'Node {self.node_id} election timer timed out, Starting election For Term {self.term}.')
+        self.become_follower() #Done to stop heartbeats if it is a leader
         self.state = "candidate"
         
         self.voted_for = self.node_id
@@ -52,16 +52,18 @@ class RaftNode(raft_pb2_grpc.RaftServiceServicer):
                         votes_received += 1
                         if votes_received > len(self.peers) // 2:
                             self.become_leader()
-                            print(str(self.node_id)+" became leader")
                             break
+
             except Exception as e:
-                print(e)
+                followerNodeID="Figure this Id"
+                print(f'Error occurred while sending RPC to Node {followerNodeID}.')
         
         if votes_received > len(self.peers) // 2 and self.status !="leader":
             self.become_leader()
-            print(str(self.node_id)+" became leader")
+            
             
         if(self.state!="leader"):
+            self.term-=1
             self.become_follower()
             print(str(self.node_id)+" became follower")
 
@@ -70,17 +72,22 @@ class RaftNode(raft_pb2_grpc.RaftServiceServicer):
     
     # Become leader if win election
     def become_leader(self):
+        print(f'Node {self.node_id} became the leader for term {self.term}.')
         self.state = "leader"
         # self.next_index = {peer: len(self.log) for peer in self.peers}
         # self.match_index = {peer: 0 for peer in self.peers}
 
         # Add NO-OP entry to log 
-        
+
+        #Sending heartbeats for first time
         self.send_heartbeats()
+
+        #Starting timer
         self.start_heartbeats()
 
     # Become follower    
     def become_follower(self):
+        print(f'{self.node_id} Stepping down')
         self.state = "follower"
         self.stop_heartbeats()
 
@@ -116,8 +123,6 @@ class RaftNode(raft_pb2_grpc.RaftServiceServicer):
         self.election_timer.start()
 
     def RequestVote(self, request, context):
-        print(str(self.node_id)+" recieved request for vote")
-
         #settingToFollowerIfRequired
         if request.term > self.term:
             self.term=request.term
@@ -135,10 +140,10 @@ class RaftNode(raft_pb2_grpc.RaftServiceServicer):
             self.term = request.term
             self.voted_for = request.candidateId    
             self.reset_election_timer()
-            print(str(self.node_id)+" gave vote to "+ str(self.voted_for))
+            print(f'Vote granted for Node {request.candidateId} in term {request.term}')
             return raft_pb2.RequestVoteResponse(term=self.term, voteGranted=True)
         
-        print(str(self.node_id)+" didn't vote to "+ str(request.candidateId))
+        print(f'Vote denied for Node {request.candidateId} in term {request.term}')
         return raft_pb2.RequestVoteResponse(term=self.term, voteGranted=False)
 
     def AppendEntries(self, request, context):
@@ -151,8 +156,7 @@ class RaftNode(raft_pb2_grpc.RaftServiceServicer):
         self.become_follower()
 
         # Log replication and commit logic goes here
-
-        print(str(self.node_id)+" sent ACK to "+ str(request.leaderId))
+        print(f'Node {self.node_id} accepted AppendEntries RPC from {request.leaderId}.')
         return raft_pb2.AppendEntriesResponse(term=self.term, success=True)
 
     # def ClientRequest(self, request, context):
