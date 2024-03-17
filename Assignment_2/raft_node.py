@@ -3,8 +3,13 @@ import raft_pb2
 import raft_pb2_grpc
 from concurrent import futures
 import threading
-import time
 import random
+
+
+#LEFT WORK IN LEADER ELECTION:
+#1. creating dump files, log files, metadata files
+#2. creating leader lease variable which updates itself when we send heartbeats
+#3. retrieving info from files if node crashes
 
 class RaftNode(raft_pb2_grpc.RaftServiceServicer):
     def __init__(self, node_id, peers):
@@ -70,6 +75,7 @@ class RaftNode(raft_pb2_grpc.RaftServiceServicer):
         # self.match_index = {peer: 0 for peer in self.peers}
 
         # Add NO-OP entry to log 
+        
         self.send_heartbeats()
         self.start_heartbeats()
 
@@ -81,6 +87,7 @@ class RaftNode(raft_pb2_grpc.RaftServiceServicer):
     def send_heartbeats(self):
         if self.state != "leader":
             return
+        print(f'Leader {self.node_id} sending heartbeat & Renewing Lease')
         for peer in self.peers:
             with grpc.insecure_channel(peer) as channel:
                 stub = raft_pb2_grpc.RaftServiceStub(channel)
@@ -91,9 +98,7 @@ class RaftNode(raft_pb2_grpc.RaftServiceServicer):
                     prevLogTerm=self.log[-1].term if len(self.log)>0 else 0,
                     entries=[],
                     leaderCommit=self.commit_index,
-                ))
-        print(str(self.node_id)+" sent heartbeats")
-        
+                ))        
     
     def start_heartbeats(self):
         self.heartbeats_timer=threading.Timer(1, self.send_heartbeats)
