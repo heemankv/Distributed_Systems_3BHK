@@ -6,7 +6,6 @@ import threading
 import random
 import os
 
-
 #LEFT WORK IN LEADER ELECTION:
 #2. Creating leader lease variable which updates itself when we send heartbeats
 
@@ -247,7 +246,7 @@ class RaftNode(raft_pb2_grpc.RaftServiceServicer):
 def serve(node_id, peers):
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     raft_pb2_grpc.add_RaftServiceServicer_to_server(RaftNode(node_id, peers), server)
-    server.add_insecure_port(f'[::]:{5005 + node_id}')
+    server.add_insecure_port(f'127.0.0.1:{5005 + node_id}')
     server.start()
     server.wait_for_termination()
 
@@ -256,5 +255,5 @@ if __name__ == '__main__':
     node_id = int(sys.argv[1])
 
     # Assumption: Only 5 servers
-    peers = [f'localhost:{5005 + i}' for i in range(5) if i != node_id]
+    peers = [f'127.0.0.1:{5005 + i}' for i in range(5) if i != node_id]
     serve(node_id, peers)
