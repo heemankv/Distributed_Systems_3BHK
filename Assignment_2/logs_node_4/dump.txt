@@ -1,0 +1,1384 @@
+4 Stepping down
+Vote granted for Node 1 in term 5
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+Node 4 election timer timed out, Starting election For Term 7.
+4 Stepping down
+Node 4 became the leader for term 7.
+Leader 4 sending heartbeat & Renewing Lease
+Leader 4 sending heartbeat & Renewing Lease
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+Node 4 election timer timed out, Starting election For Term 13.
+4 Stepping down
+Node 4 became the leader for term 13.
+Leader 4 sending heartbeat & Renewing Lease
+Leader 4 sending heartbeat & Renewing Lease
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Vote granted for Node 3 in term 16
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+Node 4 election timer timed out, Starting election For Term 22.
+4 Stepping down
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+Node 4 election timer timed out, Starting election For Term 26.
+4 Stepping down
+Node 4 became the leader for term 26.
+Leader 4 sending heartbeat & Renewing Lease
+Leader 4 sending heartbeat & Renewing Lease
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+Node 4 election timer timed out, Starting election For Term 31.
+4 Stepping down
+Node 4 became the leader for term 31.
+Leader 4 sending heartbeat & Renewing Lease
+Leader 4 sending heartbeat & Renewing Lease
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+Node 4 election timer timed out, Starting election For Term 33.
+4 Stepping down
+Node 4 became the leader for term 33.
+Leader 4 sending heartbeat & Renewing Lease
+Leader 4 sending heartbeat & Renewing Lease
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+Node 4 election timer timed out, Starting election For Term 38.
+4 Stepping down
+Node 4 became the leader for term 38.
+Leader 4 sending heartbeat & Renewing Lease
+Leader 4 sending heartbeat & Renewing Lease
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+Node 4 election timer timed out, Starting election For Term 42.
+4 Stepping down
+Node 4 became the leader for term 42.
+Leader 4 sending heartbeat & Renewing Lease
+Leader 4 sending heartbeat & Renewing Lease
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+Node 4 election timer timed out, Starting election For Term 60.
+4 Stepping down
+Node 4 became the leader for term 60.
+Leader 4 sending heartbeat & Renewing Lease
+Leader 4 sending heartbeat & Renewing Lease
+Node 4 election timer timed out, Starting election For Term 61.
+4 Stepping down
+Node 4 became the leader for term 61.
+Leader 4 sending heartbeat & Renewing Lease
+Leader 4 sending heartbeat & Renewing Lease
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+Node 4 election timer timed out, Starting election For Term 63.
+4 Stepping down
+Node 4 became the leader for term 63.
+Leader 4 sending heartbeat & Renewing Lease
+Leader 4 sending heartbeat & Renewing Lease
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+Node 4 election timer timed out, Starting election For Term 69.
+4 Stepping down
+Node 4 became the leader for term 69.
+Leader 4 sending heartbeat & Renewing Lease
+Leader 4 sending heartbeat & Renewing Lease
+Node 4 election timer timed out, Starting election For Term 70.
+4 Stepping down
+Node 4 became the leader for term 70.
+Leader 4 sending heartbeat & Renewing Lease
+Leader 4 sending heartbeat & Renewing Lease
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+Node 4 election timer timed out, Starting election For Term 73.
+4 Stepping down
+Node 4 became the leader for term 73.
+Leader 4 sending heartbeat & Renewing Lease
+Leader 4 sending heartbeat & Renewing Lease
+Node 4 election timer timed out, Starting election For Term 74.
+4 Stepping down
+Node 4 became the leader for term 74.
+Leader 4 sending heartbeat & Renewing Lease
+Leader 4 sending heartbeat & Renewing Lease
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+Node 4 election timer timed out, Starting election For Term 79.
+4 Stepping down
+Node 4 became the leader for term 79.
+Leader 4 sending heartbeat & Renewing Lease
+Leader 4 sending heartbeat & Renewing Lease
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+Node 4 election timer timed out, Starting election For Term 84.
+4 Stepping down
+Node 4 became the leader for term 84.
+Leader 4 sending heartbeat & Renewing Lease
+Leader 4 sending heartbeat & Renewing Lease
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+Node 4 election timer timed out, Starting election For Term 90.
+4 Stepping down
+Node 4 became the leader for term 90.
+Leader 4 sending heartbeat & Renewing Lease
+Leader 4 sending heartbeat & Renewing Lease
+Node 4 election timer timed out, Starting election For Term 91.
+4 Stepping down
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+Node 4 election timer timed out, Starting election For Term 102.
+4 Stepping down
+Node 4 became the leader for term 102.
+Leader 4 sending heartbeat & Renewing Lease
+Leader 4 sending heartbeat & Renewing Lease
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+Node 4 election timer timed out, Starting election For Term 107.
+4 Stepping down
+Node 4 became the leader for term 107.
+Leader 4 sending heartbeat & Renewing Lease
+Vote denied for Node 3 in term 107
+Leader 4 sending heartbeat & Renewing Lease
+Node 4 election timer timed out, Starting election For Term 108.
+4 Stepping down
+Node 4 became the leader for term 108.
+Leader 4 sending heartbeat & Renewing Lease
+Leader 4 sending heartbeat & Renewing Lease
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+Node 4 election timer timed out, Starting election For Term 151.
+4 Stepping down
+4 Stepping down
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+Node 4 election timer timed out, Starting election For Term 159.
+4 Stepping down
+Node 4 became the leader for term 159.
+Leader 4 sending heartbeat & Renewing Lease
+Leader 4 sending heartbeat & Renewing Lease
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+Node 4 election timer timed out, Starting election For Term 162.
+4 Stepping down
+Node 4 became the leader for term 162.
+Leader 4 sending heartbeat & Renewing Lease
+Leader 4 sending heartbeat & Renewing Lease
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+Node 4 election timer timed out, Starting election For Term 171.
+4 Stepping down
+Node 4 became the leader for term 171.
+Leader 4 sending heartbeat & Renewing Lease
+Leader 4 sending heartbeat & Renewing Lease
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+Node 4 election timer timed out, Starting election For Term 180.
+4 Stepping down
+Node 4 became the leader for term 180.
+Leader 4 sending heartbeat & Renewing Lease
+Leader 4 sending heartbeat & Renewing Lease
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+Node 4 election timer timed out, Starting election For Term 187.
+4 Stepping down
+Node 4 became the leader for term 187.
+Leader 4 sending heartbeat & Renewing Lease
+Leader 4 sending heartbeat & Renewing Lease
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+Node 4 election timer timed out, Starting election For Term 202.
+4 Stepping down
+Node 4 became the leader for term 202.
+Leader 4 sending heartbeat & Renewing Lease
+Leader 4 sending heartbeat & Renewing Lease
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+Node 4 election timer timed out, Starting election For Term 206.
+4 Stepping down
+Node 4 became the leader for term 206.
+Leader 4 sending heartbeat & Renewing Lease
+Leader 4 sending heartbeat & Renewing Lease
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+Node 4 election timer timed out, Starting election For Term 217.
+4 Stepping down
+Node 4 became the leader for term 217.
+Leader 4 sending heartbeat & Renewing Lease
+Leader 4 sending heartbeat & Renewing Lease
+Node 4 election timer timed out, Starting election For Term 218.
+4 Stepping down
+Node 4 became the leader for term 218.
+Leader 4 sending heartbeat & Renewing Lease
+Leader 4 sending heartbeat & Renewing Lease
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+Node 4 election timer timed out, Starting election For Term 225.
+4 Stepping down
+Node 4 became the leader for term 225.
+Leader 4 sending heartbeat & Renewing Lease
+Leader 4 sending heartbeat & Renewing Lease
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+Node 4 election timer timed out, Starting election For Term 227.
+4 Stepping down
+Node 4 became the leader for term 227.
+Leader 4 sending heartbeat & Renewing Lease
+Leader 4 sending heartbeat & Renewing Lease
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+Node 4 election timer timed out, Starting election For Term 232.
+4 Stepping down
+Node 4 became the leader for term 232.
+Leader 4 sending heartbeat & Renewing Lease
+Leader 4 sending heartbeat & Renewing Lease
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+Node 4 election timer timed out, Starting election For Term 234.
+4 Stepping down
+Node 4 became the leader for term 234.
+Leader 4 sending heartbeat & Renewing Lease
+Leader 4 sending heartbeat & Renewing Lease
+Node 4 election timer timed out, Starting election For Term 235.
+4 Stepping down
+Node 4 became the leader for term 235.
+Leader 4 sending heartbeat & Renewing Lease
+Leader 4 sending heartbeat & Renewing Lease
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+Node 4 election timer timed out, Starting election For Term 238.
+4 Stepping down
+Node 4 became the leader for term 238.
+Leader 4 sending heartbeat & Renewing Lease
+Leader 4 sending heartbeat & Renewing Lease
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+Node 4 election timer timed out, Starting election For Term 251.
+4 Stepping down
+Node 4 became the leader for term 251.
+Leader 4 sending heartbeat & Renewing Lease
+Leader 4 sending heartbeat & Renewing Lease
+Node 4 election timer timed out, Starting election For Term 252.
+4 Stepping down
+Node 4 became the leader for term 252.
+Leader 4 sending heartbeat & Renewing Lease
+Leader 4 sending heartbeat & Renewing Lease
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+Node 4 election timer timed out, Starting election For Term 255.
+4 Stepping down
+Node 4 became the leader for term 255.
+Leader 4 sending heartbeat & Renewing Lease
+Leader 4 sending heartbeat & Renewing Lease
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+Node 4 election timer timed out, Starting election For Term 260.
+4 Stepping down
+Node 4 became the leader for term 260.
+Leader 4 sending heartbeat & Renewing Lease
+Leader 4 sending heartbeat & Renewing Lease
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+Node 4 election timer timed out, Starting election For Term 263.
+4 Stepping down
+Node 4 became the leader for term 263.
+Leader 4 sending heartbeat & Renewing Lease
+Leader 4 sending heartbeat & Renewing Lease
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+Node 4 election timer timed out, Starting election For Term 265.
+4 Stepping down
+Node 4 became the leader for term 265.
+Leader 4 sending heartbeat & Renewing Lease
+Leader 4 sending heartbeat & Renewing Lease
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+Node 4 election timer timed out, Starting election For Term 267.
+4 Stepping down
+Node 4 became the leader for term 267.
+Leader 4 sending heartbeat & Renewing Lease
+Leader 4 sending heartbeat & Renewing Lease
+Node 4 election timer timed out, Starting election For Term 268.
+4 Stepping down
+Node 4 became the leader for term 268.
+Leader 4 sending heartbeat & Renewing Lease
+Leader 4 sending heartbeat & Renewing Lease
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Vote denied for Node 2 in term 271
+Vote granted for Node 3 in term 271
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+4 Stepping down
+Vote granted for Node 2 in term 273
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+Node 4 election timer timed out, Starting election For Term 282.
+4 Stepping down
+Node 4 became the leader for term 282.
+Leader 4 sending heartbeat & Renewing Lease
+Leader 4 sending heartbeat & Renewing Lease
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+Node 4 election timer timed out, Starting election For Term 290.
+4 Stepping down
+Node 4 became the leader for term 290.
+Leader 4 sending heartbeat & Renewing Lease
+Leader 4 sending heartbeat & Renewing Lease
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+Node 4 election timer timed out, Starting election For Term 298.
+4 Stepping down
+Node 4 became the leader for term 298.
+Leader 4 sending heartbeat & Renewing Lease
+Vote denied for Node 2 in term 298
+Leader 4 sending heartbeat & Renewing Lease
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+Vote denied for Node 3 in term 308
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 1.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+Node 4 election timer timed out, Starting election For Term 317.
+4 Stepping down
+Node 4 became the leader for term 317.
+Leader 4 sending heartbeat & Renewing Lease
+Leader 4 sending heartbeat & Renewing Lease
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+Node 4 election timer timed out, Starting election For Term 319.
+4 Stepping down
+Node 4 became the leader for term 319.
+Leader 4 sending heartbeat & Renewing Lease
+Leader 4 sending heartbeat & Renewing Lease
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 3.
+Node 4 election timer timed out, Starting election For Term 326.
+4 Stepping down
+Node 4 became the leader for term 326.
+Leader 4 sending heartbeat & Renewing Lease
+Leader 4 sending heartbeat & Renewing Lease
+Node 4 election timer timed out, Starting election For Term 327.
+4 Stepping down
+Node 4 became the leader for term 327.
+Leader 4 sending heartbeat & Renewing Lease
+Leader 4 sending heartbeat & Renewing Lease
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 2.
+Node 4 election timer timed out, Starting election For Term 331.
+4 Stepping down
+Node 4 became the leader for term 331.
+Leader 4 sending heartbeat & Renewing Lease
+Leader 4 sending heartbeat & Renewing Lease
+Node 4 election timer timed out, Starting election For Term 332.
+4 Stepping down
+Node 4 became the leader for term 332.
+Leader 4 sending heartbeat & Renewing Lease
+Leader 4 sending heartbeat & Renewing Lease
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.
+4 Stepping down
+Node 4 accepted AppendEntries RPC from 0.

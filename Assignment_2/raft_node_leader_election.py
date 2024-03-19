@@ -6,6 +6,9 @@ import threading
 import random
 import os
 
+#Assumptions:
+#First election at term 1
+
 #LEFT WORK IN LEADER ELECTION:
 #2. Creating leader lease variable which updates itself when we send heartbeats
 
@@ -110,7 +113,6 @@ class RaftNode(raft_pb2_grpc.RaftServiceServicer):
     
     # Contesting elections in case of timeout
     def start_election(self):
-        self.term += 1
         self.dump(f'Node {self.node_id} election timer timed out, Starting election For Term {self.term}.')
 
         self.become_follower() #Done to stop heartbeats if it is a leader
@@ -123,7 +125,7 @@ class RaftNode(raft_pb2_grpc.RaftServiceServicer):
                 with grpc.insecure_channel(peer) as channel:
                     stub = raft_pb2_grpc.RaftServiceStub(channel)
                     response = stub.RequestVote(raft_pb2.RequestVoteRequest(
-                        term=self.term,
+                        term=self.term+1,
                         candidateId=self.node_id,
                         lastLogIndex=len(self.log) - 1,
                         lastLogTerm=self.log[-1].term if len(self.log)>0 else 0,
@@ -143,7 +145,6 @@ class RaftNode(raft_pb2_grpc.RaftServiceServicer):
             
             
         if(self.state!="leader"):
-            self.term-=1
             self.become_follower()
 
         self.reset_election_timer()
@@ -151,8 +152,9 @@ class RaftNode(raft_pb2_grpc.RaftServiceServicer):
     
     # Become leader if win election
     def become_leader(self):
+        self.term+=1
         self.dump(f'Node {self.node_id} became the leader for term {self.term}.')
-        self.state = "leader"
+        self.state = "leader"        
         self.update_metadata()
 
         # Add NO-OP entry to log 
@@ -165,9 +167,9 @@ class RaftNode(raft_pb2_grpc.RaftServiceServicer):
 
     # Become follower    
     def become_follower(self):
-        self.dump(f'{self.node_id} Stepping down')
-        self.state = "follower"
         self.stop_heartbeats()
+        self.dump(f'{self.node_id} Stepping down')
+        self.state = "follower"        
 
     def send_heartbeats(self):
         if self.state != "leader":
@@ -200,6 +202,7 @@ class RaftNode(raft_pb2_grpc.RaftServiceServicer):
         self.election_timer = threading.Timer(self.election_timeout, self.start_election)
         self.election_timer.start()
 
+    #Node getting request for a vote
     def RequestVote(self, request, context):
         #settingToFollowerIfRequired
         if request.term > self.term:
@@ -207,7 +210,7 @@ class RaftNode(raft_pb2_grpc.RaftServiceServicer):
             self.voted_for="None"
             self.become_follower()
         
-        #log check
+        #log is verified
         logCheck=False
         currentLastLogTerm= self.log[-1].term if len(self.log)>0 else 0
         if request.lastLogTerm > currentLastLogTerm or (request.lastLogTerm==currentLastLogTerm and  request.lastLogIndex>=len(self.log)-1):
@@ -225,6 +228,10 @@ class RaftNode(raft_pb2_grpc.RaftServiceServicer):
         self.dump(f'Vote denied for Node {request.candidateId} in term {request.term}')
         return raft_pb2.RequestVoteResponse(term=self.term, voteGranted=False)
 
+    #Node getting an AppendRPC
+    #When client will send some write requests, leader needs to send appendRPCs to all its followers. Followers need to add it to their logs after resolving conflicts, if any.
+    #Followers need send ACK once log is appended. Depending on the ACK, the leader will commit the index, and inform the followers again.
+    
     def AppendEntries(self, request, context):
         if request.term < self.term:
             self.dump(f'Node {self.node_id} rejected AppendEntries RPC from {request.leaderId}.')
