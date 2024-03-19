@@ -4,35 +4,116 @@ import raft_pb2_grpc
 from concurrent import futures
 import threading
 import random
+import os
 
 
 #LEFT WORK IN LEADER ELECTION:
-#1. creating dump files, log files, metadata files
-#2. creating leader lease variable which updates itself when we send heartbeats
-#3. retrieving info from files if node crashes
+#2. Creating leader lease variable which updates itself when we send heartbeats
 
 class RaftNode(raft_pb2_grpc.RaftServiceServicer):
     def __init__(self, node_id, peers):
         self.node_id = node_id
+        self.create_folders_and_files()
         self.peers = peers
-        
-        self.voted_for = None
-        self.log = []
-        self.term = self.log[-1].term if len(self.log)>0 else 0
-        self.commit_index = 0
+        self.log = self.read_from_logs_file()
+        metadata = self.read_from_metadata_file()
+        self.term = int(metadata['term']) #self.log[-1].split()[-1] if len(self.log)>0 else 0
+        self.commit_index = int(metadata['commitLength'])
+        self.voted_for = metadata['voted_for']
+
+        #Checking metadata values if crashed
+        print("Checking Values:",self.term,self.commit_index,self.voted_for)
+
         self.state = "follower"
         self.election_timeout = random.uniform(5, 10)
         self.election_timer = threading.Timer(self.election_timeout, self.start_election)
         self.heartbeats_timer=None
         self.election_timer.start()
 
-        print(str(self.node_id)+" has started")
-        print(self.term)
+        print("Node "+str(self.node_id)+" has started")
+    
+    # Creating files
+    def create_folders_and_files(self):
+        # Define folder name
+        folder_name='logs_node_'+str(self.node_id)
+        
+        # Create folder if it don't exist
+        if not os.path.exists(folder_name):
+            os.makedirs(folder_name)
+    
+        # Define file names
+        file_names = ['logs.txt','dump.txt']
+        
+        for file_name in file_names:
+            file_path = os.path.join(folder_name, file_name)
+            if not os.path.exists(file_path):
+                with open(file_path, 'w') as f:
+                    pass  # Create an empty file
 
+        file_path = os.path.join(folder_name, 'metadata.txt')
+        if not os.path.exists(file_path):
+            self.term=0
+            self.voted_for=None
+            self.commit_index=0
+            with open(file_path, 'w') as f:
+                f.write(f"commitLength: {self.commit_index}\n")
+                f.write(f"term: {self.term}\n")
+                f.write(f"voted_for: {self.voted_for}\n")
+
+    #Appending To Log
+    def update_log(self,entry):
+        folder_name='logs_node_'+str(self.node_id)
+        file_path = os.path.join(folder_name, 'logs.txt')
+        with open(file_path, 'a') as f:
+            f.write(f"{entry}\n")
+    
+    #Appending to Dump
+    def dump(self,entry):
+        folder_name='logs_node_'+str(self.node_id)
+        file_path = os.path.join(folder_name, 'dump.txt')
+        with open(file_path, 'a') as f:
+            f.write(f"{entry}\n")
+
+    #Updating Metadata
+    def update_metadata(self):
+        folder_name='logs_node_'+str(self.node_id)
+        file_path = os.path.join(folder_name, 'metadata.txt')
+        with open(file_path, 'w') as f:
+            f.write(f"commitLength: {self.commit_index}\n")
+            f.write(f"term: {self.term}\n")
+            f.write(f"voted_for: {self.voted_for}\n")
+   
+    #Reading from logs file:
+    def read_from_logs_file(self):
+        try:
+            file_path="logs_node_"+str(self.node_id)+"/logs.txt"
+            with open(file_path, 'r') as file:
+                lines = file.readlines()
+            return lines
+        except FileNotFoundError:
+            print(f"Error: File '{file_path}' not found.")
+            return []
+        
+    #Reading from metadata file:
+    def read_from_metadata_file(self):
+        try:
+            metadata = {}
+            file_path="logs_node_"+str(self.node_id)+"/metadata.txt"
+            with open(file_path, 'r') as file:
+                for line in file:
+                    if ':' in line:
+                        key, value = line.strip().split(':', 1)
+                        metadata[key.strip()] = value.strip()
+            return metadata
+        except FileNotFoundError:
+            print(f"Error: File '{file_path}' not found.")
+            return {}
+    
     # Contesting elections in case of timeout
     def start_election(self):
         self.term += 1
-        print(f'Node {self.node_id} election timer timed out, Starting election For Term {self.term}.')
+        self.dump(f'Node {self.node_id} election timer timed out, Starting election For Term {self.term}.')
+
         self.become_follower() #Done to stop heartbeats if it is a leader
         self.state = "candidate"
         
@@ -55,27 +136,25 @@ class RaftNode(raft_pb2_grpc.RaftServiceServicer):
                             break
 
             except Exception as e:
-                followerNodeID="Figure this Id"
-                print(f'Error occurred while sending RPC to Node {followerNodeID}.')
+                followerNodeID="{Figure this Id Out}"
+                self.dump(f'Error occurred while sending RPC to Node {followerNodeID} with IP {peer}.')
         
-        if votes_received > len(self.peers) // 2 and self.status !="leader":
+        if votes_received > len(self.peers) // 2 and self.state !="leader":
             self.become_leader()
             
             
         if(self.state!="leader"):
             self.term-=1
             self.become_follower()
-            print(str(self.node_id)+" became follower")
 
         self.reset_election_timer()
 
     
     # Become leader if win election
     def become_leader(self):
-        print(f'Node {self.node_id} became the leader for term {self.term}.')
+        self.dump(f'Node {self.node_id} became the leader for term {self.term}.')
         self.state = "leader"
-        # self.next_index = {peer: len(self.log) for peer in self.peers}
-        # self.match_index = {peer: 0 for peer in self.peers}
+        self.update_metadata()
 
         # Add NO-OP entry to log 
 
@@ -87,14 +166,14 @@ class RaftNode(raft_pb2_grpc.RaftServiceServicer):
 
     # Become follower    
     def become_follower(self):
-        print(f'{self.node_id} Stepping down')
+        self.dump(f'{self.node_id} Stepping down')
         self.state = "follower"
         self.stop_heartbeats()
 
     def send_heartbeats(self):
         if self.state != "leader":
             return
-        print(f'Leader {self.node_id} sending heartbeat & Renewing Lease')
+        self.dump(f'Leader {self.node_id} sending heartbeat & Renewing Lease')
         for peer in self.peers:
             with grpc.insecure_channel(peer) as channel:
                 stub = raft_pb2_grpc.RaftServiceStub(channel)
@@ -126,7 +205,7 @@ class RaftNode(raft_pb2_grpc.RaftServiceServicer):
         #settingToFollowerIfRequired
         if request.term > self.term:
             self.term=request.term
-            self.voted_for=None
+            self.voted_for="None"
             self.become_follower()
         
         #log check
@@ -136,27 +215,27 @@ class RaftNode(raft_pb2_grpc.RaftServiceServicer):
             logCheck=True
         
         #sending response based on conditions
-        if request.term>=self.term and logCheck and self.voted_for in [None, request.candidateId]:
+        if request.term>=self.term and logCheck and self.voted_for in [str(request.candidateId),"None"]:
             self.term = request.term
-            self.voted_for = request.candidateId    
+            self.voted_for = str(request.candidateId)    
+            self.update_metadata()
             self.reset_election_timer()
-            print(f'Vote granted for Node {request.candidateId} in term {request.term}')
+            self.dump(f'Vote granted for Node {request.candidateId} in term {request.term}')
             return raft_pb2.RequestVoteResponse(term=self.term, voteGranted=True)
         
-        print(f'Vote denied for Node {request.candidateId} in term {request.term}')
+        self.dump(f'Vote denied for Node {request.candidateId} in term {request.term}')
         return raft_pb2.RequestVoteResponse(term=self.term, voteGranted=False)
 
     def AppendEntries(self, request, context):
-        print(str(self.node_id)+" recieved heartbeat from "+ str(request.leaderId))
         if request.term < self.term:
-            print(str(self.node_id)+" rejected AppendRPC from "+ str(request.leaderId))
+            self.dump(f'Node {self.node_id} rejected AppendEntries RPC from {request.leaderId}.')
             return raft_pb2.AppendEntriesResponse(term=self.term, success=False)
         self.reset_election_timer()
         self.term = request.term
         self.become_follower()
 
         # Log replication and commit logic goes here
-        print(f'Node {self.node_id} accepted AppendEntries RPC from {request.leaderId}.')
+        self.dump(f'Node {self.node_id} accepted AppendEntries RPC from {request.leaderId}.')
         return raft_pb2.AppendEntriesResponse(term=self.term, success=True)
 
     # def ClientRequest(self, request, context):
