@@ -84,6 +84,8 @@ if __name__ == "__main__":
         # Send the command to the leader
         # Print the response
 
+        # 'SET x 10'
+        # 'GET x'
         command = input("Enter command: ")
         command = command.upper()
 
