@@ -6,6 +6,12 @@ import threading
 import random
 import os
 
+
+# TODO: The Whole of leader lease is left
+
+# TODO: NO-OP needs to be sent
+
+
 #Assumptions:
 #First election at term 1
 
@@ -244,6 +250,7 @@ class RaftNode(raft_pb2_grpc.RaftServiceServicer):
         self.dump(f'Node {self.node_id} accepted AppendEntries RPC from {request.leaderId}.')
         return raft_pb2.AppendEntriesResponse(term=self.term, success=True)
 
+    # TODO: @heemank - Implement this
     # def ClientRequest(self, request, context):
     #     if self.state != "leader":
     #         return raft_pb2.ClientRequestResponse(result="Not the leader")

@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+service RaftCluster {
+  rpc ServeClient(ServeClientArgs) returns (ServeClientReply);
+}
+
+message ServeClientArgs {
+  string request = 1;
+}
+
+message ServeClientReply {
+  string data = 1;
+  string leader_id = 2;
+  bool success = 3;
+}
