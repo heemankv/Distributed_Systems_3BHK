@@ -6,6 +6,8 @@ import threading
 import random
 import os
 
+from utils.HashTable import HashTable
+
 
 # TODO: The Whole of leader lease is left
 
@@ -41,7 +43,7 @@ class RaftNode(raftNode_pb2_grpc.RaftServiceServicer):
         self.leaderId = None
 
         # TODO: might have to delete later
-        self.data = {}
+        self.data = HashTable()
 
         print("Node "+str(self.node_id)+" has started")
     
