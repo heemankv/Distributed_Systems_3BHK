@@ -250,6 +250,94 @@ class RaftNode(raft_pb2_grpc.RaftServiceServicer):
         self.dump(f'Node {self.node_id} accepted AppendEntries RPC from {request.leaderId}.')
         return raft_pb2.AppendEntriesResponse(term=self.term, success=True)
 
+
+
+    # private fn
+    def internal_get_handler(self, request):
+        #  GETs the value of variable passed in the request
+        #  if available, returns the value
+        #  else returns empty string
+        #  Returns the value of the variable
+        
+
+
+    # private fn
+    def internal_set_handler(self, request):
+        #  SETs the value of variable passed in the request
+        #  if variable is not present, creates it
+        #  Returns the value of the variable
+
+
+
+    def GET_handler(self, request):
+        # If GET, return the value of the key from the leader node only
+        # If the leader node is not known, return failure response to the client
+
+        # If GET, return the value of the key from the leader node only
+        return raft_pb2.ServeClientResponse(success=False, leader_id=self.node_id)
+
+    def SET_handler(self, request):
+        # If SET, append the key-value pair to the log of the leader node
+        # Send AppendEntries RPC to all the followers
+        # Wait for ACK from majority of the followers
+        # Commit the entry in the log
+        # Return success response to the client
+
+        # Append the key-value pair to the log of the leader node
+        self.log.append(request)
+        self.update_log(request)
+
+        # Send AppendEntries RPC to all the followers
+        for peer in self.peers:
+            with grpc.insecure_channel(peer) as channel:
+                stub = raft_pb2_grpc.RaftServiceStub(channel)
+                response = stub.AppendEntries(raft_pb2.AppendEntriesRequest(
+                    term=self.term,
+                    leaderId=self.node_id,
+                    prevLogIndex=len(self.log) - 2,
+                    prevLogTerm=self.log[-2].term if len(self.log)>1 else 0,
+                    entries=[request],
+                    leaderCommit=self.commit_index,
+                ))
+                if response.success:
+                    self.dump(f'Node {self.node_id} received success from {peer}.')
+                else:
+                    self.dump(f'Node {self.node_id} received failure from {peer}.')
+
+        # Wait for ACK from majority of the followers
+        # Commit the entry in the log
+        self.commit_index += 1
+        self.update_metadata()
+        self.dump(f'Node {self.node_id} committed entry {request}.')
+
+        # Return success response to the client
+        return raft_pb2.ServeClientResponse(success=True, leader_id=self.node_id)
+
+
+    def ServeClient(self, request, context):
+        # Request will either be a GET or SET command
+        # SWITCH based on command
+        # If GET, return the value of the key from the leader node only
+
+        # The operations supported for the client on this database are as follows:
+
+        # SET K V: Maps the key K to value V; for example, {SET x hello} will map the key “x” to value “hello.”
+        #  (WRITE OPERATION)
+        # GET K: Returns the latest committed value of key K. If K doesn’t exist in the database,
+        #  an empty string will be returned as value by default. (READ OPERATION)
+
+
+        #  SWITCH based on command
+        if("GET" in request):
+            return self.GET_handler(request)
+        elif("SET" in request):
+            return self.SET_handler(request)
+        else:
+            return raft_pb2.ServeClientResponse(success=False, leader_id=self.node_id)
+
+
+
+
     # TODO: @heemank - Implement this
     # def ClientRequest(self, request, context):
     #     if self.state != "leader":
