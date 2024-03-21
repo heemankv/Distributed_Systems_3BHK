@@ -1,6 +1,6 @@
 import grpc
-import raft_pb2
-import raft_pb2_grpc
+import raftNode_pb2
+import raftNode_pb2_grpc
 from concurrent import futures
 import threading
 import random
@@ -18,7 +18,7 @@ import os
 #LEFT WORK IN LEADER ELECTION:
 #2. Creating leader lease variable which updates itself when we send heartbeats
 
-class RaftNode(raft_pb2_grpc.RaftServiceServicer):
+class RaftNode(raftNode_pb2_grpc.RaftServiceServicer):
     def __init__(self, node_id, peers):
         self.node_id = node_id
         self.create_folders_and_files()
@@ -37,6 +37,9 @@ class RaftNode(raft_pb2_grpc.RaftServiceServicer):
         self.election_timer = threading.Timer(self.election_timeout, self.start_election)
         self.heartbeats_timer=None
         self.election_timer.start()
+
+        # TODO: might have to delete later
+        self.data = {}
 
         print("Node "+str(self.node_id)+" has started")
     
@@ -129,8 +132,8 @@ class RaftNode(raft_pb2_grpc.RaftServiceServicer):
         for peer in self.peers:
             try:
                 with grpc.insecure_channel(peer) as channel:
-                    stub = raft_pb2_grpc.RaftServiceStub(channel)
-                    response = stub.RequestVote(raft_pb2.RequestVoteRequest(
+                    stub = raftNode_pb2_grpc.RaftServiceStub(channel)
+                    response = stub.RequestVote(raftNode_pb2.RequestVoteRequest(
                         term=self.term+1,
                         candidateId=self.node_id,
                         lastLogIndex=len(self.log) - 1,
@@ -183,8 +186,8 @@ class RaftNode(raft_pb2_grpc.RaftServiceServicer):
         self.dump(f'Leader {self.node_id} sending heartbeat & Renewing Lease')
         for peer in self.peers:
             with grpc.insecure_channel(peer) as channel:
-                stub = raft_pb2_grpc.RaftServiceStub(channel)
-                stub.AppendEntries(raft_pb2.AppendEntriesRequest(
+                stub = raftNode_pb2_grpc.RaftServiceStub(channel)
+                stub.AppendEntries(raftNode_pb2.AppendEntriesRequest(
                     term=self.term,
                     leaderId=self.node_id,
                     prevLogIndex=len(self.log) - 1,
@@ -229,10 +232,10 @@ class RaftNode(raft_pb2_grpc.RaftServiceServicer):
             self.update_metadata()
             self.reset_election_timer()
             self.dump(f'Vote granted for Node {request.candidateId} in term {request.term}')
-            return raft_pb2.RequestVoteResponse(term=self.term, voteGranted=True)
+            return raftNode_pb2.RequestVoteResponse(term=self.term, voteGranted=True)
         
         self.dump(f'Vote denied for Node {request.candidateId} in term {request.term}')
-        return raft_pb2.RequestVoteResponse(term=self.term, voteGranted=False)
+        return raftNode_pb2.RequestVoteResponse(term=self.term, voteGranted=False)
 
     #Node getting an AppendRPC
     #When client will send some write requests, leader needs to send appendRPCs to all its followers. Followers need to add it to their logs after resolving conflicts, if any.
@@ -241,14 +244,14 @@ class RaftNode(raft_pb2_grpc.RaftServiceServicer):
     def AppendEntries(self, request, context):
         if request.term < self.term:
             self.dump(f'Node {self.node_id} rejected AppendEntries RPC from {request.leaderId}.')
-            return raft_pb2.AppendEntriesResponse(term=self.term, success=False)
+            return raftNode_pb2.AppendEntriesResponse(term=self.term, success=False)
         self.reset_election_timer()
         self.term = request.term
         self.become_follower()
 
         # Log replication and commit logic goes here
         self.dump(f'Node {self.node_id} accepted AppendEntries RPC from {request.leaderId}.')
-        return raft_pb2.AppendEntriesResponse(term=self.term, success=True)
+        return raftNode_pb2.AppendEntriesResponse(term=self.term, success=True)
 
 
 
@@ -259,22 +262,32 @@ class RaftNode(raft_pb2_grpc.RaftServiceServicer):
         #  else returns empty string
         #  Returns the value of the variable
         
+        #  Request will be of the form "GET K"
+        #  We need to return the value of the key K
+        #  If K doesn't exist, return empty string
+        key = request.split()[1]
+        return self.data.get(key, "")
+    
+    def GET_handler(self, request):
+        # If GET, return the value of the key from the leader node only
+        # If the leader node is not known, return failure response to the client
 
+        # If GET, return the value of the key from the leader node only
+        value = self.internal_get_handler(request)
+        return raftNode_pb2.ServeClientReply(
+            successReply=raftNode_pb2.ServeClientSuccessReply(
+                data=value,
+                leaderId=self.node_id,
+                success=True
+        ))
 
     # private fn
     def internal_set_handler(self, request):
         #  SETs the value of variable passed in the request
         #  if variable is not present, creates it
         #  Returns the value of the variable
+        return 'success'
 
-
-
-    def GET_handler(self, request):
-        # If GET, return the value of the key from the leader node only
-        # If the leader node is not known, return failure response to the client
-
-        # If GET, return the value of the key from the leader node only
-        return raft_pb2.ServeClientResponse(success=False, leader_id=self.node_id)
 
     def SET_handler(self, request):
         # If SET, append the key-value pair to the log of the leader node
@@ -290,8 +303,8 @@ class RaftNode(raft_pb2_grpc.RaftServiceServicer):
         # Send AppendEntries RPC to all the followers
         for peer in self.peers:
             with grpc.insecure_channel(peer) as channel:
-                stub = raft_pb2_grpc.RaftServiceStub(channel)
-                response = stub.AppendEntries(raft_pb2.AppendEntriesRequest(
+                stub = raftNode_pb2_grpc.RaftServiceStub(channel)
+                response = stub.AppendEntries(raftNode_pb2.AppendEntriesRequest(
                     term=self.term,
                     leaderId=self.node_id,
                     prevLogIndex=len(self.log) - 2,
@@ -311,7 +324,7 @@ class RaftNode(raft_pb2_grpc.RaftServiceServicer):
         self.dump(f'Node {self.node_id} committed entry {request}.')
 
         # Return success response to the client
-        return raft_pb2.ServeClientResponse(success=True, leader_id=self.node_id)
+        return raftNode_pb2.ServeClientResponse(success=True, leader_id=self.node_id)
 
 
     def ServeClient(self, request, context):
@@ -333,7 +346,7 @@ class RaftNode(raft_pb2_grpc.RaftServiceServicer):
         elif("SET" in request):
             return self.SET_handler(request)
         else:
-            return raft_pb2.ServeClientResponse(success=False, leader_id=self.node_id)
+            return raftNode_pb2.ServeClientResponse(success=False, leader_id=self.node_id)
 
 
 
@@ -341,13 +354,13 @@ class RaftNode(raft_pb2_grpc.RaftServiceServicer):
     # TODO: @heemank - Implement this
     # def ClientRequest(self, request, context):
     #     if self.state != "leader":
-    #         return raft_pb2.ClientRequestResponse(result="Not the leader")
+    #         return raftNode_pb2.ClientRequestResponse(result="Not the leader")
     #     # Command handling logic goes here
-    #     return raft_pb2.ClientRequestResponse(result="Command executed")
+    #     return raftNode_pb2.ClientRequestResponse(result="Command executed")
 
 def serve(node_id, peers):
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
-    raft_pb2_grpc.add_RaftServiceServicer_to_server(RaftNode(node_id, peers), server)
+    raftNode_pb2_grpc.add_RaftServiceServicer_to_server(RaftNode(node_id, peers), server)
     server.add_insecure_port(f'127.0.0.1:{5005 + node_id}')
     server.start()
     server.wait_for_termination()

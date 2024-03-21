@@ -1,7 +1,7 @@
 import os
 import grpc
-import raft_pb2
-import raft_pb2_grpc
+import Assignment_2.raftNode.raft_pb2 as raft_pb2
+import Assignment_2.raftNode.raft_pb2_grpc as raft_pb2_grpc
 
 from dotenv import load_dotenv
 load_dotenv()  # take environment variables from .env.
