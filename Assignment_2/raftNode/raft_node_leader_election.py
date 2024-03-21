@@ -11,11 +11,10 @@ import os
 # TODO: Ensure a node updates its term whenever it meets a node either in request or response with a higher term
 # TODO: NO-OP needs to be sent during start of election
 
-
 #Assumptions:
 #First election at term 1
 
-class RaftNode(raftNode_pb2_grpc.RaftServiceServicer):
+class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
     def __init__(self, node_id, peers):
         self.node_id = node_id
         self.create_folders_and_files()
@@ -39,6 +38,7 @@ class RaftNode(raftNode_pb2_grpc.RaftServiceServicer):
 
         # TODO: might have to delete later
         self.data = {}
+        self.process_logs_for_intial_status()
 
         print("Node "+str(self.node_id)+" has started")
     
@@ -120,9 +120,8 @@ class RaftNode(raftNode_pb2_grpc.RaftServiceServicer):
             return {}
     
     #Processing logs to get intial status of database
-    #Needs to be tested
     def process_logs_for_intial_status(self):
-        for request in self.logs:
+        for request in self.log:
             info=request.split()
             if(info[0]=="NO-OP"):
                 pass
@@ -130,7 +129,10 @@ class RaftNode(raftNode_pb2_grpc.RaftServiceServicer):
                 key=info[1]
                 value=info[2]
                 self.data[key]=value
-                           
+        
+    def check_database(self):
+        for key in self.data:
+            print(key,":",self.data[key])                           
     
     # Contesting elections in case of timeout
     def start_election(self):
@@ -374,7 +376,7 @@ class RaftNode(raftNode_pb2_grpc.RaftServiceServicer):
 
 def serve(node_id, peers):
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
-    raftNode_pb2_grpc.add_RaftServiceServicer_to_server(RaftNode(node_id, peers), server)
+    raftNode_pb2_grpc.add_RaftNodeServiceServicer_to_server(RaftNode(node_id, peers), server)
     server.add_insecure_port(f'127.0.0.1:{5005 + node_id}')
     server.start()
     server.wait_for_termination()
