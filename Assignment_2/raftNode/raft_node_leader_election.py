@@ -6,19 +6,14 @@ import threading
 import random
 import os
 
-from utils.HashTable import HashTable
-
 
 # TODO: The Whole of leader lease is left
-
-# TODO: NO-OP needs to be sent
+# TODO: Ensure a node updates its term whenever it meets a node either in request or response with a higher term
+# TODO: NO-OP needs to be sent during start of election
 
 
 #Assumptions:
 #First election at term 1
-
-#LEFT WORK IN LEADER ELECTION:
-#2. Creating leader lease variable which updates itself when we send heartbeats
 
 class RaftNode(raftNode_pb2_grpc.RaftServiceServicer):
     def __init__(self, node_id, peers):
@@ -43,7 +38,7 @@ class RaftNode(raftNode_pb2_grpc.RaftServiceServicer):
         self.leaderId = None
 
         # TODO: might have to delete later
-        self.data = HashTable()
+        self.data = {}
 
         print("Node "+str(self.node_id)+" has started")
     
@@ -123,6 +118,19 @@ class RaftNode(raftNode_pb2_grpc.RaftServiceServicer):
         except FileNotFoundError:
             print(f"Error: File '{file_path}' not found.")
             return {}
+    
+    #Processing logs to get intial status of database
+    #Needs to be tested
+    def process_logs_for_intial_status(self):
+        for request in self.logs:
+            info=request.split()
+            if(info[0]=="NO-OP"):
+                pass
+            elif(info[0]=="SET"):
+                key=info[1]
+                value=info[2]
+                self.data[key]=value
+                           
     
     # Contesting elections in case of timeout
     def start_election(self):
