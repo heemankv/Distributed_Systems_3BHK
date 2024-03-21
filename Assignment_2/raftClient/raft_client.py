@@ -43,7 +43,7 @@ class RaftClient:
                 if response.success:
                     return response
                 else:
-                    self.leader_address = response.leader_id
+                    self.leader_address = response.leaderId
                     self.channel = grpc.insecure_channel(self.leader_address)
                     self.stub = raft_pb2_grpc.RaftClusterStub(self.channel)
             except Exception as e:

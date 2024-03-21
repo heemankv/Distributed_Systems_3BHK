@@ -38,6 +38,8 @@ class RaftNode(raftNode_pb2_grpc.RaftServiceServicer):
         self.heartbeats_timer=None
         self.election_timer.start()
 
+        self.leaderId = None
+
         # TODO: might have to delete later
         self.data = {}
 
@@ -339,15 +341,13 @@ class RaftNode(raftNode_pb2_grpc.RaftServiceServicer):
         # GET K: Returns the latest committed value of key K. If K doesn’t exist in the database,
         #  an empty string will be returned as value by default. (READ OPERATION)
 
-
-        #  SWITCH based on command
         if("GET" in request):
             if(self.state == "leader"):
                 return self.GET_handler(request)
             else:
                 return raftNode_pb2.ServeClientResponse(
                     failureReply=raftNode_pb2.ServeClientFailureReply(
-                        leaderId=self.node_id,
+                        leaderId=self.leaderId,
                         success=False
                     )
                 )
@@ -355,17 +355,12 @@ class RaftNode(raftNode_pb2_grpc.RaftServiceServicer):
         elif("SET" in request):
             return self.SET_handler(request)
         else:
-            return raftNode_pb2.ServeClientResponse(success=False, leader_id=self.node_id)
-
-
-
-
-    # TODO: @heemank - Implement this
-    # def ClientRequest(self, request, context):
-    #     if self.state != "leader":
-    #         return raftNode_pb2.ClientRequestResponse(result="Not the leader")
-    #     # Command handling logic goes here
-    #     return raftNode_pb2.ClientRequestResponse(result="Command executed")
+            return raftNode_pb2.ServeClientResponse(
+                    failureReply=raftNode_pb2.ServeClientFailureReply(
+                        leaderId=self.leaderId,
+                        success=False
+                    )
+                )
 
 def serve(node_id, peers):
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
