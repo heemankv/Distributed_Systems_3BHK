@@ -50,7 +50,6 @@ message ServeClientSuccessReply {
 }
 
 message ServeClientFailureReply {
-  string data = 1;
   string leaderId = 2;
   bool success = 3;
 }

@@ -342,7 +342,16 @@ class RaftNode(raftNode_pb2_grpc.RaftServiceServicer):
 
         #  SWITCH based on command
         if("GET" in request):
-            return self.GET_handler(request)
+            if(self.state == "leader"):
+                return self.GET_handler(request)
+            else:
+                return raftNode_pb2.ServeClientResponse(
+                    failureReply=raftNode_pb2.ServeClientFailureReply(
+                        leaderId=self.node_id,
+                        success=False
+                    )
+                )
+            
         elif("SET" in request):
             return self.SET_handler(request)
         else:
