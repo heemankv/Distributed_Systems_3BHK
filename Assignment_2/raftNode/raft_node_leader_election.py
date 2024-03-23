@@ -268,6 +268,90 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
         return raftNode_pb2.AppendEntriesResponse(term=self.term, success=True)
 
 
+    def BroadcastMessage(self, request, context):
+        '''
+        Handles all the replicate logs functions from the leader to the followers
+        if leader handle caller
+        if follower handle the request
+
+        Pseudo code:
+        on request to broadcast msg at node nodeId do
+            if currentRole = leader then
+                append the record (msg : msg, term : currentTerm) to log
+                ackedLength[nodeId] := log.length
+                for each follower ∈ nodes \ {nodeId} do
+                    ReplicateLog(nodeId, follower )
+                end for
+            else
+                forward the request to currentLeader via a FIFO link
+            end if
+        end on
+        '''
+        if self.state == "leader":
+            self.log.append(request)
+            acked_length = len(self.log)
+            replicatedCount = 0
+            for peer in self.peers:
+                with grpc.insecure_channel(peer) as channel:
+                    stub = raftNode_pb2_grpc.RaftServiceStub(channel)
+                    response = stub.AppendEntries(raftNode_pb2.AppendEntriesRequest(
+                        term=self.term,
+                        leaderId=self.node_id,
+                        # TODO: unsure of the term and index
+                        prevLogIndex=len(self.log) - 2,
+                        prevLogTerm=self.log[-2].term if len(self.log)>1 else 0,
+                        entries=[request],
+                        leaderCommit=self.commit_index,
+                    ))
+
+                    if response.AckedLength == acked_length:
+                        self.dump(f'Node {self.node_id} received success from {peer}.')
+                        replicatedCount += 1
+                    else:
+                        self.dump(f'Node {self.node_id} received failure from {peer}.')
+            if replicatedCount > len(self.peers) // 2:
+                # Majority Achieved
+                # TODO: send message to client for successful replication
+                self.commit_index = acked_length
+                self.update_metadata()
+                self.dump(f'Node {self.node_id} committed entry {request}.')
+            # TODO: handle case of minority
+    
+        # else case for when the client contacts a Follower, 
+        # follower will query the leader to call broadcast message with same request
+        else:
+            with grpc.insecure_channel(self.leaderId) as channel:
+                stub = raftNode_pb2_grpc.RaftServiceStub(channel)
+                response = stub.BroadcastMessage(request)
+                return response
+    
+
+
+    def ReplicateLog(self, request, context):
+        '''
+        Called on the leader whenever there is a new message in the log, and also
+        periodically. If there are no new messages, suffix is the empty list.
+        LogRequest messages with suffix = hi serve as heartbeats, letting
+        followers know that the leader is still alive
+
+        To synchronize a follower's log with the leader's,
+        the leader identifies the latest matching log entry
+        (same PrevLogIndex and PrevLogTerm), removes entries in the follower's
+        log beyond that point, and transmits all subsequent leader entries.
+
+        '''
+        prefix_len = request.PrefixLen
+        suffix = request.Suffix
+
+        # Process the log replication
+        # Here you would typically send the log entries to the follower node
+        
+        acked_length = prefix_len + len(suffix)
+
+        return raft_pb2.LogReply(AckedLength=acked_length)
+
+
+
 
     # private fn
     def internal_get_handler(self, request):
@@ -310,35 +394,8 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
         # Commit the entry in the log
         # Return success response to the client
 
-        # Append the key-value pair to the log of the leader node
-        self.log.append(request)
-        self.update_log(request)
-
-        # Send AppendEntries RPC to all the followers
-        for peer in self.peers:
-            with grpc.insecure_channel(peer) as channel:
-                stub = raftNode_pb2_grpc.RaftServiceStub(channel)
-                response = stub.AppendEntries(raftNode_pb2.AppendEntriesRequest(
-                    term=self.term,
-                    leaderId=self.node_id,
-                    prevLogIndex=len(self.log) - 2,
-                    prevLogTerm=self.log[-2].term if len(self.log)>1 else 0,
-                    entries=[request],
-                    leaderCommit=self.commit_index,
-                ))
-                if response.success:
-                    self.dump(f'Node {self.node_id} received success from {peer}.')
-                else:
-                    self.dump(f'Node {self.node_id} received failure from {peer}.')
-
-        # Wait for ACK from majority of the followers
-        # Commit the entry in the log
-        self.commit_index += 1
-        self.update_metadata()
-        self.dump(f'Node {self.node_id} committed entry {request}.')
-
-        # Return success response to the client
-        return raftNode_pb2.ServeClientResponse(success=True, leader_id=self.node_id)
+        # Use BroadCast Message
+        self.BroadcastMessage(request=request)
 
 
     def ServeClient(self, request, context):

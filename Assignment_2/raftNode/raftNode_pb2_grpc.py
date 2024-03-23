@@ -29,6 +29,16 @@ class RaftNodeServiceStub(object):
                 request_serializer=raftNode__pb2.ServeClientArgs.SerializeToString,
                 response_deserializer=raftNode__pb2.ServeClientResponse.FromString,
                 )
+        self.BroadcastMessage = channel.unary_unary(
+                '/raftNode.RaftNodeService/BroadcastMessage',
+                request_serializer=raftNode__pb2.BroadcastMessageRequest.SerializeToString,
+                response_deserializer=raftNode__pb2.BroadcastMessageReply.FromString,
+                )
+        self.PeriodicTask = channel.unary_unary(
+                '/raftNode.RaftNodeService/PeriodicTask',
+                request_serializer=raftNode__pb2.PeriodicTaskRequest.SerializeToString,
+                response_deserializer=raftNode__pb2.PeriodicTaskReply.FromString,
+                )
 
 
 class RaftNodeServiceServicer(object):
@@ -52,6 +62,18 @@ class RaftNodeServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def BroadcastMessage(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def PeriodicTask(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_RaftNodeServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -69,6 +91,16 @@ def add_RaftNodeServiceServicer_to_server(servicer, server):
                     servicer.ServeClient,
                     request_deserializer=raftNode__pb2.ServeClientArgs.FromString,
                     response_serializer=raftNode__pb2.ServeClientResponse.SerializeToString,
+            ),
+            'BroadcastMessage': grpc.unary_unary_rpc_method_handler(
+                    servicer.BroadcastMessage,
+                    request_deserializer=raftNode__pb2.BroadcastMessageRequest.FromString,
+                    response_serializer=raftNode__pb2.BroadcastMessageReply.SerializeToString,
+            ),
+            'PeriodicTask': grpc.unary_unary_rpc_method_handler(
+                    servicer.PeriodicTask,
+                    request_deserializer=raftNode__pb2.PeriodicTaskRequest.FromString,
+                    response_serializer=raftNode__pb2.PeriodicTaskReply.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -128,5 +160,39 @@ class RaftNodeService(object):
         return grpc.experimental.unary_unary(request, target, '/raftNode.RaftNodeService/ServeClient',
             raftNode__pb2.ServeClientArgs.SerializeToString,
             raftNode__pb2.ServeClientResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def BroadcastMessage(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/raftNode.RaftNodeService/BroadcastMessage',
+            raftNode__pb2.BroadcastMessageRequest.SerializeToString,
+            raftNode__pb2.BroadcastMessageReply.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def PeriodicTask(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/raftNode.RaftNodeService/PeriodicTask',
+            raftNode__pb2.PeriodicTaskRequest.SerializeToString,
+            raftNode__pb2.PeriodicTaskReply.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

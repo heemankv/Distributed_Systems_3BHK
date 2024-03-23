@@ -2,10 +2,46 @@ syntax = "proto3";
 
 package raftNode;
 
+
+message LogRequest {
+  int32 LeaderId = 1;
+  int32 Term = 2;
+  int32 PrefixLen = 3;
+  int32 PrefixTerm = 4;
+  int32 CommitLength = 5;
+  repeated LogEntry Suffix = 6;
+}
+
+message LogReply {
+  int32 AckedLength = 1;
+}
+
+
+message BroadcastMessageRequest {
+  int32 NodeId = 1;
+  string Message = 2;
+  int32 Term = 3;
+}
+
+message BroadcastMessageReply {
+  int32 AckedLength = 1;
+}
+
+message PeriodicTaskRequest {
+  int32 NodeId = 1;
+}
+
+message PeriodicTaskReply {
+  int32 AckedLength = 1;
+}
+
+
 service RaftNodeService {
   rpc RequestVote (RequestVoteRequest) returns (RequestVoteResponse) {}
   rpc AppendEntries (AppendEntriesRequest) returns (AppendEntriesResponse) {}
   rpc ServeClient (ServeClientArgs) returns (ServeClientResponse) {}
+  rpc BroadcastMessage(BroadcastMessageRequest) returns (BroadcastMessageReply) {}
+  rpc PeriodicTask(PeriodicTaskRequest) returns (PeriodicTaskReply) {}
 }
 
 message RequestVoteRequest {
@@ -36,7 +72,8 @@ message AppendEntriesResponse {
 
 message LogEntry {
   int32 term = 1;
-  string command = 2;
+  int32 index = 2;
+  string operation = 3;
 }
 
 message ServeClientArgs {
