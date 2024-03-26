@@ -690,10 +690,10 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
                     )
                 )
 
-def serve(node_id, peers):
+def serve(starterID,node_id, peers):
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     raftNode_pb2_grpc.add_RaftNodeServiceServicer_to_server(RaftNode(node_id, peers), server)
-    node_address = f'{os.getenv(f"NODE_{node_id}_IP")}:{os.getenv(f"NODE_{node_id}_PORT")}'    
+    node_address = f'{os.getenv(f"NODE_{starterID}_IP")}:{os.getenv(f"NODE_{starterID}_PORT")}'    
     server.add_insecure_port(node_address)
     server.start()
     server.wait_for_termination()
@@ -703,7 +703,7 @@ if __name__ == '__main__':
 
     num_nodes = int(os.getenv("NUM_NODES"))
     
-    node_ID = os.getenv(f"NODE_{starterID}_IP")
+    node_ID = os.getenv(f"NODE_{starterID}_ID")
 
     peers = {}
     for i in range(1, num_nodes+1):
@@ -714,4 +714,4 @@ if __name__ == '__main__':
             peers[key] = value
 
     print(peers)
-    serve(node_ID, peers)
+    serve(starterID,node_ID, peers)
