@@ -5,7 +5,7 @@ import grpc
 import raftClient_pb2 as raftClient__pb2
 
 
-class RaftClusterStub(object):
+class RaftClientServiceStub(object):
     """Missing associated documentation comment in .proto file."""
 
     def __init__(self, channel):
@@ -15,13 +15,13 @@ class RaftClusterStub(object):
             channel: A grpc.Channel.
         """
         self.ServeClient = channel.unary_unary(
-                '/RaftCluster/ServeClient',
+                '/raftClient.RaftClientService/ServeClient',
                 request_serializer=raftClient__pb2.ServeClientArgs.SerializeToString,
                 response_deserializer=raftClient__pb2.ServeClientReply.FromString,
                 )
 
 
-class RaftClusterServicer(object):
+class RaftClientServiceServicer(object):
     """Missing associated documentation comment in .proto file."""
 
     def ServeClient(self, request, context):
@@ -31,7 +31,7 @@ class RaftClusterServicer(object):
         raise NotImplementedError('Method not implemented!')
 
 
-def add_RaftClusterServicer_to_server(servicer, server):
+def add_RaftClientServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
             'ServeClient': grpc.unary_unary_rpc_method_handler(
                     servicer.ServeClient,
@@ -40,12 +40,12 @@ def add_RaftClusterServicer_to_server(servicer, server):
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-            'RaftCluster', rpc_method_handlers)
+            'raftClient.RaftClientService', rpc_method_handlers)
     server.add_generic_rpc_handlers((generic_handler,))
 
 
  # This class is part of an EXPERIMENTAL API.
-class RaftCluster(object):
+class RaftClientService(object):
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod
@@ -59,7 +59,7 @@ class RaftCluster(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/RaftCluster/ServeClient',
+        return grpc.experimental.unary_unary(request, target, '/raftClient.RaftClientService/ServeClient',
             raftClient__pb2.ServeClientArgs.SerializeToString,
             raftClient__pb2.ServeClientReply.FromString,
             options, channel_credentials,

@@ -14,17 +14,17 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x10raftClient.proto\"\"\n\x0fServeClientArgs\x12\x0f\n\x07request\x18\x01 \x01(\t\"D\n\x10ServeClientReply\x12\x0c\n\x04\x64\x61ta\x18\x01 \x01(\t\x12\x11\n\tleader_id\x18\x02 \x01(\t\x12\x0f\n\x07success\x18\x03 \x01(\x08\x32\x41\n\x0bRaftCluster\x12\x32\n\x0bServeClient\x12\x10.ServeClientArgs\x1a\x11.ServeClientReplyb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x10raftClient.proto\x12\nraftClient\"\"\n\x0fServeClientArgs\x12\x0f\n\x07request\x18\x01 \x01(\t\"D\n\x10ServeClientReply\x12\x0c\n\x04\x64\x61ta\x18\x01 \x01(\t\x12\x11\n\tleader_id\x18\x02 \x01(\t\x12\x0f\n\x07success\x18\x03 \x01(\x08\x32]\n\x11RaftClientService\x12H\n\x0bServeClient\x12\x1b.raftClient.ServeClientArgs\x1a\x1c.raftClient.ServeClientReplyb\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'raftClient_pb2', _globals)
 if _descriptor._USE_C_DESCRIPTORS == False:
   DESCRIPTOR._options = None
-  _globals['_SERVECLIENTARGS']._serialized_start=20
-  _globals['_SERVECLIENTARGS']._serialized_end=54
-  _globals['_SERVECLIENTREPLY']._serialized_start=56
-  _globals['_SERVECLIENTREPLY']._serialized_end=124
-  _globals['_RAFTCLUSTER']._serialized_start=126
-  _globals['_RAFTCLUSTER']._serialized_end=191
+  _globals['_SERVECLIENTARGS']._serialized_start=32
+  _globals['_SERVECLIENTARGS']._serialized_end=66
+  _globals['_SERVECLIENTREPLY']._serialized_start=68
+  _globals['_SERVECLIENTREPLY']._serialized_end=136
+  _globals['_RAFTCLIENTSERVICE']._serialized_start=138
+  _globals['_RAFTCLIENTSERVICE']._serialized_end=231
 # @@protoc_insertion_point(module_scope)
