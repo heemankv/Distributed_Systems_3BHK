@@ -3,6 +3,9 @@ import sys
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'raftClient'))
 
+from dotenv import load_dotenv
+load_dotenv()  # take environment variables from .env.
+
 import grpc
 import raftNode_pb2
 import raftNode_pb2_grpc
@@ -705,4 +708,4 @@ if __name__ == '__main__':
         f'{os.getenv("NODE_5_IP")}:{os.getenv("NODE_5_PORT")}',
     ]
     print(peers)
-    serve(node_id, peers)
+    # serve(node_id, peers)

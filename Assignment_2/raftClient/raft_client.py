@@ -3,13 +3,15 @@ import sys
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'raftNode'))
 
+from dotenv import load_dotenv
+load_dotenv()  # take environment variables from .env.
+
+
 import grpc
 import raftNode_pb2 as raft_pb2
 import raftNode_pb2_grpc as raft_pb2_grpc
 
 
-from dotenv import load_dotenv
-load_dotenv()  # take environment variables from .env.
 
 # TODO: Store the node ids as an array here : 
 # The client stores the IP addresses and ports of all the nodes.
