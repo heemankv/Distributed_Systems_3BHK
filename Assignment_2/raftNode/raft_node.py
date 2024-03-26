@@ -165,7 +165,7 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
     
     # Contesting elections in case of timeout
     def start_election(self):
-        self.dump(f'Node {self.node_id} election timer timed out, Starting election For Term {self.term}.')
+        self.dump(f'Node {self.node_id} election timer timed out, Starting election For Term {self.term+1}.')
 
         self.become_follower() #Done to stop heartbeats if it is a leader
         self.state = "candidate"
@@ -693,6 +693,11 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
 
 def serve(node_id, peers):
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
+    node_address = peers[node_id-1]
+    print(node_address)
+    server.add_insecure_port(node_address)
+    del peers[node_id-1]
+    print(peers)
     raftNode_pb2_grpc.add_RaftNodeServiceServicer_to_server(RaftNode(node_id, peers), server)
     node_address = f'{os.getenv(f"NODE_{node_id}_IP")}:{os.getenv(f"NODE_{node_id}_PORT")}'    
     server.add_insecure_port(node_address)
@@ -713,4 +718,4 @@ if __name__ == '__main__':
             peers.add(f'{os.getenv("NODE_{i}_IP")}:{os.getenv("NODE_{i}_PORT")}')
     
     print(peers)
-    # serve(node_id, peers)
+    serve(node_id, peers)
