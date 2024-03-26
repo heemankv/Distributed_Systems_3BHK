@@ -1,5 +1,6 @@
 import os
 import sys
+sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'raftClient'))
 
 import grpc
@@ -186,7 +187,7 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
                         #     break
 
             except Exception as e:
-                followerNodeID="{Figure this Id Out}"
+                followerNodeID=peer.split(":")[1]
                 self.dump(f'Error occurred while sending RPC to Node {followerNodeID} with IP {peer}.')
         
         self.old_leader_lease_timestamp=datetime.now(timezone.utc) + timedelta(seconds=duration_left)
@@ -686,7 +687,8 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
 def serve(node_id, peers):
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     raftNode_pb2_grpc.add_RaftNodeServiceServicer_to_server(RaftNode(node_id, peers), server)
-    server.add_insecure_port(f'127.0.0.1:{5005 + node_id}')
+    node_address = f'{os.getenv("NODE{node_id}_IP")}:{os.getenv("NODE{node_id}_PORT")}'
+    server.add_insecure_port(node_address)
     server.start()
     server.wait_for_termination()
 
@@ -695,5 +697,12 @@ if __name__ == '__main__':
     node_id = int(sys.argv[1])
 
     # Assumption: Only 5 servers
-    peers = [f'127.0.0.1:{5005 + i}' for i in range(5) if i != node_id]
+    peers = [
+        f'{os.getenv("NODE_1_IP")}:{os.getenv("NODE_1_PORT")}',
+        f'{os.getenv("NODE_2_IP")}:{os.getenv("NODE_2_PORT")}',
+        f'{os.getenv("NODE_3_IP")}:{os.getenv("NODE_3_PORT")}',
+        f'{os.getenv("NODE_4_IP")}:{os.getenv("NODE_4_PORT")}',
+        f'{os.getenv("NODE_5_IP")}:{os.getenv("NODE_5_PORT")}',
+    ]
+    print(peers)
     serve(node_id, peers)
