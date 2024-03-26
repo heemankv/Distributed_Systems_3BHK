@@ -702,13 +702,15 @@ if __name__ == '__main__':
     import sys
     node_id = int(sys.argv[1])
 
-    # Assumption: Only 5 servers
-    peers = [
-        f'{os.getenv("NODE_1_IP")}:{os.getenv("NODE_1_PORT")}',
-        f'{os.getenv("NODE_2_IP")}:{os.getenv("NODE_2_PORT")}',
-        f'{os.getenv("NODE_3_IP")}:{os.getenv("NODE_3_PORT")}',
-        f'{os.getenv("NODE_4_IP")}:{os.getenv("NODE_4_PORT")}',
-        f'{os.getenv("NODE_5_IP")}:{os.getenv("NODE_5_PORT")}',
-    ]
+    num_nodes = os.getenv("NUM_NODES")
+
+    # Peers should be dynamic
+    # add all to peer list except the node with id node_id
+
+    peers = set()
+    for i in range(1, num_nodes+1):
+        if i != node_id:
+            peers.add(f'{os.getenv("NODE_{i}_IP")}:{os.getenv("NODE_{i}_PORT")}')
+    
     print(peers)
     # serve(node_id, peers)
