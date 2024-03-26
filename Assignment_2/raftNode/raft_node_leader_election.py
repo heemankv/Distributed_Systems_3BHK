@@ -5,6 +5,7 @@ from concurrent import futures
 import threading
 import random
 import os
+import datetime
 
 
 # TODO: The Whole of leader lease is left
@@ -35,6 +36,8 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
         self.election_timer.start()
 
         self.leaderId = None
+        self.old_leader_lease_timestamp=None
+        self.leader_lease_timer=None
 
         # TODO: might have to delete later
         self.data = {}
@@ -175,6 +178,16 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
     
     # Become leader if win election
     def become_leader(self):
+        '''
+        #Leader Lease: Leader needs to send a no-op entry to followers
+        #Leader Lease: It must also send lease interval duration whenver the leader starts timer
+        #Leader Lease: It must check if the old leader's lease timer hasn't ended
+        '''
+
+        while( self.old_leader_lease_timestamp!=None or datetime.now()<self.old_leader_lease_timestamp):
+
+
+
         self.term+=1
         self.dump(f'Node {self.node_id} became the leader for term {self.term}.')
         self.state = "leader"        
@@ -190,25 +203,40 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
 
     # Become follower    
     def become_follower(self):
+        self.stop_leader_lease_timer()
         self.stop_heartbeats()
         self.dump(f'{self.node_id} Stepping down')
         self.state = "follower"        
 
     def send_heartbeats(self):
+        '''
+        #Leader Lease: leader reacquires its lease, leader needs to step down if it doesn't get enough ack
+        '''
         if self.state != "leader":
             return
         self.dump(f'Leader {self.node_id} sending heartbeat & Renewing Lease')
+        ack_received=0
         for peer in self.peers:
-            with grpc.insecure_channel(peer) as channel:
-                stub = raftNode_pb2_grpc.RaftServiceStub(channel)
-                stub.AppendEntries(raftNode_pb2.AppendEntriesRequest(
-                    term=self.term,
-                    leaderId=self.node_id,
-                    prevLogIndex=len(self.log) - 1,
-                    prevLogTerm=self.log[-1].term if len(self.log)>0 else 0,
-                    entries=[],
-                    leaderCommit=self.commit_index,
-                ))        
+            try:
+                with grpc.insecure_channel(peer) as channel:
+                    stub = raftNode_pb2_grpc.RaftServiceStub(channel)
+                    response=stub.AppendEntries(raftNode_pb2.AppendEntriesRequest(
+                        term=self.term,
+                        leaderId=self.node_id,
+                        prevLogIndex=len(self.log) - 1,
+                        prevLogTerm=self.log[-1].term if len(self.log)>0 else 0,
+                        entries=[],
+                        leaderCommit=self.commit_index,
+                    ))        
+                    if response.success:
+                        ack_received += 1
+
+            except Exception as e:
+                followerNodeID="{Figure this Id Out}"
+                self.dump(f'Error occurred while sending RPC to Node {followerNodeID} with IP {peer}.')
+        if ack_received > (len(self.peers)/2):
+            self.reset_leader_lease_timer()
+           
     
     def start_heartbeats(self):
         self.heartbeats_timer=threading.Timer(1, self.send_heartbeats)
@@ -219,6 +247,19 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
             self.heartbeats_timer.cancel()
             self.heartbeats_timer=None
 
+    # leader lease related functions
+    
+    def reset_leader_lease_timer(self):
+        self.stop_leader_lease_timer()
+        leader_lease_timeout= 2
+        self.leader_lease_timer = threading.Timer(leader_lease_timeout, self.become_follower())
+        self.leader_lease_timer.start()
+    
+    def stop_leader_lease_timer(self):
+        if(self.leader_lease_timer):
+            self.leader_lease_timer.cancel()
+            self.leader_lease_timer=None
+
     def reset_election_timer(self):
         self.election_timer.cancel()
         self.election_timeout = random.uniform(5, 10)
@@ -227,6 +268,7 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
 
     #Node getting request for a vote
     def RequestVote(self, request, context):
+        
         #settingToFollowerIfRequired
         if request.term > self.term:
             self.term=request.term
