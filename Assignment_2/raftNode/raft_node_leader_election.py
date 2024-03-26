@@ -5,10 +5,10 @@ from concurrent import futures
 import threading
 import random
 import os
-import datetime
+from datetime import datetime, timezone, timedelta
 
 
-# TODO: The Whole of leader lease is left
+# TODO: Change AppendRPCs and VoteRPCs for leader lease
 # TODO: Ensure a node updates its term whenever it meets a node either in request or response with a higher term
 # TODO: NO-OP needs to be sent during start of election
 
@@ -36,8 +36,11 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
         self.election_timer.start()
 
         self.leaderId = None
+
+        #LeaderLease related variables
         self.old_leader_lease_timestamp=None
         self.leader_lease_timer=None
+        self.leader_lease_end_timestamp=None
 
         # TODO: might have to delete later
         self.data = {}
@@ -158,15 +161,16 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
                     ))
                     if response.voteGranted:
                         votes_received += 1
-                        if votes_received > len(self.peers) // 2:
-                            self.become_leader()
-                            break
+                        self.old_leader_lease_timestamp=max(self.old_leader_lease_timestamp,response.old_leader_lease_timestamp)
+                        # if votes_received > len(self.peers) // 2:
+                        #     self.become_leader()
+                        #     break
 
             except Exception as e:
                 followerNodeID="{Figure this Id Out}"
                 self.dump(f'Error occurred while sending RPC to Node {followerNodeID} with IP {peer}.')
         
-        if votes_received > len(self.peers) // 2 and self.state !="leader":
+        if votes_received > len(self.peers) // 2:
             self.become_leader()
             
             
@@ -179,24 +183,25 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
     # Become leader if win election
     def become_leader(self):
         '''
-        #Leader Lease: Leader needs to send a no-op entry to followers
-        #Leader Lease: It must also send lease interval duration whenver the leader starts timer
-        #Leader Lease: It must check if the old leader's lease timer hasn't ended
+        #LeaderLease: Leader needs to send a no-op entry to followers
+        #LeaderLease: It must also send lease interval duration whenver the leader starts timer
+        #LeaderLease: It must check if the old leader's lease timer hasn't ended - Done
         '''
 
-        while( self.old_leader_lease_timestamp!=None or datetime.now()<self.old_leader_lease_timestamp):
+        while( self.old_leader_lease_timestamp!=None and datetime.now(timezone.utc) < self.old_leader_lease_timestamp):
             pass
 
-        self.reset_leader_lease_timer()
         
-
         self.term+=1
-        self.dump(f'Node {self.node_id} became the leader for term {self.term}.')
-        self.state = "leader"        
+        self.reset_leader_lease_timer()
+        self.state = "leader"                
         self.update_metadata()
+        self.dump(f'Node {self.node_id} became the leader for term {self.term}.')
+        
 
         # Add NO-OP entry to log 
         # Send lease endtimestamp
+        
 
         #Sending heartbeats for first time
         self.send_heartbeats()
@@ -213,7 +218,8 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
 
     def send_heartbeats(self):
         '''
-        #Leader Lease: leader reacquires its lease, leader needs to step down if it doesn't get enough ack
+        #LeaderLease: leader reacquires its lease, leader needs to step down if it doesn't get enough ack - Done
+        #LeaderLease: need to send lease duration left
         '''
         if self.state != "leader":
             return
@@ -237,10 +243,12 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
             except Exception as e:
                 followerNodeID="{Figure this Id Out}"
                 self.dump(f'Error occurred while sending RPC to Node {followerNodeID} with IP {peer}.')
+
         if ack_received > (len(self.peers)/2):
             self.reset_leader_lease_timer()
+        else:
+            self.become_follower()
            
-    
     def start_heartbeats(self):
         self.heartbeats_timer=threading.Timer(1, self.send_heartbeats)
         self.heartbeats_timer.start()
@@ -250,28 +258,38 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
             self.heartbeats_timer.cancel()
             self.heartbeats_timer=None
 
-    # leader lease related functions
+    #LeaderLease related functions
     
     def reset_leader_lease_timer(self):
         self.stop_leader_lease_timer()
         leader_lease_timeout= 2
         self.leader_lease_timer = threading.Timer(leader_lease_timeout, self.become_follower())
         self.leader_lease_timer.start()
+        self.leader_lease_end_timestamp= datetime.now(timezone.utc) + timedelta(seconds=leader_lease_timeout)
     
     def stop_leader_lease_timer(self):
         if(self.leader_lease_timer):
             self.leader_lease_timer.cancel()
             self.leader_lease_timer=None
+        self.leader_lease_end_timestamp=None
 
     def reset_election_timer(self):
         self.election_timer.cancel()
         self.election_timeout = random.uniform(5, 10)
         self.election_timer = threading.Timer(self.election_timeout, self.start_election)
         self.election_timer.start()
+    
+    def get_lease_duration(self):
+        duration_left=max((self.leader_lease_end_timestamp-datetime.now(timezone.utc)).total_seconds(),0)
+        return duration_left
 
     #Node getting request for a vote
     def RequestVote(self, request, context):
-        
+        '''
+        #LeaderLease: Need to send old leader lease duration
+        duration_left=max((self.old_leader_lease_timestamp-datetime.now(timezone.utc)).total_seconds(),0)      
+        '''
+    
         #settingToFollowerIfRequired
         if request.term > self.term:
             self.term=request.term
@@ -301,6 +319,10 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
     #Followers need send ACK once log is appended. Depending on the ACK, the leader will commit the index, and inform the followers again.
     
     def AppendEntries(self, request, context):
+        """
+        #LeaderLease: Need to compute leader lease end timestamp from leader's lese duration left
+        self.old_leader_lease_timestamp=datetime.now(timezone.utc) + timedelta(seconds=duration)
+        """
         if request.term < self.term:
             self.dump(f'Node {self.node_id} rejected AppendEntries RPC from {request.leaderId}.')
             return raftNode_pb2.AppendEntriesResponse(term=self.term, success=False)
