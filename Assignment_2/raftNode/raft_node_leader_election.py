@@ -185,8 +185,10 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
         '''
 
         while( self.old_leader_lease_timestamp!=None or datetime.now()<self.old_leader_lease_timestamp):
+            pass
 
-
+        self.reset_leader_lease_timer()
+        
 
         self.term+=1
         self.dump(f'Node {self.node_id} became the leader for term {self.term}.')
@@ -194,6 +196,7 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
         self.update_metadata()
 
         # Add NO-OP entry to log 
+        # Send lease endtimestamp
 
         #Sending heartbeats for first time
         self.send_heartbeats()
