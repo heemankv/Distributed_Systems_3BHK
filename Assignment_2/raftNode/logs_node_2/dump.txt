@@ -1,70 +1,16 @@
 Node 2 election timer timed out, Starting election For Term 1.
 2 Stepping down
-Error occurred while sending RPC to Node 5000 with IP 127.0.0.1:5000.
-Error occurred while sending RPC to Node 5002 with IP 127.0.0.1:5002.
-Error occurred while sending RPC to Node 5003 with IP 127.0.0.1:5003.
-Error occurred while sending RPC to Node 5004 with IP 127.0.0.1:5004.
 2 Stepping down
-Node 2 election timer timed out, Starting election For Term 1.
+Node 2 became the leader for term 1.
+Error occurred while sending RPC to Node 127.0.0.1:5000
+Leader 2 sending heartbeat & Renewing Lease
 2 Stepping down
-Error occurred while sending RPC to Node 5000 with IP 127.0.0.1:5000.
-Error occurred while sending RPC to Node 5002 with IP 127.0.0.1:5002.
-Error occurred while sending RPC to Node 5003 with IP 127.0.0.1:5003.
-Error occurred while sending RPC to Node 5004 with IP 127.0.0.1:5004.
 2 Stepping down
-Node 2 election timer timed out, Starting election For Term 1.
+Node 2 election timer timed out, Starting election For Term 2.
 2 Stepping down
-Error occurred while sending RPC to Node 5000 with IP 127.0.0.1:5000.
-Error occurred while sending RPC to Node 5002 with IP 127.0.0.1:5002.
-Error occurred while sending RPC to Node 5003 with IP 127.0.0.1:5003.
-Error occurred while sending RPC to Node 5004 with IP 127.0.0.1:5004.
 2 Stepping down
-Node 2 election timer timed out, Starting election For Term 1.
+Node 2 became the leader for term 2.
+Error occurred while sending RPC to Node 127.0.0.1:5000
+Leader 2 sending heartbeat & Renewing Lease
 2 Stepping down
-Error occurred while sending RPC to Node 5000 with IP 127.0.0.1:5000.
-Error occurred while sending RPC to Node 5002 with IP 127.0.0.1:5002.
-Error occurred while sending RPC to Node 5003 with IP 127.0.0.1:5003.
-Error occurred while sending RPC to Node 5004 with IP 127.0.0.1:5004.
-2 Stepping down
-Node 2 election timer timed out, Starting election For Term 1.
-2 Stepping down
-Error occurred while sending RPC to Node 5000 with IP 127.0.0.1:5000.
-Error occurred while sending RPC to Node 5002 with IP 127.0.0.1:5002.
-Error occurred while sending RPC to Node 5003 with IP 127.0.0.1:5003.
-Error occurred while sending RPC to Node 5004 with IP 127.0.0.1:5004.
-2 Stepping down
-Node 2 election timer timed out, Starting election For Term 1.
-2 Stepping down
-Error occurred while sending RPC to Node 5000 with IP 127.0.0.1:5000.
-Error occurred while sending RPC to Node 5002 with IP 127.0.0.1:5002.
-Error occurred while sending RPC to Node 5003 with IP 127.0.0.1:5003.
-Error occurred while sending RPC to Node 5004 with IP 127.0.0.1:5004.
-2 Stepping down
-Node 2 election timer timed out, Starting election For Term 1.
-2 Stepping down
-Error occurred while sending RPC to Node 5000 with IP 127.0.0.1:5000.
-Error occurred while sending RPC to Node 5002 with IP 127.0.0.1:5002.
-Error occurred while sending RPC to Node 5003 with IP 127.0.0.1:5003.
-Error occurred while sending RPC to Node 5004 with IP 127.0.0.1:5004.
-2 Stepping down
-Node 2 election timer timed out, Starting election For Term 1.
-2 Stepping down
-Error occurred while sending RPC to Node 5000 with IP 127.0.0.1:5000.
-Error occurred while sending RPC to Node 5002 with IP 127.0.0.1:5002.
-Error occurred while sending RPC to Node 5003 with IP 127.0.0.1:5003.
-Error occurred while sending RPC to Node 5004 with IP 127.0.0.1:5004.
-2 Stepping down
-Node 2 election timer timed out, Starting election For Term 1.
-2 Stepping down
-Error occurred while sending RPC to Node 5000 with IP 127.0.0.1:5000.
-Error occurred while sending RPC to Node 5002 with IP 127.0.0.1:5002.
-Error occurred while sending RPC to Node 5003 with IP 127.0.0.1:5003.
-Error occurred while sending RPC to Node 5004 with IP 127.0.0.1:5004.
-2 Stepping down
-Node 2 election timer timed out, Starting election For Term 1.
-2 Stepping down
-Error occurred while sending RPC to Node 5000 with IP 127.0.0.1:5000.
-Error occurred while sending RPC to Node 5002 with IP 127.0.0.1:5002.
-Error occurred while sending RPC to Node 5003 with IP 127.0.0.1:5003.
-Error occurred while sending RPC to Node 5004 with IP 127.0.0.1:5004.
 2 Stepping down

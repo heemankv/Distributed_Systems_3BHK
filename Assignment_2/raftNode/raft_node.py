@@ -186,13 +186,12 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
                     ))
                     if response.voteGranted:
                         votes_received += 1
-                        duration_left=max(duration_left,response.old_leader_lease_duration)
+                        duration_left=max(duration_left,response.oldLeaderLeaseDuration)
                         # if votes_received > len(self.peers) // 2:
                         #     self.become_leader()
                         #     break
 
-            except Exception as e:
-                print("Exception:", e)
+            except Exception as e:                
                 followerNodeID=peer.split(":")[1]
                 self.dump(f'Error occurred while sending RPC to Node {followerNodeID} with IP {peer}.')
         
@@ -225,10 +224,9 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
         self.update_metadata()
         self.dump(f'Node {self.node_id} became the leader for term {self.term}.')
 
-        for peer in self.peers:
+        for peer in range(len(self.peers)):
             self.sentLength[peer]=len(self.log)
-            self.ackedLength[peer]=0
-
+            self.ackedLength[peer]=0        
         self.BroadcastAppendMessage("NO-OP "+str(self.term))            
 
         #Sending heartbeats for first time
@@ -437,8 +435,7 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
                 # prepare the params 
                 current_term = self.term
 
-                # prefixLen should be length of the log of the follower till which it matches the leader's log     
-                # TODO: Execute the sentLength thing                       
+                # prefixLen should be length of the log of the follower till which it matches the leader's log                                   
                 prefixLen = self.sentLength[follower]
 
                 # If there's no entry in the log, prefixTerm = 0, else get the term of the last one in the prefix
@@ -466,7 +463,9 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
                 ))
 
                 return response
+            
         except Exception as e:
+            print("Exception1:", e)
             return None
             
             # TODO: validate
@@ -524,13 +523,11 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
             acked_length = len(self.log)
             replicatedCount = 0
             for follower in self.peers:
-                # 5/9
-                # if replicated: replicatedCount += 1
+                # 5/9                
                 replicatedLogResponse = self.ReplicateLog(self.node_id, follower)
 
-                if(replicatedLogResponse==None):
-                    followerNodeID="Figure this ID"
-                    self.dump(f'Error occurred while sending RPC to Node {followerNodeID}')
+                if(replicatedLogResponse==None):                    
+                    self.dump(f'Error occurred while sending RPC to Node {follower}')
                     break
 
                 # 8/9
@@ -702,7 +699,7 @@ def serve(node_id, peers):
 if __name__ == '__main__':
     node_id = int(sys.argv[1])
 
-    num_nodes = os.getenv("NUM_NODES")
+    num_nodes = int(os.getenv("NUM_NODES"))
 
     # Peers should be dynamic
     # add all to peer list except the node with id node_id
@@ -710,7 +707,7 @@ if __name__ == '__main__':
     peers = set()
     for i in range(1, num_nodes+1):
         if i != node_id:
-            peers.add(f'{os.getenv("NODE_{i}_IP")}:{os.getenv("NODE_{i}_PORT")}')
+            peers.add(f'{os.getenv(f"NODE_{i}_IP")}:{os.getenv(f"NODE_{i}_PORT")}')
     
     print(peers)
     serve(node_id, peers)

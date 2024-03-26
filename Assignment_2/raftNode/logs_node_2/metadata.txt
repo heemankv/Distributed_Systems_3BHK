@@ -1,3 +1,3 @@
 commitLength: 0
-term: 0
-voted_for: None
+term: 2
+voted_for: 2
