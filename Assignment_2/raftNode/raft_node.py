@@ -15,7 +15,7 @@ from concurrent import futures
 import threading
 import random
 from datetime import datetime, timezone, timedelta
-from utils.utils import run_thread
+from utils import run_thread
 
 
 # TODO: Implement broadcast messgaes in heartbeat not replicate log
@@ -65,6 +65,8 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
     
 
     def getTermGivenLog(self,entry):
+        if not entry:
+            raise ValueError("Entry is empty", entry)
         return int(entry.split()[-1])
 
     # Creating files

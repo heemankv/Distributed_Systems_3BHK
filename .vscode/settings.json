@@ -1,11 +1,12 @@
 {
-	"python.analysis.extraPaths": [
-		"./Assignment_1/Question_1/python/market/Market_grpc",
-		"./Assignment_1/Question_1/python/market/Buyer_grpc",
-		"./Assignment_1/Question_1/python/market/Seller_grpc",
-		"./Assignment_1/Question_1/python/Buyer_grpc",
-		"./Assignment_1/Question_1/python/Market_grpc",
-		"./Assignment_1/Question_1/python/Seller_grpc",
-		"./Assignment_2/raftNode"
-	]
+  "python.analysis.extraPaths": [
+    "./Assignment_1/Question_1/python/market/Market_grpc",
+    "./Assignment_1/Question_1/python/market/Buyer_grpc",
+    "./Assignment_1/Question_1/python/market/Seller_grpc",
+    "./Assignment_1/Question_1/python/Buyer_grpc",
+    "./Assignment_1/Question_1/python/Market_grpc",
+    "./Assignment_1/Question_1/python/Seller_grpc",
+    "./Assignment_2/raftNode",
+    "./Assignment_2/utils"
+  ]
 }
