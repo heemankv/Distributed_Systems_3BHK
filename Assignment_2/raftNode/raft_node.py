@@ -468,7 +468,27 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
             #     self.dump(f'Node {self.node_id} received failure from {follower}.')
             #     return False
         
-    
+
+    def acks(self,length):
+        """Define the set of nodes that have acknowledged log entries up to a certain length."""
+        return {n for n in self.peers if self.ackedLength[n] >= length}
+
+    def commitLogEntries(self):
+        # Assuming nodes is a list of node identifiers in the Raft cluster
+        # Assuming ackedLength is a dictionary with nodes as keys and the length of the log they have acknowledged as values
+        # Assuming log is a list of log entries and each entry has a 'term' and 'msg' field
+
+        minAcks = (len(self.peers) + 1) // 2
+
+        # Find indices that are ready to be committed
+        ready = {len_idx for len_idx in range(1, len(self.log) + 1) if len(self.acks(self,len_idx)) >= minAcks}
+
+        if ready and max(ready) > self.commit_index and self.getTermGivenLog(self.log[max(ready) - 1]) == self.term:
+            for i in range(self.commit_index, max(ready)):      
+                self.internal_set_handler(self.log[i])          
+                self.dump(f'Node {self.node_id} committed entry {self.log[i]}.')                
+            self.commit_index = max(ready)
+
 
     def BroadcastAppendMessage(self, request, context):
         # 4/9
@@ -601,6 +621,9 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
 
     # private fn
     def internal_set_handler(self, request):
+        '''
+        Cater to the text : deliver msg to the application 
+        '''
         #  SETs the value of variable passed in the request
         #  if variable is not present, creates it
         #  Returns the value of the variable
@@ -620,20 +643,6 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
 
         # Use BroadCast Message
         appendSuccess = self.BroadcastAppendMessage(request=request)
-
-            #    self.commit_index = acked_length
-        #     self.update_metadata()
-        #     self.dump(f'Node {self.node_id} committed entry {request}.')
-        # # TODO: handle case of minority
-            
-        if(appendSuccess):
-            # 9/9
-            commitSuccess = self.internal_set_handler(request)
-            # if(commitSuccess):
-            #     self.BroadcastCommitMessage(request=request)
-               
-
-
 
     def ServeClient(self, request, context):
         # Request will either be a GET or SET command
