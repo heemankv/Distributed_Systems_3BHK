@@ -177,12 +177,12 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
         for peer in self.peers:
             try:
                 with grpc.insecure_channel(peer) as channel:
-                    stub = raftNode_pb2_grpc.RaftServiceStub(channel)
+                    stub = raftNode_pb2_grpc.RaftNodeServiceStub(channel)
                     response = stub.RequestVote(raftNode_pb2.RequestVoteRequest(
                         term=self.term+1,
                         candidateId=self.node_id,
                         lastLogIndex=len(self.log) - 1,
-                        lastLogTerm=self.log[-1].term if len(self.log)>0 else 0,
+                        lastLogTerm=self.getTermGivenLog(self.log[-1]) if len(self.log)>0 else 0,
                     ))
                     if response.voteGranted:
                         votes_received += 1
@@ -192,6 +192,7 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
                         #     break
 
             except Exception as e:
+                print("Exception:", e)
                 followerNodeID=peer.split(":")[1]
                 self.dump(f'Error occurred while sending RPC to Node {followerNodeID} with IP {peer}.')
         
@@ -228,7 +229,7 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
             self.sentLength[peer]=len(self.log)
             self.ackedLength[peer]=0
 
-        self.BroadcastAppendMessage("NO-OP "+self.term)            
+        self.BroadcastAppendMessage("NO-OP "+str(self.term))            
 
         #Sending heartbeats for first time
         self.send_heartbeats()
@@ -317,7 +318,7 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
         
         #log is verified
         logCheck=False
-        currentLastLogTerm= self.log[-1].term if len(self.log)>0 else 0
+        currentLastLogTerm= self.getTermGivenLog(self.log[-1]) if len(self.log)>0 else 0
         if request.lastLogTerm > currentLastLogTerm or (request.lastLogTerm==currentLastLogTerm and  request.lastLogIndex>=len(self.log)-1):
             logCheck=True
         
@@ -498,7 +499,7 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
             self.commit_index = max(ready)
 
 
-    def BroadcastAppendMessage(self, request, context):
+    def BroadcastAppendMessage(self, request):
         # 4/9
         '''
         Handles all the replicate logs functions from the leader to the followers
@@ -574,7 +575,7 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
         # follower will query the leader to call broadcast message with same request
         else:
             with grpc.insecure_channel(self.leaderId) as channel:
-                stub = raftNode_pb2_grpc.RaftServiceStub(channel)
+                stub = raftNode_pb2_grpc.RaftNodeServiceStub(channel)
                 response = stub.BroadcastMessage(request)
                 return response
     
@@ -693,13 +694,12 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
 def serve(node_id, peers):
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     raftNode_pb2_grpc.add_RaftNodeServiceServicer_to_server(RaftNode(node_id, peers), server)
-    node_address = f'{os.getenv("NODE{node_id}_IP")}:{os.getenv("NODE{node_id}_PORT")}'
+    node_address = f'{os.getenv(f"NODE_{node_id}_IP")}:{os.getenv(f"NODE_{node_id}_PORT")}'    
     server.add_insecure_port(node_address)
     server.start()
     server.wait_for_termination()
 
 if __name__ == '__main__':
-    import sys
     node_id = int(sys.argv[1])
 
     num_nodes = os.getenv("NUM_NODES")
