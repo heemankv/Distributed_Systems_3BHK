@@ -1,7 +1,11 @@
 import os
+import sys
+sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'raftNode'))
+
 import grpc
-import Assignment_2.raftNode.raft_pb2 as raft_pb2
-import Assignment_2.raftNode.raft_pb2_grpc as raft_pb2_grpc
+import raftNode_pb2 as raft_pb2
+import raftNode_pb2_grpc as raft_pb2_grpc
+
 
 from dotenv import load_dotenv
 load_dotenv()  # take environment variables from .env.

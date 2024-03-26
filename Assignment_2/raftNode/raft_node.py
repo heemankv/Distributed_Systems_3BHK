@@ -1,10 +1,13 @@
+import os
+import sys
+sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'raftClient'))
+
 import grpc
 import raftNode_pb2
 import raftNode_pb2_grpc
 from concurrent import futures
 import threading
 import random
-import os
 from datetime import datetime, timezone, timedelta
 
 
