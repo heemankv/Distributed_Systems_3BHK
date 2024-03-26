@@ -55,7 +55,7 @@ message LogEntriesRequest {
 
 message LogEntriesResponse {
   int32 nodeId = 1;
-  int32 currentTerm = 2;
+  int32 term = 2;
   int32 ackedLength = 3;
   bool success = 4;
 }

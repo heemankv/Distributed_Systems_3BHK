@@ -11,7 +11,7 @@ from datetime import datetime, timezone, timedelta
 # TODO: Change AppendRPCs and VoteRPCs for leader lease
 # TODO: Ensure a node updates its term whenever it meets a node either in request or response with a higher term
 # TODO: NO-OP needs to be sent during start of election
-
+#  TODO: cancel election timer : is it reset or stop
 #Assumptions:
 #First election at term 1
 
@@ -46,6 +46,7 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
         self.leader_lease_end_timestamp=None
 
         self.sentLength = {}
+        self.ackedLength = {}
 
         # TODO: might have to delete later
         self.data = {}
@@ -357,9 +358,8 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
         self.dump(f'Node {self.node_id} accepted AppendEntries RPC from {request.leaderId}.')
         return raftNode_pb2.AppendEntriesResponse(term=self.term, success=True)
 
-        
-    def LogRequest(self, request, context):
-        # 6/9
+    # 6/9
+    def LogRequest(self, request, context):        
         # request : LogEntriesRequest
         # response : LogEntriesResponse
         
@@ -388,16 +388,39 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
         if len(self.log) >= _prefix_len and _prefix_term == currentLastLogTerm:
             logCheck=True
         
-        if _term == self.term and logCheck:
-            # TODO: Call new append entries            
+        if _term == self.term and logCheck:            
+            self.appendEntries(_prefix_len, _commit_len, _suffix)            
             
             self.dump(f'Node {self.node_id} accepted AppendEntries RPC from {request.leaderId}.')
-            return raftNode_pb2.LogEntriesResponse(nodeId=self.node_id, currentTerm=self.term, ackedLength=acked_length, success=True)
+            return raftNode_pb2.LogEntriesResponse(nodeId=self.node_id, term=self.term, ackedLength=acked_length, success=True)
         
         else:
             self.dump(f'Node {self.node_id} rejected AppendEntries RPC from {request.leaderId}.')
-            return raftNode_pb2.LogEntriesResponse(nodeId=self.node_id, currentTerm=self.term, ackedLength=acked_length, success=False)    
+            return raftNode_pb2.LogEntriesResponse(nodeId=self.node_id, term=self.term, ackedLength=acked_length, success=False)    
         
+    # 7/9
+    def appendEntries(self, prefix_len, leader_commit_len, suffix):
+        if len(suffix) > 0 and len(self.log) > prefix_len:
+            index = min(len(self.log), prefix_len + len(suffix)) - 1
+
+            log_at_index = self.log[index]
+            term_of_log_at_index = self.getTermGivenLog(log_at_index)
+            term_of_suffix_at_index=self.getTermGivenLog(suffix[index-prefix_len])
+
+            if(term_of_log_at_index!= term_of_suffix_at_index):
+                self.log = self.log[:prefix_len-1]
+        
+        if prefix_len + len(suffix) > len(self.log):
+            for i in range(len(self.log)-prefix_len, len(suffix) - 1):
+                self.update_log(suffix[i])
+
+        if leader_commit_len > self.commit_index:
+            for i in range(self.commit_index, leader_commit_len-1):
+                operation=self.log[i].split()[0]
+                if(operation=="SET"):
+                    self.internal_set_handler(self.log[i])
+                pass
+            self.commit_index = leader_commit_len
 
     # 5/9
     def ReplicateLog(self, leader_id, follower, acked_length, request):
@@ -408,7 +431,8 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
             # prepare the params 
             current_term = self.term
 
-            # prefixLen should be length of the log of the follower till which it matches the leader's log                               
+            # prefixLen should be length of the log of the follower till which it matches the leader's log     
+            # TODO: Execute the sentLength thing                       
             prefixLen = self.sentLength[follower]
 
             # If there's no entry in the log, prefixTerm = 0, else get the term of the last one in the prefix
@@ -433,14 +457,16 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
                 commitLength=commitLength,
                 suffix=suffix,
             ))
+
+            return response
             
             # TODO: validate
-            if response.ackedLength == acked_length:
-                self.dump(f'Node {self.node_id} received success from {follower}.')
-                return True
-            else:
-                self.dump(f'Node {self.node_id} received failure from {follower}.')
-                return False
+            # if response.ackedLength == acked_length:
+            #     self.dump(f'Node {self.node_id} received success from {follower}.')
+            #     return True
+            # else:
+            #     self.dump(f'Node {self.node_id} received failure from {follower}.')
+            #     return False
         
     
 
@@ -470,18 +496,46 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
             replicatedCount = 0
             for follower in self.peers:
                 # 5/9
-                replicated = self.ReplicateLog(self.node_id, follower, acked_length, request)
-                if replicated: replicatedCount += 1
+                # if replicated: replicatedCount += 1
+                replicatedLogResponse = self.ReplicateLog(self.node_id, follower, acked_length, request)
+
+                # 8/9
+                followerId = replicatedLogResponse.nodeId
+                followerTerm = replicatedLogResponse.term
+                followerAckedLength = replicatedLogResponse.ackedLength
+                followerSuccess = replicatedLogResponse.success
+
+                if followerTerm == self.term and self.state == "leader"  :
+                    if followerSuccess and followerAckedLength  >= self.ackedLength[followerId]:
+                        self.sentLength[followerId] = followerAckedLength
+                        self.ackedLength[followerId] = followerAckedLength
+                        # TODO: implement the commitLogEntries()
+                        self.commitLogEntries()
+                    elif self.sentLength[followerId] > 0:
+                        self.sentLength[followerId] -= 1
+                        # TODO: Validate : Call ReplicateLog on that follower exact node again
+                        self.ReplicateLog(self.node_id, follower, acked_length, request)
                     
+                elif followerTerm > self.term:
+                    # cancel election timer
+                    # current role  = follower
+                    # 
+                    self.become_follower()
+                    self.reset_election_timer()
+                    self.term = followerTerm
+                    self.voted_for = "None"
+                    return
+                    
+
+            # if replicatedCount > len(self.peers) // 2:
+            #     # Majority Achieved
+            #     # TODO: send message to client for successful replication
+            #     return True
+            # else:   
+            #     # Majority not achieved
+            #     return False
             
-            # 8/9
-            if replicatedCount > len(self.peers) // 2:
-                # Majority Achieved
-                # TODO: send message to client for successful replication
-                self.commit_index = acked_length
-                self.update_metadata()
-                self.dump(f'Node {self.node_id} committed entry {request}.')
-            # TODO: handle case of minority
+       
     
         # else case for when the client contacts a Follower, 
         # follower will query the leader to call broadcast message with same request
@@ -493,28 +547,28 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
     
 
 
-    def ReplicateLog(self, request, context):
-        '''
-        Called on the leader whenever there is a new message in the log, and also
-        periodically. If there are no new messages, suffix is the empty list.
-        LogRequest messages with suffix = hi serve as heartbeats, letting
-        followers know that the leader is still alive
+    # def ReplicateLog(self, request, context):
+    #     '''
+    #     Called on the leader whenever there is a new message in the log, and also
+    #     periodically. If there are no new messages, suffix is the empty list.
+    #     LogRequest messages with suffix = hi serve as heartbeats, letting
+    #     followers know that the leader is still alive
 
-        To synchronize a follower's log with the leader's,
-        the leader identifies the latest matching log entry
-        (same PrevLogIndex and PrevLogTerm), removes entries in the follower's
-        log beyond that point, and transmits all subsequent leader entries.
+    #     To synchronize a follower's log with the leader's,
+    #     the leader identifies the latest matching log entry
+    #     (same PrevLogIndex and PrevLogTerm), removes entries in the follower's
+    #     log beyond that point, and transmits all subsequent leader entries.
 
-        '''
-        prefix_len = request.PrefixLen
-        suffix = request.Suffix
+    #     '''
+    #     prefix_len = request.PrefixLen
+    #     suffix = request.Suffix
 
-        # Process the log replication
-        # Here you would typically send the log entries to the follower node
+    #     # Process the log replication
+    #     # Here you would typically send the log entries to the follower node
         
-        acked_length = prefix_len + len(suffix)
+    #     acked_length = prefix_len + len(suffix)
 
-        return raft_pb2.LogReply(AckedLength=acked_length)
+    #     return raft_pb2.LogReply(AckedLength=acked_length)
 
 
 
@@ -566,6 +620,12 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
 
         # Use BroadCast Message
         appendSuccess = self.BroadcastAppendMessage(request=request)
+
+            #    self.commit_index = acked_length
+        #     self.update_metadata()
+        #     self.dump(f'Node {self.node_id} committed entry {request}.')
+        # # TODO: handle case of minority
+            
         if(appendSuccess):
             # 9/9
             commitSuccess = self.internal_set_handler(request)
