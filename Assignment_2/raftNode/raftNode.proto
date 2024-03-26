@@ -35,10 +35,41 @@ message PeriodicTaskReply {
   int32 AckedLength = 1;
 }
 
+message AppendEntriesRequest {
+  int32 term = 1;
+  int32 leaderId = 2;
+  int32 prevLogIndex = 3;
+  int32 prevLogTerm = 4;
+  repeated LogEntry entries = 5;
+  int32 leaderCommit = 6;
+}
+
+message LogEntriesRequest {
+  int32 leaderId = 1;
+  int32 term = 2;
+  int32 prefixLength = 3;
+  int32 prefixTerm = 4;
+  int32 commitLength = 5;
+  repeated string suffix = 6;
+}
+
+message LogEntriesResponse {
+  int32 nodeId = 1;
+  int32 currentTerm = 2;
+  int32 ackedLength = 3;
+  bool success = 4;
+}
+
+message AppendEntriesResponse {
+  int32 term = 1;
+  bool success = 2;
+}
+
 
 service RaftNodeService {
   rpc RequestVote (RequestVoteRequest) returns (RequestVoteResponse) {}
   rpc AppendEntries (AppendEntriesRequest) returns (AppendEntriesResponse) {}
+  rpc LogRequest (LogEntriesRequest) returns (LogEntriesResponse) {}
   rpc ServeClient (ServeClientArgs) returns (ServeClientResponse) {}
   rpc BroadcastMessage(BroadcastMessageRequest) returns (BroadcastMessageReply) {}
   rpc PeriodicTask(PeriodicTaskRequest) returns (PeriodicTaskReply) {}
@@ -56,19 +87,6 @@ message RequestVoteResponse {
   bool voteGranted = 2;
 }
 
-message AppendEntriesRequest {
-  int32 term = 1;
-  int32 leaderId = 2;
-  int32 prevLogIndex = 3;
-  int32 prevLogTerm = 4;
-  repeated LogEntry entries = 5;
-  int32 leaderCommit = 6;
-}
-
-message AppendEntriesResponse {
-  int32 term = 1;
-  bool success = 2;
-}
 
 message LogEntry {
   int32 term = 1;

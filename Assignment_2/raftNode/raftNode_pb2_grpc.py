@@ -24,6 +24,11 @@ class RaftNodeServiceStub(object):
                 request_serializer=raftNode__pb2.AppendEntriesRequest.SerializeToString,
                 response_deserializer=raftNode__pb2.AppendEntriesResponse.FromString,
                 )
+        self.LogRequest = channel.unary_unary(
+                '/raftNode.RaftNodeService/LogRequest',
+                request_serializer=raftNode__pb2.LogEntriesRequest.SerializeToString,
+                response_deserializer=raftNode__pb2.LogEntriesResponse.FromString,
+                )
         self.ServeClient = channel.unary_unary(
                 '/raftNode.RaftNodeService/ServeClient',
                 request_serializer=raftNode__pb2.ServeClientArgs.SerializeToString,
@@ -51,6 +56,12 @@ class RaftNodeServiceServicer(object):
         raise NotImplementedError('Method not implemented!')
 
     def AppendEntries(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def LogRequest(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -86,6 +97,11 @@ def add_RaftNodeServiceServicer_to_server(servicer, server):
                     servicer.AppendEntries,
                     request_deserializer=raftNode__pb2.AppendEntriesRequest.FromString,
                     response_serializer=raftNode__pb2.AppendEntriesResponse.SerializeToString,
+            ),
+            'LogRequest': grpc.unary_unary_rpc_method_handler(
+                    servicer.LogRequest,
+                    request_deserializer=raftNode__pb2.LogEntriesRequest.FromString,
+                    response_serializer=raftNode__pb2.LogEntriesResponse.SerializeToString,
             ),
             'ServeClient': grpc.unary_unary_rpc_method_handler(
                     servicer.ServeClient,
@@ -143,6 +159,23 @@ class RaftNodeService(object):
         return grpc.experimental.unary_unary(request, target, '/raftNode.RaftNodeService/AppendEntries',
             raftNode__pb2.AppendEntriesRequest.SerializeToString,
             raftNode__pb2.AppendEntriesResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def LogRequest(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/raftNode.RaftNodeService/LogRequest',
+            raftNode__pb2.LogEntriesRequest.SerializeToString,
+            raftNode__pb2.LogEntriesResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 

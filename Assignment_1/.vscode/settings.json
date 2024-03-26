@@ -1,0 +1,7 @@
+{
+	"python.analysis.extraPaths": [
+		"./Question_1/python/Market_grpc",
+		"./Question_1/python/Seller_grpc",
+		"./Question_1/python/Buyer_grpc"
+	]
+}
