@@ -146,6 +146,9 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
         except FileNotFoundError:
             print(f"Error: File '{file_path}' not found.")
             return {}
+        
+    def givenIDGetAddress(self, ID):
+        return self.peers[ID] if ID in self.peers else None
     
     #Processing logs to get intial status of database
     def process_logs_for_intial_status(self):
@@ -430,29 +433,31 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
         '''
         Returns True if the log was successfully replicated, False otherwise
         '''
-        try:
+        # prepare the params 
+        current_term = self.term
+
+        # prefixLen should be length of the log of the follower till which it matches the leader's log                                   
+        prefixLen = self.sentLength[followerID]
+
+        # If there's no entry in the log, prefixTerm = 0, else get the term of the last one in the prefix
+        prefixTerm = 0
+        if prefixLen > 0:
+            prefixTerm = self.getTermGivenLog(self.log[prefixLen - 1])                
+
+        # Make a suffix which will be log[prevLogIndex:] i.e. all entries of leader's log after prevLogIndex
+        suffix = self.log[prefixLen: ]
+
+        # The length of the log that has been committed
+        commitLength = self.commit_index
+                                                        
+        #  send the params
+        # keeps on retrying untile the follower responds
+        # retries on failure
+        while True:
+            replicatedLogResponse = None
             with grpc.insecure_channel(followerAddress) as channel:
-                # prepare the params 
-                current_term = self.term
-
-                # prefixLen should be length of the log of the follower till which it matches the leader's log                                   
-                prefixLen = self.sentLength[followerID]
-
-                # If there's no entry in the log, prefixTerm = 0, else get the term of the last one in the prefix
-                prefixTerm = 0
-                if prefixLen > 0:
-                    prefixTerm = self.getTermGivenLog(self.log[prefixLen - 1])                
-
-                # Make a suffix which will be log[prevLogIndex:] i.e. all entries of leader's log after prevLogIndex
-                suffix = self.log[prefixLen: ]
-
-                # The length of the log that has been committed
-                commitLength = self.commit_index
-                                                                
-                #  send the params
-
                 stub = raftNode_pb2_grpc.RaftNodeServiceStub(channel)
-                response = stub.LogRequest(raftNode_pb2.LogEntriesRequest(
+                replicatedLogResponse = stub.LogRequest(raftNode_pb2.LogEntriesRequest(
                     leaderId=leader_id,
                     term=current_term,
                     prefixLength=prefixLen,
@@ -462,19 +467,34 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
                     LeaseDuration=self.get_lease_duration()
                 ))
 
-                return response
-            
-        except Exception as e:
-            print("Exception1:", e)
-            return None
-            
-            # TODO: validate
-            # if response.ackedLength == acked_length:
-            #     self.dump(f'Node {self.node_id} received success from {follower}.')
-            #     return True
-            # else:
-            #     self.dump(f'Node {self.node_id} received failure from {follower}.')
-            #     return False
+            # Process the response
+            if replicatedLogResponse:
+                # 8/9
+                followerId = replicatedLogResponse.nodeId
+                followerTerm = replicatedLogResponse.term
+                followerAckedLength = replicatedLogResponse.ackedLength
+                followerSuccess = replicatedLogResponse.success
+
+                if followerTerm == self.term and self.state == "leader"  :
+                    if followerSuccess and followerAckedLength  >= self.ackedLength[followerId]:
+                        self.sentLength[followerId] = followerAckedLength
+                        self.ackedLength[followerId] = followerAckedLength
+                        # TODO: implement the commitLogEntries()
+                        self.commitLogEntries()
+                    elif self.sentLength[followerId] > 0:
+                        self.sentLength[followerId] -= 1
+                        # TODO: Validate : Call ReplicateLog on that follower exact node again
+                        self.ReplicateLog(self.node_id, followerId, followerAddress)
+                    
+                elif followerTerm > self.term:
+                    # cancel election timer
+                    # current role  = follower
+                    self.become_follower()
+                    self.reset_election_timer()
+                    self.term = followerTerm
+                    self.voted_for = "None"
+                    return
+                break
         
 
     def acks(self,length):
@@ -505,80 +525,21 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
         Handles all the replicate logs functions from the leader to the followers
         if leader handle caller
         if follower handle the request
-
-        Pseudo code:
-        on request to broadcast msg at node nodeId do
-            if currentRole = leader then
-                append the record (msg : msg, term : currentTerm) to log
-                ackedLength[nodeId] := log.length
-                for each follower ∈ nodes \ {nodeId} do
-                    ReplicateLog(nodeId, follower )
-                end for
-            else
-                forward the request to currentLeader via a FIFO link
-            end if
-        end on
-        '''
+        ''' 
         if self.state == "leader":            
-            self.update_log(request)            
-            acked_length = len(self.log)
-            replicatedCount = 0
+            self.update_log(request)  
+            # TODO: Needs Threading here @bhavya   
+            #  https://github.com/funktor/distributed-hash-table/blob/dfa4b6b8bb7ffb0cd83f37b96bbdc344eb03a526/raft.py#L240
             for followerID, followerAddress in self.peers.items():
                 # 5/9
-                # if replicated: replicatedCount += 1
-                replicatedLogResponse = self.ReplicateLog(self.node_id, followerID, followerAddress)
-
-                if(replicatedLogResponse==None):
-                    self.dump(f'Error occurred while sending RPC to Node {followerID}')
-                    break
-
-                # 8/9
-                followerId = replicatedLogResponse.nodeId
-                followerTerm = replicatedLogResponse.term
-                followerAckedLength = replicatedLogResponse.ackedLength
-                followerSuccess = replicatedLogResponse.success
-
-                if followerTerm == self.term and self.state == "leader"  :
-                    
-                    if followerSuccess and followerAckedLength  >= self.ackedLength[followerId]:
-                        self.sentLength[followerId] = followerAckedLength
-                        self.ackedLength[followerId] = followerAckedLength
-                        print(request, "replicated to", followerID)
-                        # TODO: implement the commitLogEntries()
-                        self.commitLogEntries()
-                    elif self.sentLength[followerId] > 0:
-                        self.sentLength[followerId] -= 1
-                        print(request, "re-replicated to", followerID)
-                        # TODO: Validate : Call ReplicateLog on that follower exact node again
-                        self.ReplicateLog(self.node_id, followerId, followerAddress)
-                    
-                elif followerTerm > self.term:
-                    # cancel election timer
-                    # current role  = follower
-                    # 
-                    print(request, "not replicated to", followerID)
-                    
-                    self.become_follower()
-                    self.reset_election_timer()
-                    self.term = followerTerm
-                    self.voted_for = "None"
-                    return
-                    
-
-            # if replicatedCount > len(self.peers) // 2:
-            #     # Majority Achieved
-            #     # TODO: send message to client for successful replication
-            #     return True
-            # else:   
-            #     # Majority not achieved
-            #     return False
+                self.ReplicateLog(self.node_id, followerID, followerAddress)
             
        
     
         # else case for when the client contacts a Follower, 
         # follower will query the leader to call broadcast message with same request
         else:
-            with grpc.insecure_channel(self.leaderId) as channel:
+            with grpc.insecure_channel(self.givenIDGetAddress(self.leaderId)) as channel:
                 stub = raftNode_pb2_grpc.RaftNodeServiceStub(channel)
                 response = stub.BroadcastMessage(request)
                 return response
