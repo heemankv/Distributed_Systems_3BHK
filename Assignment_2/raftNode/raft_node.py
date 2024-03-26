@@ -15,9 +15,8 @@ import random
 from datetime import datetime, timezone, timedelta
 
 
-# TODO: Change AppendRPCs and VoteRPCs for leader lease
+# TODO: Implement broadcast messgaes in heartbeat not replicate log
 # TODO: Ensure a node updates its term whenever it meets a node either in request or response with a higher term
-# TODO: NO-OP needs to be sent during start of election
 #  TODO: cancel election timer : is it reset or stop
 #Assumptions:
 #First election at term 1
@@ -175,7 +174,7 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
         
         duration_left=max((self.old_leader_lease_timestamp-datetime.now(timezone.utc)).total_seconds(),0) if self.old_leader_lease_timestamp else 0
         for peerID, peerAddress in self.peers.items():
-            # try:
+            try:
                 with grpc.insecure_channel(peerAddress) as channel:
                     stub = raftNode_pb2_grpc.RaftNodeServiceStub(channel)
                     response = stub.RequestVote(raftNode_pb2.RequestVoteRequest(
@@ -191,9 +190,9 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
                         #     self.become_leader()
                         #     break
 
-            # except Exception as e:            
-            #     print(e)    
-            #     self.dump(f'Error occurred while sending RPC to Node {peerID}, and ip peerAddress: {peerAddress}')
+            except Exception as e:            
+                print(e)    
+                self.dump(f'Error occurred while sending RPC to Node {peerID}, and ip peerAddress: {peerAddress}')
         
         self.old_leader_lease_timestamp=datetime.now(timezone.utc) + timedelta(seconds=duration_left)
         
@@ -493,8 +492,9 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
         ready = {len_idx for len_idx in range(1, len(self.log) + 1) if len(self.acks(len_idx)) >= minAcks}
 
         if ready and max(ready) > self.commit_index and self.getTermGivenLog(self.log[max(ready) - 1]) == self.term:
-            for i in range(self.commit_index, max(ready)):      
-                self.internal_set_handler(self.log[i])          
+            for i in range(self.commit_index, max(ready)): 
+                if(self.log[i].split()[0]=="SET"):     
+                    self.internal_set_handler(self.log[i])          
                 self.dump(f'Node {self.node_id} committed entry {self.log[i]}.')                
             self.commit_index = max(ready)
 
@@ -539,13 +539,16 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
                 followerSuccess = replicatedLogResponse.success
 
                 if followerTerm == self.term and self.state == "leader"  :
+                    
                     if followerSuccess and followerAckedLength  >= self.ackedLength[followerId]:
                         self.sentLength[followerId] = followerAckedLength
                         self.ackedLength[followerId] = followerAckedLength
+                        print(request, "replicated to", followerID)
                         # TODO: implement the commitLogEntries()
                         self.commitLogEntries()
                     elif self.sentLength[followerId] > 0:
                         self.sentLength[followerId] -= 1
+                        print(request, "re-replicated to", followerID)
                         # TODO: Validate : Call ReplicateLog on that follower exact node again
                         self.ReplicateLog(self.node_id, followerId, followerAddress)
                     
@@ -553,6 +556,8 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
                     # cancel election timer
                     # current role  = follower
                     # 
+                    print(request, "not replicated to", followerID)
+                    
                     self.become_follower()
                     self.reset_election_timer()
                     self.term = followerTerm
