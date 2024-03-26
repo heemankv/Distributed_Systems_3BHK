@@ -10,6 +10,7 @@ message LogRequest {
   int32 PrefixTerm = 4;
   int32 CommitLength = 5;
   repeated LogEntry Suffix = 6;
+  float LeaseDuration=7;
 }
 
 message LogReply {
@@ -85,6 +86,7 @@ message RequestVoteRequest {
 message RequestVoteResponse {
   int32 term = 1;
   bool voteGranted = 2;
+  float oldLeaderLeaseDuration=3;
 }
 
 

@@ -164,6 +164,7 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
         
         self.voted_for = self.node_id
         votes_received = 1
+        duration_left=max((self.old_leader_lease_timestamp-datetime.now(timezone.utc)).total_seconds(),0) 
         for peer in self.peers:
             try:
                 with grpc.insecure_channel(peer) as channel:
@@ -176,7 +177,7 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
                     ))
                     if response.voteGranted:
                         votes_received += 1
-                        self.old_leader_lease_timestamp=max(self.old_leader_lease_timestamp,response.old_leader_lease_timestamp)
+                        duration_left=max(duration_left,response.old_leader_lease_duration)
                         # if votes_received > len(self.peers) // 2:
                         #     self.become_leader()
                         #     break
@@ -185,10 +186,11 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
                 followerNodeID="{Figure this Id Out}"
                 self.dump(f'Error occurred while sending RPC to Node {followerNodeID} with IP {peer}.')
         
+        self.old_leader_lease_timestamp=datetime.now(timezone.utc) + timedelta(seconds=duration_left)
+        
         if votes_received > len(self.peers) // 2:
             self.become_leader()
-            
-            
+                        
         if(self.state!="leader"):
             self.become_follower()
 
@@ -198,7 +200,7 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
     # Become leader if win election
     def become_leader(self):
         '''
-        #LeaderLease: Leader needs to send a no-op entry to followers
+        #LeaderLease: Leader needs to send a no-op entry to followers - Done
         #LeaderLease: It must also send lease interval duration whenver the leader starts timer
         #LeaderLease: It must check if the old leader's lease timer hasn't ended - Done
         '''
@@ -212,11 +214,12 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
         self.state = "leader"                
         self.update_metadata()
         self.dump(f'Node {self.node_id} became the leader for term {self.term}.')
-        
 
-        # Add NO-OP entry to log 
-        # Send lease endtimestamp
-        
+        for peer in self.peers:
+            self.sentLength[peer]=len(self.log)
+            self.ackedLength[peer]=0
+
+        self.BroadcastAppendMessage("NO-OP "+self.term)            
 
         #Sending heartbeats for first time
         self.send_heartbeats()
