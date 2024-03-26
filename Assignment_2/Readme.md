@@ -15,6 +15,7 @@ python -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. raftNode.prot
 
 <!-- Broacasting message -->
 <!-- When leader sends NoOp, followers are not appending that to it's log -->
+<!-- Solved -->
 
 <!-- Failure of Replicate log -->
 <!-- Call replicate log again with reduced set length in a while loop this it actually works -->

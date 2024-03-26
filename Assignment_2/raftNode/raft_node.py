@@ -425,7 +425,8 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
                 operation=self.log[i].split()[0]
                 if(operation=="SET"):
                     self.internal_set_handler(self.log[i])
-                pass
+                if(operation=="NO-OP"):
+                    self.update_log(self.log[i])
             self.commit_index = leader_commit_len
 
     # 5/9
