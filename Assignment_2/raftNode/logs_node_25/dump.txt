@@ -1,0 +1,11 @@
+25 Stepping down
+Vote granted for Node 324 in term 1
+25 Stepping down
+Node 25 accepted AppendEntries RPC from 324.
+Node 25 election timer timed out, Starting election For Term 2.
+25 Stepping down
+25 Stepping down
+Node 25 became the leader for term 2.
+Leader 25 sending heartbeat & Renewing Lease
+25 Stepping down
+25 Stepping down

@@ -1,0 +1,12 @@
+Node 324 election timer timed out, Starting election For Term 1.
+324 Stepping down
+324 Stepping down
+Node 324 became the leader for term 1.
+324 Stepping down
+Vote denied for Node 25 in term 2
+324 Stepping down
+Node 324 rejected AppendEntries RPC from 25.
+324 Stepping down
+Node 324 rejected AppendEntries RPC from 25.
+Node 324 election timer timed out, Starting election For Term 3.
+324 Stepping down

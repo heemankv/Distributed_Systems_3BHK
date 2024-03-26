@@ -175,7 +175,7 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
         
         duration_left=max((self.old_leader_lease_timestamp-datetime.now(timezone.utc)).total_seconds(),0) if self.old_leader_lease_timestamp else 0
         for peerID, peerAddress in self.peers.items():
-            try:
+            # try:
                 with grpc.insecure_channel(peerAddress) as channel:
                     stub = raftNode_pb2_grpc.RaftNodeServiceStub(channel)
                     response = stub.RequestVote(raftNode_pb2.RequestVoteRequest(
@@ -191,9 +191,9 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
                         #     self.become_leader()
                         #     break
 
-            except Exception as e:                
-                followerNodeID=peer.split(":")[1]
-                self.dump(f'Error occurred while sending RPC to Node {followerNodeID} with IP {peer}.')
+            # except Exception as e:            
+            #     print(e)    
+            #     self.dump(f'Error occurred while sending RPC to Node {peerID}, and ip peerAddress: {peerAddress}')
         
         self.old_leader_lease_timestamp=datetime.now(timezone.utc) + timedelta(seconds=duration_left)
         
@@ -254,7 +254,7 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
         for followerID, followerAddress in self.peers.items():
                 # 5/9
                 # if replicated: replicatedCount += 1
-                replicatedLogResponse = self.ReplicateLog(self.node_id, followerID)
+                replicatedLogResponse = self.ReplicateLog(self.node_id, followerID, followerAddress)
 
                 if replicatedLogResponse and replicatedLogResponse.success==True:
                     ack_received += 1
@@ -427,17 +427,17 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
             self.commit_index = leader_commit_len
 
     # 5/9
-    def ReplicateLog(self, leader_id, follower):
+    def ReplicateLog(self, leader_id, followerID, followerAddress):
         '''
         Returns True if the log was successfully replicated, False otherwise
         '''
         try:
-            with grpc.insecure_channel(follower) as channel:
+            with grpc.insecure_channel(followerAddress) as channel:
                 # prepare the params 
                 current_term = self.term
 
                 # prefixLen should be length of the log of the follower till which it matches the leader's log                                   
-                prefixLen = self.sentLength[follower]
+                prefixLen = self.sentLength[followerID]
 
                 # If there's no entry in the log, prefixTerm = 0, else get the term of the last one in the prefix
                 prefixTerm = 0
@@ -490,7 +490,7 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
         minAcks = (len(self.peers) + 1) // 2
 
         # Find indices that are ready to be committed
-        ready = {len_idx for len_idx in range(1, len(self.log) + 1) if len(self.acks(self,len_idx)) >= minAcks}
+        ready = {len_idx for len_idx in range(1, len(self.log) + 1) if len(self.acks(len_idx)) >= minAcks}
 
         if ready and max(ready) > self.commit_index and self.getTermGivenLog(self.log[max(ready) - 1]) == self.term:
             for i in range(self.commit_index, max(ready)):      
@@ -526,7 +526,7 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
             for followerID, followerAddress in self.peers.items():
                 # 5/9
                 # if replicated: replicatedCount += 1
-                replicatedLogResponse = self.ReplicateLog(self.node_id, followerID)
+                replicatedLogResponse = self.ReplicateLog(self.node_id, followerID, followerAddress)
 
                 if(replicatedLogResponse==None):
                     self.dump(f'Error occurred while sending RPC to Node {followerID}')
@@ -547,7 +547,7 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
                     elif self.sentLength[followerId] > 0:
                         self.sentLength[followerId] -= 1
                         # TODO: Validate : Call ReplicateLog on that follower exact node again
-                        self.ReplicateLog(self.node_id, followerId)
+                        self.ReplicateLog(self.node_id, followerId, followerAddress)
                     
                 elif followerTerm > self.term:
                     # cancel election timer
@@ -703,13 +703,13 @@ if __name__ == '__main__':
 
     num_nodes = int(os.getenv("NUM_NODES"))
     
-    node_ID = os.getenv(f"NODE_{starterID}_ID")
+    node_ID = int(os.getenv(f"NODE_{starterID}_ID"))
 
     peers = {}
     for i in range(1, num_nodes+1):
         if i != starterID:
             index = str(i)
-            key = os.getenv(f'NODE_{index}_ID')
+            key = int(os.getenv(f'NODE_{index}_ID'))
             value = f'{os.getenv(f"NODE_{index}_IP")}:{os.getenv(f"NODE_{index}_PORT")}'
             peers[key] = value
 
