@@ -27,7 +27,7 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
     def __init__(self, node_id, peers):
         self.node_id = node_id
         self.create_folders_and_files()
-        self.peers = peers
+        self.peers : dict = peers
         self.log = self.read_from_logs_file()
         self.metadata = self.read_from_metadata_file()
         self.term = int(self.metadata['term']) 
@@ -174,9 +174,9 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
         votes_received = 1
         
         duration_left=max((self.old_leader_lease_timestamp-datetime.now(timezone.utc)).total_seconds(),0) if self.old_leader_lease_timestamp else 0
-        for peer in self.peers:
+        for peerID, peerAddress in self.peers.items():
             try:
-                with grpc.insecure_channel(peer) as channel:
+                with grpc.insecure_channel(peerAddress) as channel:
                     stub = raftNode_pb2_grpc.RaftNodeServiceStub(channel)
                     response = stub.RequestVote(raftNode_pb2.RequestVoteRequest(
                         term=self.term+1,
@@ -224,9 +224,10 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
         self.update_metadata()
         self.dump(f'Node {self.node_id} became the leader for term {self.term}.')
 
-        for peer in range(len(self.peers)):
-            self.sentLength[peer]=len(self.log)
-            self.ackedLength[peer]=0        
+        for peerID, peerAddress in self.peers.items():
+            self.sentLength[peerID]=len(self.log)
+            self.ackedLength[peerID]=0
+
         self.BroadcastAppendMessage("NO-OP "+str(self.term))            
 
         #Sending heartbeats for first time
@@ -250,10 +251,10 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
             return
         self.dump(f'Leader {self.node_id} sending heartbeat & Renewing Lease')
         ack_received=0
-        for follower in self.peers:
+        for followerID, followerAddress in self.peers.items():
                 # 5/9
                 # if replicated: replicatedCount += 1
-                replicatedLogResponse = self.ReplicateLog(self.node_id, follower)
+                replicatedLogResponse = self.ReplicateLog(self.node_id, followerID)
 
                 if replicatedLogResponse and replicatedLogResponse.success==True:
                     ack_received += 1
@@ -479,7 +480,7 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
 
     def acks(self,length):
         """Define the set of nodes that have acknowledged log entries up to a certain length."""
-        return {n for n in self.peers if self.ackedLength[n] >= length}
+        return {n for n,v in self.peers.items() if self.ackedLength[n] >= length}
 
     def commitLogEntries(self):
         # Assuming nodes is a list of node identifiers in the Raft cluster
@@ -522,12 +523,13 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
             self.update_log(request)            
             acked_length = len(self.log)
             replicatedCount = 0
-            for follower in self.peers:
-                # 5/9                
-                replicatedLogResponse = self.ReplicateLog(self.node_id, follower)
+            for followerID, followerAddress in self.peers.items():
+                # 5/9
+                # if replicated: replicatedCount += 1
+                replicatedLogResponse = self.ReplicateLog(self.node_id, followerID)
 
-                if(replicatedLogResponse==None):                    
-                    self.dump(f'Error occurred while sending RPC to Node {follower}')
+                if(replicatedLogResponse==None):
+                    self.dump(f'Error occurred while sending RPC to Node {followerID}')
                     break
 
                 # 8/9
@@ -545,7 +547,7 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
                     elif self.sentLength[followerId] > 0:
                         self.sentLength[followerId] -= 1
                         # TODO: Validate : Call ReplicateLog on that follower exact node again
-                        self.ReplicateLog(self.node_id, follower)
+                        self.ReplicateLog(self.node_id, followerId)
                     
                 elif followerTerm > self.term:
                     # cancel election timer
@@ -697,17 +699,19 @@ def serve(node_id, peers):
     server.wait_for_termination()
 
 if __name__ == '__main__':
-    node_id = int(sys.argv[1])
+    starterID = int(sys.argv[1])
 
     num_nodes = int(os.getenv("NUM_NODES"))
-
-    # Peers should be dynamic
-    # add all to peer list except the node with id node_id
-
-    peers = set()
-    for i in range(1, num_nodes+1):
-        if i != node_id:
-            peers.add(f'{os.getenv(f"NODE_{i}_IP")}:{os.getenv(f"NODE_{i}_PORT")}')
     
+    node_ID = os.getenv(f"NODE_{starterID}_IP")
+
+    peers = {}
+    for i in range(1, num_nodes+1):
+        if i != starterID:
+            index = str(i)
+            key = os.getenv(f'NODE_{index}_ID')
+            value = f'{os.getenv(f"NODE_{index}_IP")}:{os.getenv(f"NODE_{index}_PORT")}'
+            peers[key] = value
+
     print(peers)
-    serve(node_id, peers)
+    serve(node_ID, peers)
