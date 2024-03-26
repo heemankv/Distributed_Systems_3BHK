@@ -1,1 +1,16 @@
 /Assignment_2/dscd_a2
+
+# All the __pycache__ files are to be ignored from git
+__pycache__/
+# 
+
+/Assignment_2/raftNode/__pycache__
+/Assignment_2/raftClient/__pycache__
+/Assignment_2/__pycache__
+
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*.pyc
+*.pyo

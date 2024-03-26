@@ -6,7 +6,6 @@ sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'raftNode'))
 from dotenv import load_dotenv
 load_dotenv()  # take environment variables from .env.
 
-
 import grpc
 import raftNode_pb2 as raft_pb2
 import raftNode_pb2_grpc as raft_pb2_grpc
@@ -30,9 +29,9 @@ def CreateNodeAddresses(numNodes):
 
 class RaftClient:
     def __init__(self, num_nodes, leader_address):
-        self.node_ips = CreateNodeAddresses(num_nodes)
+        self.node_ips = CreateNodeAddresses(int(num_nodes))
         self.channel = grpc.insecure_channel(leader_address)
-        self.stub = raft_pb2_grpc.RaftClusterStub(self.channel)
+        self.stub = raft_pb2_grpc.RaftNodeServiceStub(self.channel)
         self.leader_address = leader_address
         self.leader_id = None
 
@@ -47,6 +46,7 @@ class RaftClient:
         while True:
             try:
                 response = self.stub.ServeClient(raft_pb2.ServeClientArgs(request=command))
+                print(f'Response: {response}')
                 if response.success:
                     return response
                 else:
@@ -54,11 +54,13 @@ class RaftClient:
                     self.channel = grpc.insecure_channel(self.leader_address)
                     self.stub = raft_pb2_grpc.RaftClusterStub(self.channel)
             except Exception as e:
-                # TODO: In this case will the client not contact any other node?
+                # TODO: In this case will the client not contact any other node? if the first node it contacts is Inactive ?
+                #  Code Breaks here
                 print(f'Error connecting to leader {self.leader_address} : {e}')
                 self.leader_address = None
                 self.stub = None
                 self.leader_id = None
+                return None
                 
 
 
@@ -81,18 +83,16 @@ if __name__ == "__main__":
     num_nodes = os.getenv("NUM_NODES")
 
     # Take the first node as the leader and try to connect to it
-    leader_address = f'{os.getenv("NODE1_IP")}:{os.getenv("NODE1_PORT")}'
+    leader_address = f'{os.getenv("NODE_1_IP")}:{os.getenv("NODE_1_PORT")}'
 
     client = RaftClient(num_nodes, leader_address)
 
 
     while True:
-        # Take input from the user
-        # Send the command to the leader
-        # Print the response
+        # EXAMPLE COMMANDS:
+        # 'SET x 10' -> SET X
+        # 'GET x' -> GET X
 
-        # 'SET x 10'
-        # 'GET x'
         command = input("Enter command: ")
         command = command.upper()
 
@@ -102,6 +102,5 @@ if __name__ == "__main__":
             print("Invalid command. Please enter a valid command.")
 
         response = client.client_request(command)
-        print(response)
-        print("Leader ID: ", response.leader_id)
-        print("Success: ", response.success)
+        
+        
