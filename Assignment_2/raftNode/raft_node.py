@@ -2,6 +2,8 @@ import os
 import sys
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'raftClient'))
+sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'utils'))
+
 
 from dotenv import load_dotenv
 load_dotenv()  # take environment variables from .env.
@@ -13,6 +15,7 @@ from concurrent import futures
 import threading
 import random
 from datetime import datetime, timezone, timedelta
+from utils.utils import run_thread
 
 
 # TODO: Implement broadcast messgaes in heartbeat not replicate log
@@ -532,10 +535,8 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
             # TODO: Needs Threading here @bhavya   
             #  https://github.com/funktor/distributed-hash-table/blob/dfa4b6b8bb7ffb0cd83f37b96bbdc344eb03a526/raft.py#L240
             for followerID, followerAddress in self.peers.items():
-                # 5/9
-                self.ReplicateLog(self.node_id, followerID, followerAddress)
-            
-       
+                run_thread(
+                    fn=self.ReplicateLog, args=(self.node_id, followerID, followerAddress))
     
         # else case for when the client contacts a Follower, 
         # follower will query the leader to call broadcast message with same request

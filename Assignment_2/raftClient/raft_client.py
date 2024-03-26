@@ -2,6 +2,8 @@ import os
 import sys
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'raftNode'))
+sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'utils'))
+
 
 from dotenv import load_dotenv
 load_dotenv()  # take environment variables from .env.
