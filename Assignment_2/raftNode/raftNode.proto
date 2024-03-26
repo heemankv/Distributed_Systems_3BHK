@@ -10,7 +10,6 @@ message LogRequest {
   int32 PrefixTerm = 4;
   int32 CommitLength = 5;
   repeated LogEntry Suffix = 6;
-  float LeaseDuration=7;
 }
 
 message LogReply {
@@ -52,6 +51,7 @@ message LogEntriesRequest {
   int32 prefixTerm = 4;
   int32 commitLength = 5;
   repeated string suffix = 6;
+  float LeaseDuration=7;
 }
 
 message LogEntriesResponse {
