@@ -268,7 +268,68 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
         return raftNode_pb2.AppendEntriesResponse(term=self.term, success=True)
 
 
-    def BroadcastMessage(self, request, context):
+    def BoradcastCommitMessage(self, request, context):
+        '''
+        Handles all the replicate logs functions from the leader to the followers
+        if leader handle caller
+        if follower handle the request
+
+        Pseudo code:
+        on request to broadcast msg at node nodeId do
+            if currentRole = leader then
+                append the record (msg : msg, term : currentTerm) to log
+                ackedLength[nodeId] := log.length
+                for each follower ∈ nodes \ {nodeId} do
+                    ReplicateLog(nodeId, follower )
+                end for
+            else
+                forward the request to currentLeader via a FIFO link
+            end if
+        end on
+        '''
+        if self.state == "leader":
+            self.log.append(request)
+            acked_length = len(self.log)
+            replicatedCount = 0
+            for peer in self.peers:
+                with grpc.insecure_channel(peer) as channel:
+                    stub = raftNode_pb2_grpc.RaftServiceStub(channel)
+                    response = stub.AppendEntries(raftNode_pb2.AppendEntriesRequest(
+                        term=self.term,
+                        leaderId=self.node_id,
+                        # TODO: unsure of the term and index
+                        prevLogIndex=len(self.log) - 2,
+                        prevLogTerm=self.log[-2].term if len(self.log)>1 else 0,
+                        entries=[request],
+                        leaderCommit=self.commit_index,
+                    ))
+
+                    if response.AckedLength == acked_length:
+                        self.dump(f'Node {self.node_id} received success from {peer}.')
+                        replicatedCount += 1
+                    else:
+                        self.dump(f'Node {self.node_id} received failure from {peer}.')
+            if replicatedCount > len(self.peers) // 2:
+                # Majority Achieved
+                # TODO: send message to client for successful replication
+                self.commit_index = acked_length
+                self.update_metadata()
+                self.dump(f'Node {self.node_id} committed entry {request}.')
+            # TODO: handle case of minority
+    
+        # else case for when the client contacts a Follower, 
+        # follower will query the leader to call broadcast message with same request
+        else:
+            with grpc.insecure_channel(self.leaderId) as channel:
+                stub = raftNode_pb2_grpc.RaftServiceStub(channel)
+                response = stub.BroadcastMessage(request)
+                return response
+    
+
+
+
+
+    def BroadcastAppendMessage(self, request, context):
         '''
         Handles all the replicate logs functions from the leader to the followers
         if leader handle caller
@@ -384,7 +445,11 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
         #  SETs the value of variable passed in the request
         #  if variable is not present, creates it
         #  Returns the value of the variable
-        return 'success'
+        key = request.split()[1]
+        value = request.split()[2]
+        self.data[key] = value
+        # TODO: what all to append to the log
+        self.update_log(f"SET {key} {value}")
 
 
     def SET_handler(self, request):
@@ -395,7 +460,13 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
         # Return success response to the client
 
         # Use BroadCast Message
-        self.BroadcastMessage(request=request)
+        appendSuccess = self.BroadcastAppendMessage(request=request)
+        if(appendSuccess):
+            commitSuccess = self.internal_set_handler(request)
+            if(commitSuccess):
+                self.BoradcastCommitMessage(request=request)
+               
+
 
 
     def ServeClient(self, request, context):
