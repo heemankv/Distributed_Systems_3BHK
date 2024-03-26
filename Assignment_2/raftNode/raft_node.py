@@ -693,11 +693,6 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
 
 def serve(node_id, peers):
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
-    node_address = peers[node_id-1]
-    print(node_address)
-    server.add_insecure_port(node_address)
-    del peers[node_id-1]
-    print(peers)
     raftNode_pb2_grpc.add_RaftNodeServiceServicer_to_server(RaftNode(node_id, peers), server)
     node_address = f'{os.getenv(f"NODE_{node_id}_IP")}:{os.getenv(f"NODE_{node_id}_PORT")}'    
     server.add_insecure_port(node_address)
