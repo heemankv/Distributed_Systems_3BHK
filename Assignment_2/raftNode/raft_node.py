@@ -17,6 +17,9 @@ import random
 from datetime import datetime, timezone, timedelta
 from utils import run_thread
 
+leader_lease_timeout = 8
+election_timeout = random.uniform(5, 10)
+
 
 # TODO: Implement broadcast messgaes in heartbeat not replicate log
 # TODO: Ensure a node updates its term whenever it meets a node either in request or response with a higher term
@@ -42,7 +45,7 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
         print("Checking Values:",self.term,self.commit_index,self.voted_for)
 
         self.state = "follower"
-        self.election_timeout = random.uniform(10, 20)
+        self.election_timeout = election_timeout
         self.election_timer = threading.Timer(self.election_timeout, self.start_election)
         self.heartbeats_timer=None
         self.election_timer.start()
@@ -260,7 +263,7 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
         #LeaderLease: leader reacquires its lease, leader needs to step down if it doesn't get enough ack - Done
         ''' 
 
-        print("Sending Heartbeats at:",datetime.now())          
+        print("Sending Heartbeats at:",datetime.now(), self.state)          
         if self.state != "leader":
             return
         self.dump(f'Leader {self.node_id} sending heartbeat & Renewing Lease')
@@ -277,8 +280,10 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
         
         print("Ack Received:",ack_received, "Total Peers:",len(self.peers))
         if ack_received >= (len(self.peers)/2):
-            print("Received enough acks for heartbeat")
-            self.reset_leader_lease_timer()                     
+            print("Received enough acks for heartbeat", self.state)
+            self.reset_leader_lease_timer()  
+            self.stop_heartbeats()
+            self.start_heartbeats()                   
         else:
             print("Didn't get enough acks for heartbeat")
             self.become_follower("Didn't get enough acks for heartbeat, Stepping down as leader.")
@@ -295,14 +300,24 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
     #LeaderLease related functions
     
     def reset_leader_lease_timer(self):
+        print("Leader Lease Timeout: #1",self.node_id,self.leaderId, self.state)
+
         self.stop_leader_lease_timer()
-        leader_lease_timeout= 10
+
+        print("Leader Lease Timeout: #2",self.node_id,self.leaderId, self.state)
 
         # TODO: Add the follower condition?
-        self.leader_lease_timer = threading.Timer(leader_lease_timeout, self.become_follower(f"Leader Lease Timeout, Stepping down as {self.state}."))
+        self.leader_lease_timer = threading.Timer(leader_lease_timeout, self.become_follower, args=[f"Leader Lease Timeout, Stepping down as {self.state}."])
+        print("Leader Lease Timeout: #3",self.node_id,self.leaderId, self.state)
+
         self.leader_lease_timer.start()
         self.leader_lease_end_timestamp= datetime.now(timezone.utc) + timedelta(seconds=leader_lease_timeout)
         self.old_leader_lease_timestamp=self.leader_lease_end_timestamp
+
+        print("Leader Lease Timeout: #4",self.node_id,self.leaderId, self.state)
+
+
+
     
     def stop_leader_lease_timer(self):
         if(self.leader_lease_timer):
@@ -312,7 +327,7 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
 
     def reset_election_timer(self):
         self.election_timer.cancel()
-        self.election_timeout = random.uniform(10, 20)
+        self.election_timeout = election_timeout
         self.election_timer = threading.Timer(self.election_timeout, self.start_election)
         self.election_timer.start()
     

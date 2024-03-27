@@ -1,6 +1,32 @@
 Vote granted for Node 25 in term 1
 Node 324 accepted AppendEntries RPC from 25.
 Node 324 accepted AppendEntries RPC from 25.
+Node 324 accepted AppendEntries RPC from 25.
+Node 324 accepted AppendEntries RPC from 25.
+Node 324 accepted AppendEntries RPC from 25.
+Node 324 accepted AppendEntries RPC from 25.
+Node 324 accepted AppendEntries RPC from 25.
 Vote granted for Node 25 in term 2
+Node 324 election timer timed out, Starting election For Term 3.
+Node 324 accepted AppendEntries RPC from 25.
+Node 324 became the leader for term 5.
+Node 324 committed entry NO-OP 4.
+Node 324 committed entry NO-OP 5.
+Leader 324 sending heartbeat & Renewing Lease
+Leader 324 sending heartbeat & Renewing Lease
+Leader 324 sending heartbeat & Renewing Lease
+Leader 324 sending heartbeat & Renewing Lease
+Leader 324 sending heartbeat & Renewing Lease
+Leader 324 sending heartbeat & Renewing Lease
+Node 324 election timer timed out, Starting election For Term 6.
+324 Stepping down: Election timer timed out
+324 Stepping down: 1: Found a leader with higher term, Stepping down as candidate.
+Vote granted for Node 25 in term 7
+Node 324 became the leader for term 8.
+Node 324 committed entry NO-OP 8.
+324 Stepping down: 2: Found a leader with higher term, Stepping down as leader.
+Node 324 accepted AppendEntries RPC from 25.
+Node 324 accepted AppendEntries RPC from 25.
+Node 324 accepted AppendEntries RPC from 25.
 Node 324 accepted AppendEntries RPC from 25.
 Node 324 accepted AppendEntries RPC from 25.
