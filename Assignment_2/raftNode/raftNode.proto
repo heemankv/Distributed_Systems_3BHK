@@ -100,20 +100,26 @@ message ServeClientArgs {
   string request = 1;
 }
 
-message ServeClientSuccessReply {
-  string data = 1;
-  string leaderId = 2;
-  bool success = 3;
-}
+// message ServeClientSuccessReply {
+//   string data = 1;
+//   string leaderAddress = 2;
+//   bool success = 3;
+// }
 
-message ServeClientFailureReply {
-  string leaderId = 2;
-  bool success = 3;
-}
+// message ServeClientFailureReply {
+//   string leaderAddress = 2;
+//   bool success = 3;
+// }
+
+// message ServeClientResponse {
+//   oneof reply {
+//     ServeClientSuccessReply successReply = 1;
+//     ServeClientFailureReply failureReply = 2;
+//   }
+// }
 
 message ServeClientResponse {
-  oneof reply {
-    ServeClientSuccessReply successReply = 1;
-    ServeClientFailureReply failureReply = 2;
-  }
+  string data = 1;
+  string leaderAddress = 2;
+  bool success = 3;
 }
