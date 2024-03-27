@@ -42,7 +42,7 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
         print("Checking Values:",self.term,self.commit_index,self.voted_for)
 
         self.state = "follower"
-        self.election_timeout = random.uniform(5, 10)
+        self.election_timeout = random.uniform(10, 20)
         self.election_timer = threading.Timer(self.election_timeout, self.start_election)
         self.heartbeats_timer=None
         self.election_timer.start()
@@ -103,10 +103,12 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
             folder_name='logs_node_'+str(self.node_id)
             file_path = os.path.join(folder_name, 'logs.txt')
             with open(file_path, 'a') as f:
+                # print("Updating log of Node:",self.node_id,"with entry:",entry)
                 f.write(f"{entry}\n")
 
             # Change the self.log as well
-            self.log = self.read_from_logs_file()
+            # self.log = self.read_from_logs_file()
+            self.log.append(entry)
         
     #Appending to Dump
     def dump(self,entry):
@@ -152,7 +154,7 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
             print(f"Error: File '{file_path}' not found.")
             return {}
         
-    def givenIDGetAddress(self, ID):
+    def givenIDGetAddress(self, ID):        
         return self.peers[ID] if ID in self.peers else None
     
     #Processing logs to get intial status of database
@@ -172,17 +174,19 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
     
     # Contesting elections in case of timeout
     def start_election(self):
+        print("Starting election for:", self.node_id)
         self.dump(f'Node {self.node_id} election timer timed out, Starting election For Term {self.term+1}.')
 
-        self.become_follower() #Done to stop heartbeats if it is a leader
-        self.state = "candidate"
+        if self.state == "leader":
+            self.become_follower("Election timer timed out") #Done to stop heartbeats if it is a leader
+            self.state = "candidate"
         
         self.voted_for = self.node_id
         votes_received = 1
         
         duration_left=max((self.old_leader_lease_timestamp-datetime.now(timezone.utc)).total_seconds(),0) if self.old_leader_lease_timestamp else 0
         for peerID, peerAddress in self.peers.items():
-            try:
+            try:                
                 with grpc.insecure_channel(peerAddress) as channel:
                     stub = raftNode_pb2_grpc.RaftNodeServiceStub(channel)
                     response = stub.RequestVote(raftNode_pb2.RequestVoteRequest(
@@ -208,7 +212,7 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
             self.become_leader()
                         
         if(self.state!="leader"):
-            self.become_follower()
+            self.become_follower("Didn't get enough votes, Stepping down as candidate.")
 
         self.reset_election_timer()
 
@@ -230,6 +234,7 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
         self.state = "leader"                
         self.update_metadata()
         self.dump(f'Node {self.node_id} became the leader for term {self.term}.')
+        self.leaderId = self.node_id
 
         for peerID, peerAddress in self.peers.items():
             self.sentLength[peerID]=len(self.log)
@@ -238,16 +243,16 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
         self.BroadcastAppendMessage("NO-OP "+str(self.term))            
 
         #Sending heartbeats for first time
-        self.send_heartbeats()
+        # self.send_heartbeats()
 
         #Starting timer
         self.start_heartbeats()
 
     # Become follower    
-    def become_follower(self):
+    def become_follower(self, reason = 'default'):
         self.stop_leader_lease_timer()
         self.stop_heartbeats()
-        self.dump(f'{self.node_id} Stepping down')
+        self.dump(f'{self.node_id} Stepping down: {reason}')
         self.state = "follower"        
 
     def send_heartbeats(self):
@@ -261,6 +266,7 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
         for followerID, followerAddress in self.peers.items():
                 # 5/9
                 # if replicated: replicatedCount += 1
+                print("Sending Heartbeat to:",followerID, datetime.now())
                 replicatedLogResponse = self.ReplicateLog(self.node_id, followerID, followerAddress)
 
                 if replicatedLogResponse and replicatedLogResponse.success==True:
@@ -269,7 +275,7 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
         if ack_received > (len(self.peers)/2):
             self.reset_leader_lease_timer()
         else:
-            self.become_follower()
+            self.become_follower("Didn't get enough acks for heartbeat, Stepping down as leader.")
            
     def start_heartbeats(self):
         self.heartbeats_timer=threading.Timer(1, self.send_heartbeats)
@@ -284,8 +290,10 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
     
     def reset_leader_lease_timer(self):
         self.stop_leader_lease_timer()
-        leader_lease_timeout= 2
-        self.leader_lease_timer = threading.Timer(leader_lease_timeout, self.become_follower())
+        leader_lease_timeout= 10
+
+        # TODO: Add the follower condition?
+        self.leader_lease_timer = threading.Timer(leader_lease_timeout, self.become_follower(f"Leader Lease Timeout, Stepping down as {self.state}."))
         self.leader_lease_timer.start()
         self.leader_lease_end_timestamp= datetime.now(timezone.utc) + timedelta(seconds=leader_lease_timeout)
         self.old_leader_lease_timestamp=self.leader_lease_end_timestamp
@@ -298,7 +306,7 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
 
     def reset_election_timer(self):
         self.election_timer.cancel()
-        self.election_timeout = random.uniform(5, 10)
+        self.election_timeout = random.uniform(10, 20)
         self.election_timer = threading.Timer(self.election_timeout, self.start_election)
         self.election_timer.start()
     
@@ -320,7 +328,8 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
         if request.term > self.term:
             self.term=request.term
             self.voted_for="None"
-            self.become_follower()
+            if self.state != 'follower':
+                self.become_follower("1: Found a leader with higher term, Stepping down as candidate.")
         
         #log is verified
         logCheck=False
@@ -385,8 +394,9 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
         # It resets its election timer, becomes a follower and updates its term
         if _term >= self.term:
             self.term = _term            
-            self.voted_for = "None"            
-            self.become_follower()
+            self.voted_for = "None"      
+            if self.state != 'follower':      
+                self.become_follower(f"2: Found a leader with higher term, Stepping down as {self.state}.")
             self.reset_election_timer()
             self.leaderId = _leader_id
 
@@ -411,6 +421,7 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
         
     # 7/9
     def appendEntries(self, prefix_len, leader_commit_len, suffix):
+        print("In appendEntries of Node:", self.node_id, "to add suffix:", suffix) 
         if len(suffix) > 0 and len(self.log) > prefix_len:
             index = min(len(self.log), prefix_len + len(suffix)) - 1
 
@@ -421,8 +432,8 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
             if(term_of_log_at_index!= term_of_suffix_at_index):
                 self.log = self.log[:prefix_len-1]
         
-        if prefix_len + len(suffix) > len(self.log):
-            for i in range(len(self.log)-prefix_len, len(suffix) - 1):
+        if prefix_len + len(suffix) > len(self.log):            
+            for i in range(len(self.log)-prefix_len, len(suffix)):
                 self.update_log(suffix[i])
 
         if leader_commit_len > self.commit_index:
@@ -438,7 +449,7 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
     def ReplicateLog(self, leader_id, followerID, followerAddress):
         '''
         Returns True if the log was successfully replicated, False otherwise
-        '''
+        '''        
         # prepare the params 
         current_term = self.term
 
@@ -447,7 +458,7 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
 
         # If there's no entry in the log, prefixTerm = 0, else get the term of the last one in the prefix
         prefixTerm = 0
-        if prefixLen > 0:
+        if prefixLen > 0:            
             prefixTerm = self.getTermGivenLog(self.log[prefixLen - 1])                
 
         # Make a suffix which will be log[prevLogIndex:] i.e. all entries of leader's log after prevLogIndex
@@ -459,6 +470,7 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
         #  send the params
         # keeps on retrying untile the follower responds
         # retries on failure
+        print("Log to be replicated:", suffix, leader_id, followerID, followerAddress, current_term, prefixLen, prefixTerm, commitLength)
         while True:
             replicatedLogResponse = None
             with grpc.insecure_channel(followerAddress) as channel:
@@ -471,7 +483,9 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
                     commitLength=commitLength,
                     suffix=suffix,
                     LeaseDuration=self.get_lease_duration()
-                ))
+                ))            
+
+            print("Replicated Log Response:",replicatedLogResponse)
 
             # Process the response
             if replicatedLogResponse:
@@ -482,20 +496,22 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
                 followerSuccess = replicatedLogResponse.success
 
                 if followerTerm == self.term and self.state == "leader"  :
-                    if followerSuccess and followerAckedLength  >= self.ackedLength[followerId]:
+                    if followerSuccess and followerAckedLength  >= self.ackedLength[followerId]:                        
                         self.sentLength[followerId] = followerAckedLength
                         self.ackedLength[followerId] = followerAckedLength
                         # TODO: implement the commitLogEntries()
                         self.commitLogEntries()
-                    elif self.sentLength[followerId] > 0:
+                    elif self.sentLength[followerId] > 0:                        
                         self.sentLength[followerId] -= 1
                         # TODO: Validate : Call ReplicateLog on that follower exact node again
+                        print("Going back to Replicate")
+                        print(self.sentLength, followerID)
                         self.ReplicateLog(self.node_id, followerId, followerAddress)
                     
                 elif followerTerm > self.term:
                     # cancel election timer
                     # current role  = follower
-                    self.become_follower()
+                    self.become_follower("3: Found a leader with higher term, Stepping down as candidate.")
                     self.reset_election_timer()
                     self.term = followerTerm
                     self.voted_for = "None"
@@ -525,24 +541,30 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
             self.commit_index = max(ready)
 
 
-    def BroadcastAppendMessage(self, request):
+    def BroadcastAppendMessage(self, request):        
         # 4/9
         '''
         Handles all the replicate logs functions from the leader to the followers
         if leader handle caller
         if follower handle the request
         ''' 
-        if self.state == "leader":            
+        print(request, self.state)
+        if self.state == "leader":   
+            print("Updating log for leader", request)         
             self.update_log(request)  
             # TODO: Needs Threading here @bhavya   
             #  https://github.com/funktor/distributed-hash-table/blob/dfa4b6b8bb7ffb0cd83f37b96bbdc344eb03a526/raft.py#L240
+
+            # for followerID, followerAddress in self.peers.items():
+            #     run_thread(
+            #         fn=self.ReplicateLog, args=(self.node_id, followerID, followerAddress))
             for followerID, followerAddress in self.peers.items():
-                run_thread(
-                    fn=self.ReplicateLog, args=(self.node_id, followerID, followerAddress))
+                # 5/9                
+                self.ReplicateLog(self.node_id, followerID, followerAddress)
     
         # else case for when the client contacts a Follower, 
         # follower will query the leader to call broadcast message with same request
-        else:
+        else:                                  
             with grpc.insecure_channel(self.givenIDGetAddress(self.leaderId)) as channel:
                 stub = raftNode_pb2_grpc.RaftNodeServiceStub(channel)
                 response = stub.BroadcastMessage(request)
@@ -638,7 +660,8 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
         #  (WRITE OPERATION)
         # GET K: Returns the latest committed value of key K. If K doesn’t exist in the database,
         #  an empty string will be returned as value by default. (READ OPERATION)
-
+        
+        request = request.request
         if("GET" in request):
             if(self.state == "leader"):
                 return self.GET_handler(request)
@@ -650,7 +673,7 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
                     )
                 )
             
-        elif("SET" in request):
+        elif("SET" in request):                   
             return self.SET_handler(request)
         else:
             return raftNode_pb2.ServeClientResponse(
@@ -683,5 +706,5 @@ if __name__ == '__main__':
             value = f'{os.getenv(f"NODE_{index}_IP")}:{os.getenv(f"NODE_{index}_PORT")}'
             peers[key] = value
 
-    print(peers)
+    # print(peers)
     serve(starterID,node_ID, peers)

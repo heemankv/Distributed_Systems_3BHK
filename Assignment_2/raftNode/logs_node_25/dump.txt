@@ -1,103 +1,15 @@
-Node 25 election timer timed out, Starting election For Term 1.
-25 Stepping down
-25 Stepping down
-Node 25 became the leader for term 1.
+Vote granted for Node 324 in term 1
+Node 25 accepted AppendEntries RPC from 324.
+Node 25 accepted AppendEntries RPC from 324.
+Node 25 election timer timed out, Starting election For Term 2.
+25 Stepping down: Leader Lease Timeout, Stepping down as follower.
+Node 25 became the leader for term 2.
+Node 25 committed entry NO-OP 2.
 Leader 25 sending heartbeat & Renewing Lease
-Node 25 committed entry NO-OP 1
-.
-Node 25 committed entry NO-OP 1
-.
-25 Stepping down
-25 Stepping down
-25 Stepping down
-Vote denied for Node 324 in term 2
-25 Stepping down
-25 Stepping down
-Node 25 rejected AppendEntries RPC from 324.
-Node 25 rejected AppendEntries RPC from 324.
-25 Stepping down
-Vote granted for Node 324 in term 3
-25 Stepping down
-25 Stepping down
-Node 25 rejected AppendEntries RPC from 324.
-Node 25 rejected AppendEntries RPC from 324.
-25 Stepping down
-Node 25 rejected AppendEntries RPC from 324.
-25 Stepping down
-Vote granted for Node 324 in term 4
-25 Stepping down
-25 Stepping down
-Node 25 rejected AppendEntries RPC from 324.
-Node 25 rejected AppendEntries RPC from 324.
-25 Stepping down
-Node 25 rejected AppendEntries RPC from 324.
-25 Stepping down
-Node 25 rejected AppendEntries RPC from 324.
-Node 25 election timer timed out, Starting election For Term 5.
-25 Stepping down
-25 Stepping down
-Node 25 became the leader for term 5.
+25 Stepping down: Didn't get enough acks for heartbeat, Stepping down as leader.
+Node 25 election timer timed out, Starting election For Term 3.
+25 Stepping down: Leader Lease Timeout, Stepping down as follower.
+Node 25 became the leader for term 3.
+Node 25 committed entry NO-OP 3.
 Leader 25 sending heartbeat & Renewing Lease
-25 Stepping down
-25 Stepping down
-Node 25 election timer timed out, Starting election For Term 6.
-25 Stepping down
-25 Stepping down
-Node 25 became the leader for term 6.
-Leader 25 sending heartbeat & Renewing Lease
-25 Stepping down
-25 Stepping down
-Node 25 election timer timed out, Starting election For Term 7.
-25 Stepping down
-25 Stepping down
-Node 25 became the leader for term 7.
-Leader 25 sending heartbeat & Renewing Lease
-25 Stepping down
-25 Stepping down
-Node 25 election timer timed out, Starting election For Term 8.
-25 Stepping down
-25 Stepping down
-Node 25 became the leader for term 8.
-Leader 25 sending heartbeat & Renewing Lease
-25 Stepping down
-25 Stepping down
-25 Stepping down
-Vote denied for Node 324 in term 9
-25 Stepping down
-25 Stepping down
-Node 25 rejected AppendEntries RPC from 324.
-Node 25 rejected AppendEntries RPC from 324.
-25 Stepping down
-25 Stepping down
-Node 25 rejected AppendEntries RPC from 324.
-Node 25 rejected AppendEntries RPC from 324.
-25 Stepping down
-Node 25 rejected AppendEntries RPC from 324.
-Node 25 election timer timed out, Starting election For Term 10.
-25 Stepping down
-25 Stepping down
-Node 25 became the leader for term 10.
-Leader 25 sending heartbeat & Renewing Lease
-25 Stepping down
-25 Stepping down
-Node 25 election timer timed out, Starting election For Term 11.
-25 Stepping down
-25 Stepping down
-Node 25 became the leader for term 11.
-Leader 25 sending heartbeat & Renewing Lease
-25 Stepping down
-25 Stepping down
-25 Stepping down
-Vote denied for Node 324 in term 12
-25 Stepping down
-25 Stepping down
-Node 25 rejected AppendEntries RPC from 324.
-Node 25 rejected AppendEntries RPC from 324.
-25 Stepping down
-25 Stepping down
-Node 25 rejected AppendEntries RPC from 324.
-Node 25 rejected AppendEntries RPC from 324.
-25 Stepping down
-Node 25 rejected AppendEntries RPC from 324.
-25 Stepping down
-Node 25 rejected AppendEntries RPC from 324.
+25 Stepping down: Didn't get enough acks for heartbeat, Stepping down as leader.

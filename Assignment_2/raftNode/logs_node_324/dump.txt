@@ -1,119 +1,12 @@
-324 Stepping down
-Vote granted for Node 25 in term 1
-324 Stepping down
-324 Stepping down
+Node 324 election timer timed out, Starting election For Term 1.
+324 Stepping down: Leader Lease Timeout, Stepping down as follower.
+Node 324 became the leader for term 1.
+Node 324 committed entry NO-OP 1.
+Leader 324 sending heartbeat & Renewing Lease
+324 Stepping down: Didn't get enough acks for heartbeat, Stepping down as leader.
+Vote granted for Node 25 in term 2
 Node 324 accepted AppendEntries RPC from 25.
 Node 324 accepted AppendEntries RPC from 25.
-Node 324 election timer timed out, Starting election For Term 2.
-324 Stepping down
-324 Stepping down
-Node 324 became the leader for term 2.
-Leader 324 sending heartbeat & Renewing Lease
-324 Stepping down
-324 Stepping down
-Node 324 election timer timed out, Starting election For Term 3.
-324 Stepping down
-324 Stepping down
-Node 324 became the leader for term 3.
-Leader 324 sending heartbeat & Renewing Lease
-324 Stepping down
-324 Stepping down
-Node 324 election timer timed out, Starting election For Term 4.
-324 Stepping down
-324 Stepping down
-Node 324 became the leader for term 4.
-Leader 324 sending heartbeat & Renewing Lease
-324 Stepping down
-324 Stepping down
-324 Stepping down
-Vote denied for Node 25 in term 5
-324 Stepping down
-324 Stepping down
-Node 324 rejected AppendEntries RPC from 25.
-Node 324 rejected AppendEntries RPC from 25.
-324 Stepping down
-Node 324 rejected AppendEntries RPC from 25.
-324 Stepping down
-Vote granted for Node 25 in term 6
-324 Stepping down
-324 Stepping down
-Node 324 rejected AppendEntries RPC from 25.
-Node 324 rejected AppendEntries RPC from 25.
-324 Stepping down
-324 Stepping down
-Node 324 rejected AppendEntries RPC from 25.
-Node 324 rejected AppendEntries RPC from 25.
-324 Stepping down
-Vote granted for Node 25 in term 7
-324 Stepping down
-324 Stepping down
-Node 324 rejected AppendEntries RPC from 25.
-Node 324 rejected AppendEntries RPC from 25.
-324 Stepping down
-324 Stepping down
-Node 324 rejected AppendEntries RPC from 25.
-Node 324 rejected AppendEntries RPC from 25.
-324 Stepping down
-Node 324 rejected AppendEntries RPC from 25.
-324 Stepping down
-Vote granted for Node 25 in term 8
-324 Stepping down
-324 Stepping down
-Node 324 rejected AppendEntries RPC from 25.
-Node 324 rejected AppendEntries RPC from 25.
-324 Stepping down
-324 Stepping down
-Node 324 rejected AppendEntries RPC from 25.
-Node 324 rejected AppendEntries RPC from 25.
-324 Stepping down
-324 Stepping down
-Node 324 rejected AppendEntries RPC from 25.
-Node 324 rejected AppendEntries RPC from 25.
-Node 324 election timer timed out, Starting election For Term 9.
-324 Stepping down
-324 Stepping down
-Node 324 became the leader for term 9.
-Leader 324 sending heartbeat & Renewing Lease
-324 Stepping down
-324 Stepping down
-324 Stepping down
-Vote denied for Node 25 in term 10
-324 Stepping down
-324 Stepping down
-Node 324 rejected AppendEntries RPC from 25.
-Node 324 rejected AppendEntries RPC from 25.
-324 Stepping down
-324 Stepping down
-Node 324 rejected AppendEntries RPC from 25.
-Node 324 rejected AppendEntries RPC from 25.
-324 Stepping down
-324 Stepping down
-Node 324 rejected AppendEntries RPC from 25.
-Node 324 rejected AppendEntries RPC from 25.
-324 Stepping down
-Node 324 rejected AppendEntries RPC from 25.
-324 Stepping down
-Vote granted for Node 25 in term 11
-324 Stepping down
-324 Stepping down
-Node 324 rejected AppendEntries RPC from 25.
-Node 324 rejected AppendEntries RPC from 25.
-324 Stepping down
-324 Stepping down
-Node 324 rejected AppendEntries RPC from 25.
-Node 324 rejected AppendEntries RPC from 25.
-324 Stepping down
-Node 324 rejected AppendEntries RPC from 25.
-324 Stepping down
-Node 324 rejected AppendEntries RPC from 25.
-324 Stepping down
-Node 324 rejected AppendEntries RPC from 25.
-324 Stepping down
-Node 324 rejected AppendEntries RPC from 25.
-Node 324 election timer timed out, Starting election For Term 12.
-324 Stepping down
-324 Stepping down
-Node 324 became the leader for term 12.
-Leader 324 sending heartbeat & Renewing Lease
-324 Stepping down
-324 Stepping down
+Vote granted for Node 25 in term 3
+Node 324 accepted AppendEntries RPC from 25.
+Node 324 accepted AppendEntries RPC from 25.
