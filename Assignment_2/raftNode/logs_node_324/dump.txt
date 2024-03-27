@@ -1,12 +1,6 @@
-Node 324 election timer timed out, Starting election For Term 1.
-324 Stepping down: Leader Lease Timeout, Stepping down as follower.
-Node 324 became the leader for term 1.
-Node 324 committed entry NO-OP 1.
-Leader 324 sending heartbeat & Renewing Lease
-324 Stepping down: Didn't get enough acks for heartbeat, Stepping down as leader.
+Vote granted for Node 25 in term 1
+Node 324 accepted AppendEntries RPC from 25.
+Node 324 accepted AppendEntries RPC from 25.
 Vote granted for Node 25 in term 2
-Node 324 accepted AppendEntries RPC from 25.
-Node 324 accepted AppendEntries RPC from 25.
-Vote granted for Node 25 in term 3
 Node 324 accepted AppendEntries RPC from 25.
 Node 324 accepted AppendEntries RPC from 25.

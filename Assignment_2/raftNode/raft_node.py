@@ -258,7 +258,9 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
     def send_heartbeats(self):
         '''
         #LeaderLease: leader reacquires its lease, leader needs to step down if it doesn't get enough ack - Done
-        '''
+        ''' 
+
+        print("Sending Heartbeats at:",datetime.now())          
         if self.state != "leader":
             return
         self.dump(f'Leader {self.node_id} sending heartbeat & Renewing Lease')
@@ -266,15 +268,19 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
         for followerID, followerAddress in self.peers.items():
                 # 5/9
                 # if replicated: replicatedCount += 1
-                print("Sending Heartbeat to:",followerID, datetime.now())
+                print("Sending Heartbeat to:",followerID, datetime.now())                
                 replicatedLogResponse = self.ReplicateLog(self.node_id, followerID, followerAddress)
-
+                
+                print("Replicated Log Response:",replicatedLogResponse)
                 if replicatedLogResponse and replicatedLogResponse.success==True:
                     ack_received += 1
-
-        if ack_received > (len(self.peers)/2):
-            self.reset_leader_lease_timer()
+        
+        print("Ack Received:",ack_received, "Total Peers:",len(self.peers))
+        if ack_received >= (len(self.peers)/2):
+            print("Received enough acks for heartbeat")
+            self.reset_leader_lease_timer()                     
         else:
+            print("Didn't get enough acks for heartbeat")
             self.become_follower("Didn't get enough acks for heartbeat, Stepping down as leader.")
            
     def start_heartbeats(self):
@@ -421,7 +427,7 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
         
     # 7/9
     def appendEntries(self, prefix_len, leader_commit_len, suffix):
-        print("In appendEntries of Node:", self.node_id, "to add suffix:", suffix) 
+        # print("In appendEntries of Node:", self.node_id, "to add suffix:", suffix) 
         if len(suffix) > 0 and len(self.log) > prefix_len:
             index = min(len(self.log), prefix_len + len(suffix)) - 1
 
@@ -470,7 +476,7 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
         #  send the params
         # keeps on retrying untile the follower responds
         # retries on failure
-        print("Log to be replicated:", suffix, leader_id, followerID, followerAddress, current_term, prefixLen, prefixTerm, commitLength)
+        # print("Log to be replicated:", suffix, leader_id, followerID, followerAddress, current_term, prefixLen, prefixTerm, commitLength)
         while True:
             replicatedLogResponse = None
             with grpc.insecure_channel(followerAddress) as channel:
@@ -485,7 +491,7 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
                     LeaseDuration=self.get_lease_duration()
                 ))            
 
-            print("Replicated Log Response:",replicatedLogResponse)
+            # print("Replicated Log Response:",replicatedLogResponse)
 
             # Process the response
             if replicatedLogResponse:
@@ -498,13 +504,11 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
                 if followerTerm == self.term and self.state == "leader"  :
                     if followerSuccess and followerAckedLength  >= self.ackedLength[followerId]:                        
                         self.sentLength[followerId] = followerAckedLength
-                        self.ackedLength[followerId] = followerAckedLength
-                        # TODO: implement the commitLogEntries()
+                        self.ackedLength[followerId] = followerAckedLength                        
                         self.commitLogEntries()
                     elif self.sentLength[followerId] > 0:                        
                         self.sentLength[followerId] -= 1
-                        # TODO: Validate : Call ReplicateLog on that follower exact node again
-                        print("Going back to Replicate")
+                        # TODO: Validate : Call ReplicateLog on that follower exact node again                        
                         print(self.sentLength, followerID)
                         self.ReplicateLog(self.node_id, followerId, followerAddress)
                     
@@ -515,9 +519,9 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
                     self.reset_election_timer()
                     self.term = followerTerm
                     self.voted_for = "None"
-                    return
-                break
-        
+                    return None
+                return replicatedLogResponse
+            return None
 
     def acks(self,length):
         """Define the set of nodes that have acknowledged log entries up to a certain length."""
