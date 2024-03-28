@@ -18,7 +18,9 @@ from datetime import datetime, timezone, timedelta
 from utils import run_thread
 
 leader_lease_timeout = 2
-election_timeout = random.uniform(5, 10)
+
+def election_timeout():
+    return random.uniform(5, 10)
 
 '''
 TODO: Decide on a approach for leader lease. 
@@ -67,7 +69,7 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
         print("Checking Values:",self.term,self.commit_index,self.voted_for)
 
         self.state = "follower"
-        self.election_timeout = election_timeout
+        self.election_timeout = election_timeout()
         self.election_timer = threading.Timer(self.election_timeout, self.start_election)
         self.heartbeats_timer=None
         self.election_timer.start()
@@ -315,7 +317,7 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
             self.start_heartbeats()                   
         else:
             # print("Didn't get enough acks for heartbeat")
-            self.become_follower("Didn't get enough acks for heartbeat, Stepping down as leader.")
+            self.become_follower("Lease renewal failed.")
            
     def start_heartbeats(self):
         self.heartbeats_timer=threading.Timer(1, self.send_heartbeats)
@@ -345,7 +347,7 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
 
     def reset_election_timer(self):
         self.election_timer.cancel()
-        self.election_timeout = election_timeout
+        self.election_timeout = election_timeout()
         self.dump(f"Resetting election timer for {self.node_id}, new timeout: {self.election_timeout}")
         self.election_timer = threading.Timer(self.election_timeout, self.start_election)
         self.election_timer.start()
