@@ -1,3 +1,0 @@
-commitLength: 1
-term: 5
-voted_for: None

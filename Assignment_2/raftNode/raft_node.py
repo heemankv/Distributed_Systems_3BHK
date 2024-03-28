@@ -17,13 +17,34 @@ import random
 from datetime import datetime, timezone, timedelta
 from utils import run_thread
 
-leader_lease_timeout = 10
+leader_lease_timeout = 2
 election_timeout = random.uniform(5, 10)
 
+'''
+TODO: Decide on a approach for leader lease. 
+PROBLEM: 
+Currently whenever a node becomes a leader, it needs to wait for the old leader lease to end.
+While waiting it is possible that the election timer of another node might end. This new node hence becomes leader.
+The previously elected leader never sends a NO-OP msg and hence there is a gap in NO-OP msgs.
 
-# TODO: Implement broadcast messgaes in heartbeat not replicate log
-# TODO: Ensure a node updates its term whenever it meets a node either in request or response with a higher term
-#  TODO: cancel election timer : is it reset or stop
+Solution:
+1) We keep the leader_lease_timeout less than election timeout. 
+   This will never cause any new node to have election timeout before the timeout of old leader's lease.
+   We can do this according to the assignment  (CURRENTLY IMPLEMENTED)
+
+2) Whenever a voter votes a candidate, it updates its term to the candidate term. 
+   A voter's term is equivalent to the elected leader's term even before it tells followers about the updated term. 
+   Hence, when an election timeout occurs, the voter can easily become leader for the next term. (Given, newly elected leader is waiting for old leader lease timeout)
+   One might think to not update the voter's term during voting to prevent it from becoming leader (before getting NO-OP from newly elected leader). 
+   But we need to know the last term a node voted for to handle various edge cases.
+   Alternate Solution is to store this info in a new attribute called self.voted_for _term and use it whereever required and not update self.term. 
+   This approach will prevent the voter to become leader even when a election timeout occurs as it will have a older term.
+'''
+
+# TODO: Threading
+# TODO: Code Cleanup
+# TODO: Crash handling
+
 #Assumptions:
 #First election at term 1
 
@@ -231,15 +252,19 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
         #LeaderLease: It must check if the old leader's lease timer hasn't ended - Done
         '''
 
-        while( self.old_leader_lease_timestamp!=None and datetime.now(timezone.utc) < self.old_leader_lease_timestamp):
-            pass
-        
         self.term+=1
-        self.reset_leader_lease_timer()
+       
         self.state = "leader"                
         self.update_metadata()
         self.dump(f'Node {self.node_id} became the leader for term {self.term}.')
         self.leaderId = self.node_id
+
+        self.dump("Duration left for leader lease: "+str(self.old_leader_lease_timestamp-datetime.now(timezone.utc)))
+        while( self.old_leader_lease_timestamp!=None and datetime.now(timezone.utc) < self.old_leader_lease_timestamp):
+            pass
+        
+        
+        self.reset_leader_lease_timer()
 
         for peerID, peerAddress in self.peers.items():
             self.sentLength[peerID]=len(self.log)
