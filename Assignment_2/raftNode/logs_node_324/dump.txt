@@ -1,0 +1,24 @@
+Node 324 election timer timed out, Starting election For Term 1.
+Node 324 became the leader for term 1.
+Node 324 committed entry NO-OP 1.
+Leader 324 sending heartbeat & Renewing Lease
+Leader 324 sending heartbeat & Renewing Lease
+Leader 324 sending heartbeat & Renewing Lease
+Leader 324 sending heartbeat & Renewing Lease
+Leader 324 sending heartbeat & Renewing Lease
+Node 324 election timer timed out, Starting election For Term 2.
+Node 324 received RequestVote RPC from 523 in term 3.
+324 Stepping down: If leader becomes follower
+Vote granted for Node 523 in term 3
+Node 324 became the leader for term 4.
+324 Stepping down: 3: Found a leader with higher term, Stepping down as candidate.
+Node 324 accepted AppendEntries RPC from 523.
+Node 324 accepted AppendEntries RPC from 523.
+Node 324 rejected AppendEntries RPC from 523.
+Node 324 accepted AppendEntries RPC from 523.
+Node 324 received RequestVote RPC from 523 in term 6.
+Vote granted for Node 523 in term 6
+Node 324 election timer timed out, Starting election For Term 7.
+Error occurred while sending RPC to Node 25, and ip peerAddress: 127.0.0.1:5000
+Error occurred while sending RPC to Node 523, and ip peerAddress: 127.0.0.1:5002
+Error occurred while sending RPC to Node 567, and ip peerAddress: 127.0.0.1:5003

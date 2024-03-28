@@ -1,0 +1,17 @@
+Node 25 received RequestVote RPC from 324 in term 1.
+Vote granted for Node 324 in term 1
+Node 25 accepted AppendEntries RPC from 324.
+Node 25 accepted AppendEntries RPC from 324.
+Node 25 accepted AppendEntries RPC from 324.
+Node 25 accepted AppendEntries RPC from 324.
+Node 25 accepted AppendEntries RPC from 324.
+Node 25 accepted AppendEntries RPC from 324.
+Node 25 received RequestVote RPC from 324 in term 2.
+Vote granted for Node 324 in term 2
+Node 25 received RequestVote RPC from 523 in term 3.
+Vote granted for Node 523 in term 3
+Node 25 accepted AppendEntries RPC from 324.
+Node 25 accepted AppendEntries RPC from 523.
+Node 25 accepted AppendEntries RPC from 523.
+Node 25 rejected AppendEntries RPC from 523.
+Node 25 accepted AppendEntries RPC from 523.

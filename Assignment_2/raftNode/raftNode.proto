@@ -120,6 +120,6 @@ message ServeClientArgs {
 
 message ServeClientResponse {
   string data = 1;
-  string leaderAddress = 2;
+  int32 leaderId = 2;
   bool success = 3;
 }

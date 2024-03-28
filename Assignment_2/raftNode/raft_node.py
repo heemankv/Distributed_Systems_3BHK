@@ -17,7 +17,7 @@ import random
 from datetime import datetime, timezone, timedelta
 from utils import run_thread
 
-leader_lease_timeout = 8
+leader_lease_timeout = 10
 election_timeout = random.uniform(5, 10)
 
 
@@ -29,7 +29,7 @@ election_timeout = random.uniform(5, 10)
 
 class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
     # 1/9
-    def __init__(self, node_id, peers):
+    def __init__(self, node_id, peers, address):
         self.node_id = node_id
         self.create_folders_and_files()
         self.peers : dict = peers
@@ -37,6 +37,7 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
         self.metadata = self.read_from_metadata_file()
         self.term = int(self.metadata['term']) 
         self.commit_index = int(self.metadata['commitLength'])
+        self.address = address
 
         # TODO: remove this and access it from metadata itself
         self.voted_for = self.metadata['voted_for']
@@ -182,8 +183,9 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
 
         if self.state == "leader":
             # self.become_follower("Election timer timed out") #Done to stop heartbeats if it is a leader
-            self.stop_heartbeats()
-            self.state = "candidate"
+            self.stop_leader_lease_timer()
+            self.stop_heartbeats()            
+            self.state = "candidate"            
         
         self.voted_for = self.node_id
         votes_received = 1
@@ -257,7 +259,7 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
             self.stop_leader_lease_timer()
             self.stop_heartbeats()
             self.dump(f'{self.node_id} Stepping down: {reason}')
-            self.state = "follower"        
+            self.state = "follower"              
 
     def send_heartbeats(self):
         '''
@@ -301,13 +303,13 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
     #LeaderLease related functions
     
     def reset_leader_lease_timer(self):        
-
         self.stop_leader_lease_timer()
         # TODO: Add the follower condition?
         self.leader_lease_timer = threading.Timer(leader_lease_timeout, self.become_follower, args=[f"Leader Lease Timeout, Stepping down as {self.state}."])        
         self.leader_lease_timer.start()
         self.leader_lease_end_timestamp= datetime.now(timezone.utc) + timedelta(seconds=leader_lease_timeout)
         self.old_leader_lease_timestamp=self.leader_lease_end_timestamp
+        # self.dump("Leader lease timestamp:"+str(self.leader_lease_end_timestamp))
 
     def stop_leader_lease_timer(self):
         if(self.leader_lease_timer):
@@ -330,16 +332,18 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
         '''
         #LeaderLease: Need to send old leader lease duration - Done
         duration_left=max((self.old_leader_lease_timestamp-datetime.now(timezone.utc)).total_seconds(),0)      
-        '''
+        '''        
+
+        self.dump(f'Node {self.node_id} received RequestVote RPC from {request.candidateId} in term {request.term}.')
         duration_left=0
         if(self.old_leader_lease_timestamp):
             duration_left=max((self.old_leader_lease_timestamp-datetime.now(timezone.utc)).total_seconds(),0) 
     
         #settingToFollowerIfRequired
-        if request.term > self.term:
+        if request.term > self.term:            
             self.term=request.term
             self.voted_for="None"            
-            self.become_follower("1: Found a leader with higher term, Stepping down as candidate.")
+            self.become_follower("If leader becomes follower")
         
         #log is verified
         logCheck=False
@@ -497,6 +501,7 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
 
             # print("Replicated Log Response:",replicatedLogResponse)
 
+            
             # Process the response
             if replicatedLogResponse:
                 # 8/9
@@ -529,21 +534,28 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
 
     def acks(self,length):
         """Define the set of nodes that have acknowledged log entries up to a certain length."""
+        # Gives a list of nodes that contain acknowledged logs of length >= length
         return {n for n,v in self.peers.items() if self.ackedLength[n] >= length}
 
     def commitLogEntries(self):
+        '''
+        We need to commit the un-commited entries in the log that have been acknowledged by a majority of the nodes
+        That is, those entries who are ahead of the self.commit_index and have been acknowledged by a majority of the nodes
+        And if there's nothing else to commit, which will be true in the case of normal heartbeats, then just return
+        '''        
         # Assuming nodes is a list of node identifiers in the Raft cluster
         # Assuming ackedLength is a dictionary with nodes as keys and the length of the log they have acknowledged as values
         # Assuming log is a list of log entries and each entry has a 'term' and 'msg' field        
         minAcks = (len(self.peers) + 1) // 2
 
         # Find indices that are ready to be committed
-        ready = {len_idx for len_idx in range(1, len(self.log) + 1) if len(self.acks(len_idx)) >= minAcks}
+        ready = {len_idx for len_idx in range(self.commit_index + 1, len(self.log) + 1) if len(self.acks(len_idx)) >= minAcks}
+        # print(f"Ready: {ready}, Commit Index: {self.commit_index}, Log: {self.log}")
 
         if ready and max(ready) > self.commit_index and self.getTermGivenLog(self.log[max(ready) - 1]) == self.term:
             for i in range(self.commit_index, max(ready)): 
                 if(self.log[i].split()[0]=="SET"):     
-                    self.internal_set_handler(self.log[i])          
+                    self.internal_set_handler(self.log[i])                     
                 self.dump(f'Node {self.node_id} committed entry {self.log[i]}.')                    
             self.commit_index = max(ready)
             # raftNode_pb2.ServeClientResponse(successReply=raftNode_pb2.ServeClientSuccessReply(data = "OK", leaderId=self.node_id, success=True))            
@@ -563,46 +575,21 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
             
             # 5/9
             for followerID, followerAddress in self.peers.items():
-                run_thread(
-                    fn=self.ReplicateLog, args=(self.node_id, followerID, followerAddress)) 
+                # https://alexandra-zaharia.github.io/posts/how-to-return-a-result-from-a-python-thread/
+                # TODO: @Heemank, use this type of threading mannnnnnn
+
+                self.ReplicateLog(self.node_id, followerID, followerAddress)
+                # run_thread(
+                #     fn=self.ReplicateLog, args=(self.node_id, followerID, followerAddress)) 
                 
-            return raftNode_pb2.ServeClientResponse(data = "OK", leaderAddress=str(self.node_id), success=True)                                
+            return raftNode_pb2.ServeClientResponse(data = "OK", leaderId=self.leaderId, success=True)                                
         
         # else case for when the client contacts a Follower, 
-        # follower will query the leader to call broadcast message with same request
-        elif self.state == 'candidate' and self.node_id == self.leaderId:
-            print("Candidate re-calling function")
-            self.BroadcastAppendMessage(request)
-        else:
-            # print("Not leader, contacting leader", self.leaderId, self.givenIDGetAddress(self.leaderId))  
-            return raftNode_pb2.ServeClientResponse(data = "Failure", leaderAddress=self.givenIDGetAddress(self.leaderId),success=False)
+        # follower will query the leader to call broadcast message with same request                                
+        else:            
+            return raftNode_pb2.ServeClientResponse(data = "Failure", leaderId=self.leaderId,success=False)
                                                       
-            # raftNode_pb2.ServeClientResponse(failureReply = raftNode_pb2.ServeClientFailureReply(leaderId=self.givenIDGetAddress(self.leaderId), success=False))               
-    
-
-
-    # def ReplicateLog(self, request, context):
-    #     '''
-    #     Called on the leader whenever there is a new message in the log, and also
-    #     periodically. If there are no new messages, suffix is the empty list.
-    #     LogRequest messages with suffix = hi serve as heartbeats, letting
-    #     followers know that the leader is still alive
-
-    #     To synchronize a follower's log with the leader's,
-    #     the leader identifies the latest matching log entry
-    #     (same PrevLogIndex and PrevLogTerm), removes entries in the follower's
-    #     log beyond that point, and transmits all subsequent leader entries.
-
-    #     '''
-    #     prefix_len = request.PrefixLen
-    #     suffix = request.Suffix
-
-    #     # Process the log replication
-    #     # Here you would typically send the log entries to the follower node
-        
-    #     acked_length = prefix_len + len(suffix)
-
-    #     return raft_pb2.LogReply(AckedLength=acked_length)
+            # raftNode_pb2.ServeClientResponse(failureReply = raftNode_pb2.ServeClientFailureReply(leaderId=self.givenIDGetAddress(self.leaderId), success=False))                   
 
     # private fn
     def internal_get_handler(self, request):
@@ -622,8 +609,10 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
         # If the leader node is not known, return failure response to the client
 
         # If GET, return the value of the key from the leader node only
+        # TODO: bhavya add leader lease wala thing        
         value = self.internal_get_handler(request)
-        return raftNode_pb2.ServeClientResponse(data=value, leaderAddress=str(self.node_id), success=True)
+        print("GET Handler Value:", value)
+        return raftNode_pb2.ServeClientResponse(data=str(value), leaderId=self.node_id, success=True)
 
     # private fn
     def internal_set_handler(self, request):
@@ -635,9 +624,7 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
         #  Returns the value of the variable        
         key = request.split()[1]
         value = request.split()[2]
-        self.data[key] = value
-        # TODO: what all to append to the log
-        # self.update_log(f"SET {key} {value}")
+        self.data[key] = value        
 
 
     def SET_handler(self, request):
@@ -664,23 +651,23 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
         # GET K: Returns the latest committed value of key K. If K doesn’t exist in the database,
         #  an empty string will be returned as value by default. (READ OPERATION)
         
-        request = request.request
-
-        if("GET" in request):
+        request = request.request + ' ' + str(self.term)
+        if("GET" in request):                        
             if(self.state == "leader"):
                 return self.GET_handler(request)
             else:
-                raftNode_pb2.ServeClientResponse(data = "Failure", leaderAddress=self.givenIDGetAddress(self.leaderId),success=False)
+                print(self.leaderId)
+                return raftNode_pb2.ServeClientResponse(data = "Failure", leaderId=self.leaderId, success=False)
             
         elif("SET" in request):                   
             return self.SET_handler(request)
         else:
-            return raftNode_pb2.ServeClientResponse(data = "Wrong Request", leaderAddress=self.givenIDGetAddress(self.leaderId),success=False)
+            return raftNode_pb2.ServeClientResponse(data = "Wrong Request", leaderId=self.leaderId, success=False)
 
 def serve(starterID,node_id, peers):
-    server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
-    raftNode_pb2_grpc.add_RaftNodeServiceServicer_to_server(RaftNode(node_id, peers), server)
+    server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))    
     node_address = f'{os.getenv(f"NODE_{starterID}_IP")}:{os.getenv(f"NODE_{starterID}_PORT")}'    
+    raftNode_pb2_grpc.add_RaftNodeServiceServicer_to_server(RaftNode(node_id, peers, node_address), server)
     server.add_insecure_port(node_address)
     server.start()
     server.wait_for_termination()
