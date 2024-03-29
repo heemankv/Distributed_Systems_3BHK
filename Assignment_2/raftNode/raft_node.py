@@ -691,7 +691,7 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
         #  (WRITE OPERATION)
         # GET K: Returns the latest committed value of key K. If K doesn’t exist in the database,
         #  an empty string will be returned as value by default. (READ OPERATION)
-        self.dump(f'Node {self.node_id} received a {self.request} request.')
+        self.dump(f'Node {self.node_id} received a {request.request} request.')
         request = request.request + ' ' + str(self.term)
         if("GET" in request):                        
             if(self.state == "leader"):
