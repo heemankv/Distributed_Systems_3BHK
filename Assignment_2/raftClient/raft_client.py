@@ -1,4 +1,5 @@
 import os
+import random
 import sys
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'raftNode'))
@@ -19,25 +20,9 @@ import raftClient_pb2_grpc as raftClient_pb2_grpc
 # The client stores the IP addresses and ports of all the nodes.
 # The client stores the current leader ID, although this information might get outdated.
 
-
-def CreateNodeAddresses(numNodes):
-    # This function creates an array of IP addresses and ports of all the nodes.
-    # The IP addresses and ports are read from the .env file.
-    # The array is returned.
-    node_ips = []
-    for i in range(numNodes):
-        index = i + 1
-        node_ips.append(f'{os.getenv(f"NODE_{index}_IP")}:{os.getenv(f"NODE_{index}_PORT")}')
-    return node_ips
-
 class RaftClient(raftClient_pb2_grpc.RaftClientServiceServicer):
-    def __init__(self, num_nodes, leader_id):
-        self.node_ips = CreateNodeAddresses(int(num_nodes))
-        self.channel = grpc.insecure_channel(peers[leader_id])
-        self.stub = raft_pb2_grpc.RaftNodeServiceStub(self.channel)
-        self.leader_address = peers[leader_id]
-        self.leader_id = None
-
+    def __init__(self, num_nodes):                
+        self.leader_address = None
 
     def client_request(self, command):
         # It sends a GET/SET request to the leader node.
@@ -45,6 +30,12 @@ class RaftClient(raftClient_pb2_grpc.RaftClientServiceServicer):
         # The node returns what it thinks is the current leader and a failure message
         # If there is no leader in the system, then the node will return NULL for the current leader and a failure message
         # The client continues sending the request until it receives a SUCCESS reply from any node.
+
+        node_ids = list(peers.keys())
+        self.idx = 0
+        self.leader_address = peers[node_ids[self.idx]]
+        self.channel = grpc.insecure_channel(self.leader_address)
+        self.stub = raft_pb2_grpc.RaftNodeServiceStub(self.channel)        
 
         while True:
             try:
@@ -62,14 +53,15 @@ class RaftClient(raftClient_pb2_grpc.RaftClientServiceServicer):
                     self.channel = grpc.insecure_channel(self.leader_address)
                     self.stub = raft_pb2_grpc.RaftNodeServiceStub(self.channel)
             
-            except Exception as e:
-                # TODO: In this case will the client not contact any other node? if the first node it contacts is Inactive ?
-                #  Code Breaks here
-                print(f'Error connecting to leader {self.leader_address} : {e}')
-                # self.leader_address = None                
-                # self.stub = None
-                # self.leader_id = None
-                return None
+            except Exception as e:                
+                print(f'Error connecting to leader {self.leader_address}')                                                           
+
+                self.idx += 1
+                self.leader_address = peers[node_ids[self.idx % len(node_ids)]]
+                self.channel = grpc.insecure_channel(self.leader_address)
+                self.stub = raft_pb2_grpc.RaftNodeServiceStub(self.channel)
+
+                print("Trying to connect to leader:", self.leader_address)                                
                 
 
 
@@ -91,8 +83,7 @@ if __name__ == "__main__":
 
     num_nodes = int(os.getenv("NUM_NODES"))
 
-    # Take the first node as the leader and try to connect to it
-    # leader_address = f'{os.getenv("NODE_1_IP")}:{os.getenv("NODE_1_PORT")}'
+    # Take the first node as the leader and try to connect to it 
     leader_id = int(os.getenv("NODE_1_ID"))
 
     peers = {}
@@ -101,8 +92,8 @@ if __name__ == "__main__":
             key = int(os.getenv(f'NODE_{index}_ID'))
             value = f'{os.getenv(f"NODE_{index}_IP")}:{os.getenv(f"NODE_{index}_PORT")}'
             peers[key] = value
-
-    client = RaftClient(num_nodes, leader_id)
+    
+    client = RaftClient(num_nodes)
 
     
     

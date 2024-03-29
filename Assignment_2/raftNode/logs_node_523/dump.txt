@@ -1,0 +1,235 @@
+Node 523 received RequestVote RPC from 567 in term 1.
+Resetting election timer for 523, new timeout: 5.853247936400282
+Vote granted for Node 567 in term 1
+Resetting election timer for 523, new timeout: 7.299627948257317
+Node 523 accepted AppendEntries RPC from 567.
+Resetting election timer for 523, new timeout: 6.601003168948431
+Node 523 accepted AppendEntries RPC from 567.
+Resetting election timer for 523, new timeout: 9.359029270269064
+Node 523 accepted AppendEntries RPC from 567.
+Resetting election timer for 523, new timeout: 7.122487808730819
+Node 523 accepted AppendEntries RPC from 567.
+Resetting election timer for 523, new timeout: 7.430773865123829
+Node 523 accepted AppendEntries RPC from 567.
+Resetting election timer for 523, new timeout: 9.93365430914313
+Node 523 accepted AppendEntries RPC from 567.
+Resetting election timer for 523, new timeout: 6.5869608338086705
+Node 523 accepted AppendEntries RPC from 567.
+Resetting election timer for 523, new timeout: 6.326860020264994
+Node 523 accepted AppendEntries RPC from 567.
+Resetting election timer for 523, new timeout: 7.823202793075465
+Node 523 accepted AppendEntries RPC from 567.
+Resetting election timer for 523, new timeout: 9.553692686928777
+Node 523 accepted AppendEntries RPC from 567.
+Node 523 received RequestVote RPC from 567 in term 2.
+Resetting election timer for 523, new timeout: 7.391964444396225
+Vote granted for Node 567 in term 2
+Resetting election timer for 523, new timeout: 8.688835576630835
+Node 523 accepted AppendEntries RPC from 567.
+Resetting election timer for 523, new timeout: 9.743038711330687
+Node 523 accepted AppendEntries RPC from 567.
+Resetting election timer for 523, new timeout: 5.345185546724564
+Node 523 accepted AppendEntries RPC from 567.
+Resetting election timer for 523, new timeout: 6.684895168584926
+Node 523 accepted AppendEntries RPC from 567.
+Resetting election timer for 523, new timeout: 8.86926668339197
+Node 523 accepted AppendEntries RPC from 567.
+Resetting election timer for 523, new timeout: 8.447389675983505
+Node 523 accepted AppendEntries RPC from 567.
+Resetting election timer for 523, new timeout: 8.20291962946975
+Node 523 accepted AppendEntries RPC from 567.
+Resetting election timer for 523, new timeout: 6.923443089336805
+Node 523 accepted AppendEntries RPC from 567.
+Node 523 received RequestVote RPC from 567 in term 3.
+Resetting election timer for 523, new timeout: 5.343744628724915
+Vote granted for Node 567 in term 3
+Resetting election timer for 523, new timeout: 6.757675072463561
+Node 523 accepted AppendEntries RPC from 567.
+Resetting election timer for 523, new timeout: 6.48070488622948
+Node 523 accepted AppendEntries RPC from 567.
+Resetting election timer for 523, new timeout: 8.895324663721725
+Node 523 accepted AppendEntries RPC from 567.
+Resetting election timer for 523, new timeout: 6.844093990159874
+Node 523 accepted AppendEntries RPC from 567.
+Resetting election timer for 523, new timeout: 7.9495117513297116
+Node 523 accepted AppendEntries RPC from 567.
+Resetting election timer for 523, new timeout: 5.0290943652960465
+Node 523 accepted AppendEntries RPC from 567.
+Resetting election timer for 523, new timeout: 8.406347737998525
+Node 523 accepted AppendEntries RPC from 567.
+Resetting election timer for 523, new timeout: 9.095879719713732
+Node 523 accepted AppendEntries RPC from 567.
+Node 523 received RequestVote RPC from 567 in term 4.
+Resetting election timer for 523, new timeout: 5.036838471146242
+Vote granted for Node 567 in term 4
+Resetting election timer for 523, new timeout: 7.485773972425914
+Node 523 accepted AppendEntries RPC from 567.
+Resetting election timer for 523, new timeout: 8.144990555447068
+Node 523 accepted AppendEntries RPC from 567.
+Resetting election timer for 523, new timeout: 5.541264774394942
+Node 523 accepted AppendEntries RPC from 567.
+Resetting election timer for 523, new timeout: 6.505459962525672
+Node 523 accepted AppendEntries RPC from 567.
+Resetting election timer for 523, new timeout: 5.423862987540964
+Node 523 accepted AppendEntries RPC from 567.
+Resetting election timer for 523, new timeout: 8.17162329373533
+Node 523 accepted AppendEntries RPC from 567.
+Node 523 received RequestVote RPC from 567 in term 5.
+Resetting election timer for 523, new timeout: 8.816757747082773
+Vote granted for Node 567 in term 5
+Resetting election timer for 523, new timeout: 9.563278361167846
+Node 523 accepted AppendEntries RPC from 567.
+Node 523 received a GET X request.
+Node 523 received a GET X request.
+Node 523 received RequestVote RPC from 233 in term 7.
+Resetting election timer for 523, new timeout: 8.34852603339239
+Vote granted for Node 233 in term 7
+Resetting election timer for 523, new timeout: 9.933349940214232
+Node 523 accepted AppendEntries RPC from 233.
+Resetting election timer for 523, new timeout: 5.698207635907599
+Node 523 accepted AppendEntries RPC from 233.
+Resetting election timer for 523, new timeout: 7.28626308971068
+Node 523 accepted AppendEntries RPC from 233.
+Resetting election timer for 523, new timeout: 9.624843497437894
+Node 523 accepted AppendEntries RPC from 233.
+Resetting election timer for 523, new timeout: 6.077378257303682
+Node 523 accepted AppendEntries RPC from 233.
+Resetting election timer for 523, new timeout: 6.457337329476604
+Node 523 accepted AppendEntries RPC from 233.
+Node 523 received RequestVote RPC from 233 in term 8.
+Resetting election timer for 523, new timeout: 8.718625474524844
+Vote granted for Node 233 in term 8
+Resetting election timer for 523, new timeout: 7.938351736984956
+Node 523 accepted AppendEntries RPC from 233.
+Resetting election timer for 523, new timeout: 9.204258269379977
+Node 523 accepted AppendEntries RPC from 233.
+Resetting election timer for 523, new timeout: 9.917525995414646
+Node 523 accepted AppendEntries RPC from 233.
+Resetting election timer for 523, new timeout: 9.026706718565745
+Node 523 accepted AppendEntries RPC from 233.
+Resetting election timer for 523, new timeout: 5.3575560327097635
+Node 523 accepted AppendEntries RPC from 233.
+Resetting election timer for 523, new timeout: 7.977243239275801
+Node 523 accepted AppendEntries RPC from 233.
+Resetting election timer for 523, new timeout: 6.111245922334072
+Node 523 accepted AppendEntries RPC from 233.
+Resetting election timer for 523, new timeout: 8.422366266771444
+Node 523 accepted AppendEntries RPC from 233.
+Resetting election timer for 523, new timeout: 8.332305350777585
+Node 523 accepted AppendEntries RPC from 233.
+Resetting election timer for 523, new timeout: 9.06756535903148
+Node 523 accepted AppendEntries RPC from 233.
+Node 523 received RequestVote RPC from 233 in term 9.
+Resetting election timer for 523, new timeout: 6.838963142728936
+Vote granted for Node 233 in term 9
+Resetting election timer for 523, new timeout: 8.629530340465827
+Node 523 accepted AppendEntries RPC from 233.
+Resetting election timer for 523, new timeout: 6.108594691760092
+Node 523 accepted AppendEntries RPC from 233.
+Resetting election timer for 523, new timeout: 6.869606882066811
+Node 523 accepted AppendEntries RPC from 233.
+Resetting election timer for 523, new timeout: 5.634792458213394
+Node 523 accepted AppendEntries RPC from 233.
+Resetting election timer for 523, new timeout: 6.234537936761955
+Node 523 accepted AppendEntries RPC from 233.
+Resetting election timer for 523, new timeout: 7.416684411695995
+Node 523 accepted AppendEntries RPC from 233.
+Resetting election timer for 523, new timeout: 6.988134913585229
+Node 523 accepted AppendEntries RPC from 233.
+Resetting election timer for 523, new timeout: 6.922774235041052
+Node 523 accepted AppendEntries RPC from 233.
+Resetting election timer for 523, new timeout: 6.420315865142751
+Node 523 accepted AppendEntries RPC from 233.
+Node 523 received RequestVote RPC from 233 in term 10.
+Resetting election timer for 523, new timeout: 8.31902375268375
+Vote granted for Node 233 in term 10
+Resetting election timer for 523, new timeout: 9.363516739778444
+Node 523 accepted AppendEntries RPC from 233.
+Resetting election timer for 523, new timeout: 9.598528484887112
+Node 523 accepted AppendEntries RPC from 233.
+Resetting election timer for 523, new timeout: 8.641333982975285
+Node 523 accepted AppendEntries RPC from 233.
+Resetting election timer for 523, new timeout: 9.203252579560194
+Node 523 accepted AppendEntries RPC from 233.
+Resetting election timer for 523, new timeout: 6.364904104996868
+Node 523 accepted AppendEntries RPC from 233.
+Resetting election timer for 523, new timeout: 8.637051792083367
+Node 523 accepted AppendEntries RPC from 233.
+Resetting election timer for 523, new timeout: 9.394044653507002
+Node 523 accepted AppendEntries RPC from 233.
+Resetting election timer for 523, new timeout: 8.707812977609626
+Node 523 accepted AppendEntries RPC from 233.
+Resetting election timer for 523, new timeout: 7.27712146704624
+Node 523 accepted AppendEntries RPC from 233.
+Resetting election timer for 523, new timeout: 5.146181917237322
+Node 523 accepted AppendEntries RPC from 233.
+Node 523 received RequestVote RPC from 233 in term 11.
+Resetting election timer for 523, new timeout: 6.509741549981083
+Vote granted for Node 233 in term 11
+Resetting election timer for 523, new timeout: 7.280305014268924
+Node 523 accepted AppendEntries RPC from 233.
+Resetting election timer for 523, new timeout: 6.638444476590504
+Node 523 accepted AppendEntries RPC from 233.
+Resetting election timer for 523, new timeout: 6.346279418576972
+Node 523 accepted AppendEntries RPC from 233.
+Resetting election timer for 523, new timeout: 8.590572104528992
+Node 523 accepted AppendEntries RPC from 233.
+Resetting election timer for 523, new timeout: 7.85799928476739
+Node 523 accepted AppendEntries RPC from 233.
+Resetting election timer for 523, new timeout: 6.194471150004663
+Node 523 accepted AppendEntries RPC from 233.
+Node 523 received RequestVote RPC from 233 in term 12.
+Resetting election timer for 523, new timeout: 7.040343203761838
+Vote granted for Node 233 in term 12
+Resetting election timer for 523, new timeout: 8.58549979274156
+Node 523 accepted AppendEntries RPC from 233.
+Resetting election timer for 523, new timeout: 5.3017954783809955
+Node 523 accepted AppendEntries RPC from 233.
+Resetting election timer for 523, new timeout: 7.679963098840106
+Node 523 accepted AppendEntries RPC from 233.
+Resetting election timer for 523, new timeout: 8.37446329635363
+Node 523 accepted AppendEntries RPC from 233.
+Resetting election timer for 523, new timeout: 8.362104765237667
+Node 523 accepted AppendEntries RPC from 233.
+Resetting election timer for 523, new timeout: 7.344291918616674
+Node 523 accepted AppendEntries RPC from 233.
+Resetting election timer for 523, new timeout: 5.554049544379282
+Node 523 accepted AppendEntries RPC from 233.
+Resetting election timer for 523, new timeout: 6.258179112026628
+Node 523 accepted AppendEntries RPC from 233.
+Node 523 received RequestVote RPC from 233 in term 13.
+Resetting election timer for 523, new timeout: 8.319720478349412
+Vote granted for Node 233 in term 13
+Resetting election timer for 523, new timeout: 9.603053181975316
+Node 523 accepted AppendEntries RPC from 233.
+Resetting election timer for 523, new timeout: 5.322018937643753
+Node 523 accepted AppendEntries RPC from 233.
+Resetting election timer for 523, new timeout: 9.040685036469043
+Node 523 accepted AppendEntries RPC from 233.
+Resetting election timer for 523, new timeout: 6.0609199775387905
+Node 523 accepted AppendEntries RPC from 233.
+Resetting election timer for 523, new timeout: 8.923129063420266
+Node 523 accepted AppendEntries RPC from 233.
+Resetting election timer for 523, new timeout: 6.197399664730514
+Node 523 accepted AppendEntries RPC from 233.
+Node 523 received RequestVote RPC from 233 in term 14.
+Resetting election timer for 523, new timeout: 6.756727137114621
+Vote granted for Node 233 in term 14
+Resetting election timer for 523, new timeout: 8.474835506380662
+Node 523 accepted AppendEntries RPC from 233.
+Resetting election timer for 523, new timeout: 8.973347337328383
+Node 523 accepted AppendEntries RPC from 233.
+Resetting election timer for 523, new timeout: 7.009188312786025
+Node 523 accepted AppendEntries RPC from 233.
+Resetting election timer for 523, new timeout: 5.669289619207603
+Node 523 accepted AppendEntries RPC from 233.
+Resetting election timer for 523, new timeout: 9.984556108158582
+Node 523 accepted AppendEntries RPC from 233.
+Resetting election timer for 523, new timeout: 8.0926567445755
+Node 523 accepted AppendEntries RPC from 233.
+Resetting election timer for 523, new timeout: 9.48713040169364
+Node 523 accepted AppendEntries RPC from 233.
+Resetting election timer for 523, new timeout: 5.7091816194853715
+Node 523 accepted AppendEntries RPC from 233.
+Resetting election timer for 523, new timeout: 9.05865515526854
+Node 523 accepted AppendEntries RPC from 233.

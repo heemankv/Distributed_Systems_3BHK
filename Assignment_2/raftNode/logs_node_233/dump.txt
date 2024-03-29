@@ -1,0 +1,256 @@
+Node 233 received RequestVote RPC from 567 in term 1.
+Resetting election timer for 233, new timeout: 9.86067996349566
+Vote granted for Node 567 in term 1
+Resetting election timer for 233, new timeout: 7.431264741764773
+Node 233 accepted AppendEntries RPC from 567.
+Resetting election timer for 233, new timeout: 7.125537169604869
+Node 233 accepted AppendEntries RPC from 567.
+Resetting election timer for 233, new timeout: 9.728360698545659
+Node 233 accepted AppendEntries RPC from 567.
+Resetting election timer for 233, new timeout: 9.259281143946009
+Node 233 accepted AppendEntries RPC from 567.
+Resetting election timer for 233, new timeout: 6.170102080851089
+Node 233 accepted AppendEntries RPC from 567.
+Resetting election timer for 233, new timeout: 6.870816727563327
+Node 233 accepted AppendEntries RPC from 567.
+Resetting election timer for 233, new timeout: 8.803132932172133
+Node 233 accepted AppendEntries RPC from 567.
+Resetting election timer for 233, new timeout: 9.981093230856231
+Node 233 accepted AppendEntries RPC from 567.
+Resetting election timer for 233, new timeout: 5.090137130746561
+Node 233 accepted AppendEntries RPC from 567.
+Resetting election timer for 233, new timeout: 5.223806066603628
+Node 233 accepted AppendEntries RPC from 567.
+Node 233 received RequestVote RPC from 567 in term 2.
+Resetting election timer for 233, new timeout: 8.285710728057568
+Vote granted for Node 567 in term 2
+Resetting election timer for 233, new timeout: 9.915054115813952
+Node 233 rejected AppendEntries RPC from 567.
+Resetting election timer for 233, new timeout: 5.198221751663315
+Node 233 accepted AppendEntries RPC from 567.
+Resetting election timer for 233, new timeout: 5.862631772197768
+Node 233 accepted AppendEntries RPC from 567.
+Resetting election timer for 233, new timeout: 5.867454268231161
+Node 233 accepted AppendEntries RPC from 567.
+Resetting election timer for 233, new timeout: 9.701919281220516
+Node 233 accepted AppendEntries RPC from 567.
+Resetting election timer for 233, new timeout: 7.031454585180951
+Node 233 accepted AppendEntries RPC from 567.
+Resetting election timer for 233, new timeout: 9.780667490205241
+Node 233 accepted AppendEntries RPC from 567.
+Resetting election timer for 233, new timeout: 7.924646007482058
+Node 233 accepted AppendEntries RPC from 567.
+Resetting election timer for 233, new timeout: 5.0025589457135435
+Node 233 accepted AppendEntries RPC from 567.
+Node 233 received RequestVote RPC from 567 in term 3.
+Resetting election timer for 233, new timeout: 9.02469112928793
+Vote granted for Node 567 in term 3
+Resetting election timer for 233, new timeout: 7.87201357718303
+Node 233 accepted AppendEntries RPC from 567.
+Resetting election timer for 233, new timeout: 9.21149374715452
+Node 233 accepted AppendEntries RPC from 567.
+Resetting election timer for 233, new timeout: 7.443206391000518
+Node 233 accepted AppendEntries RPC from 567.
+Resetting election timer for 233, new timeout: 5.9021977765745826
+Node 233 accepted AppendEntries RPC from 567.
+Resetting election timer for 233, new timeout: 9.824163866934244
+Node 233 accepted AppendEntries RPC from 567.
+Resetting election timer for 233, new timeout: 5.335350612358217
+Node 233 accepted AppendEntries RPC from 567.
+Resetting election timer for 233, new timeout: 9.783943351781527
+Node 233 accepted AppendEntries RPC from 567.
+Resetting election timer for 233, new timeout: 7.594723773612474
+Node 233 accepted AppendEntries RPC from 567.
+Node 233 received RequestVote RPC from 567 in term 4.
+Resetting election timer for 233, new timeout: 7.801924480328134
+Vote granted for Node 567 in term 4
+Resetting election timer for 233, new timeout: 8.716678399892523
+Node 233 accepted AppendEntries RPC from 567.
+Resetting election timer for 233, new timeout: 6.119569288099873
+Node 233 accepted AppendEntries RPC from 567.
+Resetting election timer for 233, new timeout: 9.036289268236857
+Node 233 accepted AppendEntries RPC from 567.
+Resetting election timer for 233, new timeout: 9.768890257351615
+Node 233 accepted AppendEntries RPC from 567.
+Resetting election timer for 233, new timeout: 5.754253498978177
+Node 233 accepted AppendEntries RPC from 567.
+Resetting election timer for 233, new timeout: 7.095989613296618
+Node 233 accepted AppendEntries RPC from 567.
+Node 233 received RequestVote RPC from 567 in term 5.
+Resetting election timer for 233, new timeout: 6.12135451182859
+Vote granted for Node 567 in term 5
+Resetting election timer for 233, new timeout: 7.190884672405971
+Node 233 accepted AppendEntries RPC from 567.
+Resetting election timer for 233, new timeout: 9.998440649162422
+Node 233 accepted AppendEntries RPC from 567.
+Node 233 received RequestVote RPC from 567 in term 6.
+Resetting election timer for 233, new timeout: 9.93093554401118
+Vote granted for Node 567 in term 6
+Node 233 received RequestVote RPC from 567 in term 6.
+Resetting election timer for 233, new timeout: 8.112328233371136
+Vote granted for Node 567 in term 6
+Node 233 received a GET X request.
+Node 233 received a GET X request.
+Node 233 election timer timed out, Starting election For Term 7.
+Error occurred while sending VoteRequest RPC to Node 25, and ip peerAddress: 127.0.0.1:5000
+Error occurred while sending VoteRequest RPC to Node 324, and ip peerAddress: 127.0.0.1:5001
+Error occurred while sending VoteRequest RPC to Node 523, and ip peerAddress: 127.0.0.1:5002
+Error occurred while sending VoteRequest RPC to Node 567, and ip peerAddress: 127.0.0.1:5003
+Resetting election timer for 233, new timeout: 7.348084577112116
+Node 233 received a GET X request.
+Node 233 received a GET X request.
+Node 233 received a GET X request.
+Node 233 election timer timed out, Starting election For Term 7.
+Error occurred while sending VoteRequest RPC to Node 25, and ip peerAddress: 127.0.0.1:5000
+Error occurred while sending VoteRequest RPC to Node 324, and ip peerAddress: 127.0.0.1:5001
+Error occurred while sending VoteRequest RPC to Node 523, and ip peerAddress: 127.0.0.1:5002
+Error occurred while sending VoteRequest RPC to Node 567, and ip peerAddress: 127.0.0.1:5003
+Resetting election timer for 233, new timeout: 7.039044975720708
+Node 233 received a GET X request.
+Node 233 received a GET X request.
+Node 233 election timer timed out, Starting election For Term 7.
+Error occurred while sending VoteRequest RPC to Node 25, and ip peerAddress: 127.0.0.1:5000
+Error occurred while sending VoteRequest RPC to Node 324, and ip peerAddress: 127.0.0.1:5001
+Error occurred while sending VoteRequest RPC to Node 523, and ip peerAddress: 127.0.0.1:5002
+Error occurred while sending VoteRequest RPC to Node 567, and ip peerAddress: 127.0.0.1:5003
+Resetting election timer for 233, new timeout: 8.137927272268488
+Node 233 election timer timed out, Starting election For Term 7.
+Error occurred while sending VoteRequest RPC to Node 25, and ip peerAddress: 127.0.0.1:5000
+Error occurred while sending VoteRequest RPC to Node 324, and ip peerAddress: 127.0.0.1:5001
+Node 233 became the leader for term 7.
+New Leader node 233 waiting for Old Leader Lease to timeout.
+Error occurred while sending AppendEntries RPC to Node 25, and ip peerAddress: 127.0.0.1:5000
+Error occurred while sending AppendEntries RPC to Node 324, and ip peerAddress: 127.0.0.1:5001
+Node 233 committed entry NO-OP 7 to the state machine.
+Node 233 received a GET X request.
+Resetting election timer for 233, new timeout: 6.0514589369125655
+Leader 233 sending heartbeat & Renewing Lease
+Error occurred while sending AppendEntries RPC to Node 25, and ip peerAddress: 127.0.0.1:5000
+Error occurred while sending AppendEntries RPC to Node 324, and ip peerAddress: 127.0.0.1:5001
+Leader 233 sending heartbeat & Renewing Lease
+Error occurred while sending AppendEntries RPC to Node 25, and ip peerAddress: 127.0.0.1:5000
+Error occurred while sending AppendEntries RPC to Node 324, and ip peerAddress: 127.0.0.1:5001
+Leader 233 sending heartbeat & Renewing Lease
+Error occurred while sending AppendEntries RPC to Node 25, and ip peerAddress: 127.0.0.1:5000
+Error occurred while sending AppendEntries RPC to Node 324, and ip peerAddress: 127.0.0.1:5001
+Leader 233 sending heartbeat & Renewing Lease
+Error occurred while sending AppendEntries RPC to Node 25, and ip peerAddress: 127.0.0.1:5000
+Error occurred while sending AppendEntries RPC to Node 324, and ip peerAddress: 127.0.0.1:5001
+Leader 233 sending heartbeat & Renewing Lease
+Error occurred while sending AppendEntries RPC to Node 25, and ip peerAddress: 127.0.0.1:5000
+Error occurred while sending AppendEntries RPC to Node 324, and ip peerAddress: 127.0.0.1:5001
+Node 233 election timer timed out, Starting election For Term 8.
+233 Stepping down: Leader Lease Timeout, Stepping down as leader.
+Error occurred while sending VoteRequest RPC to Node 25, and ip peerAddress: 127.0.0.1:5000
+Error occurred while sending VoteRequest RPC to Node 324, and ip peerAddress: 127.0.0.1:5001
+Node 233 became the leader for term 8.
+New Leader node 233 waiting for Old Leader Lease to timeout.
+Error occurred while sending AppendEntries RPC to Node 25, and ip peerAddress: 127.0.0.1:5000
+Error occurred while sending AppendEntries RPC to Node 324, and ip peerAddress: 127.0.0.1:5001
+Node 233 committed entry NO-OP 8 to the state machine.
+Resetting election timer for 233, new timeout: 9.165789674887744
+Leader 233 sending heartbeat & Renewing Lease
+Error occurred while sending AppendEntries RPC to Node 25, and ip peerAddress: 127.0.0.1:5000
+Error occurred while sending AppendEntries RPC to Node 324, and ip peerAddress: 127.0.0.1:5001
+Leader 233 sending heartbeat & Renewing Lease
+Error occurred while sending AppendEntries RPC to Node 25, and ip peerAddress: 127.0.0.1:5000
+Error occurred while sending AppendEntries RPC to Node 324, and ip peerAddress: 127.0.0.1:5001
+Leader 233 sending heartbeat & Renewing Lease
+Error occurred while sending AppendEntries RPC to Node 25, and ip peerAddress: 127.0.0.1:5000
+Error occurred while sending AppendEntries RPC to Node 324, and ip peerAddress: 127.0.0.1:5001
+Leader 233 sending heartbeat & Renewing Lease
+Error occurred while sending AppendEntries RPC to Node 25, and ip peerAddress: 127.0.0.1:5000
+Error occurred while sending AppendEntries RPC to Node 324, and ip peerAddress: 127.0.0.1:5001
+Leader 233 sending heartbeat & Renewing Lease
+Error occurred while sending AppendEntries RPC to Node 25, and ip peerAddress: 127.0.0.1:5000
+Error occurred while sending AppendEntries RPC to Node 324, and ip peerAddress: 127.0.0.1:5001
+Leader 233 sending heartbeat & Renewing Lease
+Error occurred while sending AppendEntries RPC to Node 25, and ip peerAddress: 127.0.0.1:5000
+Error occurred while sending AppendEntries RPC to Node 324, and ip peerAddress: 127.0.0.1:5001
+Leader 233 sending heartbeat & Renewing Lease
+Error occurred while sending AppendEntries RPC to Node 25, and ip peerAddress: 127.0.0.1:5000
+Error occurred while sending AppendEntries RPC to Node 324, and ip peerAddress: 127.0.0.1:5001
+Leader 233 sending heartbeat & Renewing Lease
+Error occurred while sending AppendEntries RPC to Node 25, and ip peerAddress: 127.0.0.1:5000
+Error occurred while sending AppendEntries RPC to Node 324, and ip peerAddress: 127.0.0.1:5001
+Leader 233 sending heartbeat & Renewing Lease
+Error occurred while sending AppendEntries RPC to Node 25, and ip peerAddress: 127.0.0.1:5000
+Node 233 election timer timed out, Starting election For Term 9.
+233 Stepping down: Leader Lease Timeout, Stepping down as leader.
+Error occurred while sending VoteRequest RPC to Node 25, and ip peerAddress: 127.0.0.1:5000
+Node 233 became the leader for term 9.
+New Leader node 233 waiting for Old Leader Lease to timeout.
+Node 233 committed entry NO-OP 9 to the state machine.
+Resetting election timer for 233, new timeout: 8.417217689599001
+Leader 233 sending heartbeat & Renewing Lease
+Leader 233 sending heartbeat & Renewing Lease
+Leader 233 sending heartbeat & Renewing Lease
+Leader 233 sending heartbeat & Renewing Lease
+Leader 233 sending heartbeat & Renewing Lease
+Leader 233 sending heartbeat & Renewing Lease
+Leader 233 sending heartbeat & Renewing Lease
+Leader 233 sending heartbeat & Renewing Lease
+Node 233 election timer timed out, Starting election For Term 10.
+233 Stepping down: Leader Lease Timeout, Stepping down as leader.
+Node 233 became the leader for term 10.
+New Leader node 233 waiting for Old Leader Lease to timeout.
+Node 233 committed entry NO-OP 10 to the state machine.
+Resetting election timer for 233, new timeout: 9.690446181879299
+Leader 233 sending heartbeat & Renewing Lease
+Leader 233 sending heartbeat & Renewing Lease
+Leader 233 sending heartbeat & Renewing Lease
+Leader 233 sending heartbeat & Renewing Lease
+Leader 233 sending heartbeat & Renewing Lease
+Leader 233 sending heartbeat & Renewing Lease
+Leader 233 sending heartbeat & Renewing Lease
+Leader 233 sending heartbeat & Renewing Lease
+Leader 233 sending heartbeat & Renewing Lease
+Node 233 election timer timed out, Starting election For Term 11.
+233 Stepping down: Leader Lease Timeout, Stepping down as leader.
+Node 233 became the leader for term 11.
+New Leader node 233 waiting for Old Leader Lease to timeout.
+Node 233 committed entry NO-OP 11 to the state machine.
+Resetting election timer for 233, new timeout: 5.9185341781270395
+Leader 233 sending heartbeat & Renewing Lease
+Leader 233 sending heartbeat & Renewing Lease
+Leader 233 sending heartbeat & Renewing Lease
+Leader 233 sending heartbeat & Renewing Lease
+Leader 233 sending heartbeat & Renewing Lease
+Node 233 election timer timed out, Starting election For Term 12.
+233 Stepping down: Leader Lease Timeout, Stepping down as leader.
+Node 233 became the leader for term 12.
+New Leader node 233 waiting for Old Leader Lease to timeout.
+Node 233 committed entry NO-OP 12 to the state machine.
+Resetting election timer for 233, new timeout: 7.87443141562588
+Leader 233 sending heartbeat & Renewing Lease
+Leader 233 sending heartbeat & Renewing Lease
+Leader 233 sending heartbeat & Renewing Lease
+Leader 233 sending heartbeat & Renewing Lease
+Leader 233 sending heartbeat & Renewing Lease
+Leader 233 sending heartbeat & Renewing Lease
+Leader 233 sending heartbeat & Renewing Lease
+Node 233 election timer timed out, Starting election For Term 13.
+233 Stepping down: Leader Lease Timeout, Stepping down as leader.
+Node 233 became the leader for term 13.
+New Leader node 233 waiting for Old Leader Lease to timeout.
+Node 233 committed entry NO-OP 13 to the state machine.
+Resetting election timer for 233, new timeout: 5.334992650422014
+Leader 233 sending heartbeat & Renewing Lease
+Leader 233 sending heartbeat & Renewing Lease
+Leader 233 sending heartbeat & Renewing Lease
+Leader 233 sending heartbeat & Renewing Lease
+Leader 233 sending heartbeat & Renewing Lease
+Node 233 election timer timed out, Starting election For Term 14.
+233 Stepping down: Leader Lease Timeout, Stepping down as leader.
+Node 233 became the leader for term 14.
+New Leader node 233 waiting for Old Leader Lease to timeout.
+Node 233 committed entry NO-OP 14 to the state machine.
+Resetting election timer for 233, new timeout: 8.58359473474596
+Leader 233 sending heartbeat & Renewing Lease
+Leader 233 sending heartbeat & Renewing Lease
+Leader 233 sending heartbeat & Renewing Lease
+Leader 233 sending heartbeat & Renewing Lease
+Leader 233 sending heartbeat & Renewing Lease
+Leader 233 sending heartbeat & Renewing Lease
+Leader 233 sending heartbeat & Renewing Lease
+Leader 233 sending heartbeat & Renewing Lease

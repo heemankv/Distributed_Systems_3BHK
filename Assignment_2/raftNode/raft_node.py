@@ -263,7 +263,7 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
 
         # self.dump("Duration left for leader lease: "+str(self.old_leader_lease_timestamp-datetime.now(timezone.utc)))
         self.dump(f"New Leader node {self.node_id} waiting for Old Leader Lease to timeout.")
-        while(self.old_leader_lease_timestamp!=None and datetime.now(timezone.utc) < self.old_leader_lease_timestamp):
+        while(self.leader_lease_end_timestamp is None and self.old_leader_lease_timestamp!=None and datetime.now(timezone.utc) < self.old_leader_lease_timestamp):
             pass
         
         
@@ -284,7 +284,7 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
     # Become follower    
     def become_follower(self, reason = 'default'):
         if self.state != 'follower':
-            self.stop_leader_lease_timer()
+            # self.stop_leader_lease_timer()
             self.stop_heartbeats()
             self.dump(f'{self.node_id} Stepping down: {reason}')
             self.state = "follower"              
@@ -331,12 +331,20 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
     #LeaderLease related functions
     
     def reset_leader_lease_timer(self):        
-        self.stop_leader_lease_timer()
+        # self.stop_leader_lease_timer()
         # TODO: Add the follower condition?
-        self.leader_lease_timer = threading.Timer(leader_lease_timeout, self.become_follower, args=[f"Leader Lease Timeout, Stepping down as {self.state}."])        
+        # self.leader_lease_timer = threading.Timer(leader_lease_timeout, self.become_follower, args=[f"Leader Lease Timeout, Stepping down as {self.state}."])        
+
+        if(self.leader_lease_timer):
+            self.leader_lease_timer.cancel()
+            self.leader_lease_timer=None
+
+        self.leader_lease_end_timestamp=None
+        self.leader_lease_timer = threading.Timer(leader_lease_timeout, self.stop_leader_lease_timer)
         self.leader_lease_timer.start()
         self.leader_lease_end_timestamp= datetime.now(timezone.utc) + timedelta(seconds=leader_lease_timeout)
         self.old_leader_lease_timestamp=self.leader_lease_end_timestamp
+        
         # self.dump("Leader lease timestamp:"+str(self.leader_lease_end_timestamp))
 
     def stop_leader_lease_timer(self):
@@ -344,6 +352,8 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
             self.leader_lease_timer.cancel()
             self.leader_lease_timer=None
         self.leader_lease_end_timestamp=None
+        if self.state!='follower':
+            self.become_follower("Leader Lease Timeout, Stepping down as leader.")
 
     def reset_election_timer(self):
         self.election_timer.cancel()
@@ -694,7 +704,7 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
         self.dump(f'Node {self.node_id} received a {request.request} request.')
         request = request.request + ' ' + str(self.term)
         if("GET" in request):                        
-            if(self.state == "leader"):
+            if(self.leader_lease_end_timestamp is not None):
                 return self.GET_handler(request)
             else:
                 print(self.leaderId)

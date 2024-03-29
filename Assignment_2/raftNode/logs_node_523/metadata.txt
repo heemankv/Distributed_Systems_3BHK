@@ -1,0 +1,3 @@
+commitLength: 15
+term: 14
+voted_for: None
