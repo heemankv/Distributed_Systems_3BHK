@@ -2,48 +2,6 @@ syntax = "proto3";
 
 package raftNode;
 
-
-message LogRequest {
-  int32 LeaderId = 1;
-  int32 Term = 2;
-  int32 PrefixLen = 3;
-  int32 PrefixTerm = 4;
-  int32 CommitLength = 5;
-  repeated LogEntry Suffix = 6;
-}
-
-message LogReply {
-  int32 AckedLength = 1;
-}
-
-
-message BroadcastMessageRequest {
-  int32 NodeId = 1;
-  string Message = 2;
-  int32 Term = 3;
-}
-
-message BroadcastMessageReply {
-  int32 AckedLength = 1;
-}
-
-message PeriodicTaskRequest {
-  int32 NodeId = 1;
-}
-
-message PeriodicTaskReply {
-  int32 AckedLength = 1;
-}
-
-message AppendEntriesRequest {
-  int32 term = 1;
-  int32 leaderId = 2;
-  int32 prevLogIndex = 3;
-  int32 prevLogTerm = 4;
-  repeated LogEntry entries = 5;
-  int32 leaderCommit = 6;
-}
-
 message LogEntriesRequest {
   int32 leaderId = 1;
   int32 term = 2;
@@ -61,21 +19,6 @@ message LogEntriesResponse {
   bool success = 4;
 }
 
-message AppendEntriesResponse {
-  int32 term = 1;
-  bool success = 2;
-}
-
-
-service RaftNodeService {
-  rpc RequestVote (RequestVoteRequest) returns (RequestVoteResponse) {}
-  rpc AppendEntries (AppendEntriesRequest) returns (AppendEntriesResponse) {}
-  rpc LogRequest (LogEntriesRequest) returns (LogEntriesResponse) {}
-  rpc ServeClient (ServeClientArgs) returns (ServeClientResponse) {}
-  rpc BroadcastMessage(BroadcastMessageRequest) returns (BroadcastMessageReply) {}
-  rpc PeriodicTask(PeriodicTaskRequest) returns (PeriodicTaskReply) {}
-}
-
 message RequestVoteRequest {
   int32 term = 1;
   int32 candidateId = 2;
@@ -89,37 +32,19 @@ message RequestVoteResponse {
   float oldLeaderLeaseDuration=3;
 }
 
-
-message LogEntry {
-  int32 term = 1;
-  int32 index = 2;
-  string operation = 3;
-}
-
 message ServeClientArgs {
   string request = 1;
 }
-
-// message ServeClientSuccessReply {
-//   string data = 1;
-//   string leaderAddress = 2;
-//   bool success = 3;
-// }
-
-// message ServeClientFailureReply {
-//   string leaderAddress = 2;
-//   bool success = 3;
-// }
-
-// message ServeClientResponse {
-//   oneof reply {
-//     ServeClientSuccessReply successReply = 1;
-//     ServeClientFailureReply failureReply = 2;
-//   }
-// }
 
 message ServeClientResponse {
   string data = 1;
   int32 leaderId = 2;
   bool success = 3;
+}
+
+
+service RaftNodeService {
+  rpc RequestVote (RequestVoteRequest) returns (RequestVoteResponse) {}
+  rpc LogRequest (LogEntriesRequest) returns (LogEntriesResponse) {}
+  rpc ServeClient (ServeClientArgs) returns (ServeClientResponse) {}
 }

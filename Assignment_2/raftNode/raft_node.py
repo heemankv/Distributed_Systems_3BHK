@@ -262,7 +262,8 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
         self.leaderId = self.node_id
 
         # self.dump("Duration left for leader lease: "+str(self.old_leader_lease_timestamp-datetime.now(timezone.utc)))
-        self.dump(f"New Leader node {self.node_id} waiting for Old Leader Lease to timeout.")
+        if self.leader_lease_end_timestamp is None:
+            self.dump(f"New Leader node {self.node_id} waiting for Old Leader Lease to timeout.")
         while(self.leader_lease_end_timestamp is None and self.old_leader_lease_timestamp!=None and datetime.now(timezone.utc) < self.old_leader_lease_timestamp):
             pass
         

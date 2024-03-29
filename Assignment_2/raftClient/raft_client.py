@@ -1,6 +1,6 @@
 import os
-import random
 import sys
+import time
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'raftNode'))
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'utils'))
@@ -16,12 +16,8 @@ import raftClient_pb2 as raftClient_pb2
 import raftClient_pb2_grpc as raftClient_pb2_grpc
 
 
-# TODO: Store the node ids as an array here : 
-# The client stores the IP addresses and ports of all the nodes.
-# The client stores the current leader ID, although this information might get outdated.
-
 class RaftClient(raftClient_pb2_grpc.RaftClientServiceServicer):
-    def __init__(self, num_nodes):                
+    def __init__(self):                
         self.leader_address = None
 
     def client_request(self, command):
@@ -48,14 +44,15 @@ class RaftClient(raftClient_pb2_grpc.RaftClientServiceServicer):
                     print("SUCCESS")
                     return response
                 else:       
-                    print("DIFFERENT LEADER: ", response.leaderId)             
+                    print("FAILURE")
+                    print("Different leader: ", response.leaderId)             
                     self.leader_address = peers[response.leaderId]
                     self.channel = grpc.insecure_channel(self.leader_address)
                     self.stub = raft_pb2_grpc.RaftNodeServiceStub(self.channel)
             
             except Exception as e:                
                 print(f'Error connecting to leader {self.leader_address}')                                                           
-
+                time.sleep(0.5)
                 self.idx += 1
                 self.leader_address = peers[node_ids[self.idx % len(node_ids)]]
                 self.channel = grpc.insecure_channel(self.leader_address)
@@ -81,11 +78,7 @@ if __name__ == "__main__":
     # Send the command to the leader
     # Print the response
 
-    num_nodes = int(os.getenv("NUM_NODES"))
-
-    # Take the first node as the leader and try to connect to it 
-    leader_id = int(os.getenv("NODE_1_ID"))
-
+    num_nodes = int(os.getenv("NUM_NODES"))    
     peers = {}
     for i in range(1, num_nodes+1):        
             index = str(i)
@@ -93,15 +86,9 @@ if __name__ == "__main__":
             value = f'{os.getenv(f"NODE_{index}_IP")}:{os.getenv(f"NODE_{index}_PORT")}'
             peers[key] = value
     
-    client = RaftClient(num_nodes)
-
-    
+    client = RaftClient()
     
     while True:
-        # EXAMPLE COMMANDS:
-        # 'SET x 10' -> SET X
-        # 'GET x' -> GET X
-
         command = input("Enter command: ")
         command = command.upper()
 

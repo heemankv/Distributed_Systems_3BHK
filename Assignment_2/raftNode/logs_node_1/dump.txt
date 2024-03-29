@@ -1,0 +1,216 @@
+Node 1 election timer timed out, Starting election For Term 1.
+Node 1 became the leader for term 1.
+New Leader node 1 waiting for Old Leader Lease to timeout.
+Resetting election timer for 1, new timeout: 7.680338991408409
+Leader 1 sending heartbeat & Renewing Lease
+Node 1 received a SET X 5 request.
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Node 1 election timer timed out, Starting election For Term 2.
+1 Stepping down: Leader Lease Timeout, Stepping down as leader.
+Node 1 became the leader for term 2.
+New Leader node 1 waiting for Old Leader Lease to timeout.
+Resetting election timer for 1, new timeout: 5.122976367667798
+Node 1 received a GET X request.
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Node 1 election timer timed out, Starting election For Term 3.
+1 Stepping down: Leader Lease Timeout, Stepping down as leader.
+Node 1 became the leader for term 3.
+New Leader node 1 waiting for Old Leader Lease to timeout.
+Resetting election timer for 1, new timeout: 9.90482059784134
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Node 1 election timer timed out, Starting election For Term 4.
+1 Stepping down: Leader Lease Timeout, Stepping down as leader.
+Node 1 became the leader for term 4.
+New Leader node 1 waiting for Old Leader Lease to timeout.
+Resetting election timer for 1, new timeout: 7.951525725496798
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Node 1 election timer timed out, Starting election For Term 5.
+1 Stepping down: Leader Lease Timeout, Stepping down as leader.
+Node 1 became the leader for term 5.
+New Leader node 1 waiting for Old Leader Lease to timeout.
+Resetting election timer for 1, new timeout: 5.647770084652318
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Node 1 election timer timed out, Starting election For Term 6.
+1 Stepping down: Leader Lease Timeout, Stepping down as leader.
+Node 1 became the leader for term 6.
+New Leader node 1 waiting for Old Leader Lease to timeout.
+Resetting election timer for 1, new timeout: 9.440952981701649
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Node 1 election timer timed out, Starting election For Term 7.
+1 Stepping down: Leader Lease Timeout, Stepping down as leader.
+Node 1 became the leader for term 7.
+New Leader node 1 waiting for Old Leader Lease to timeout.
+Resetting election timer for 1, new timeout: 7.900324010794844
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Node 1 election timer timed out, Starting election For Term 8.
+1 Stepping down: Leader Lease Timeout, Stepping down as leader.
+Node 1 became the leader for term 8.
+New Leader node 1 waiting for Old Leader Lease to timeout.
+Resetting election timer for 1, new timeout: 6.966073350448092
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Node 1 election timer timed out, Starting election For Term 9.
+1 Stepping down: Leader Lease Timeout, Stepping down as leader.
+Node 1 became the leader for term 9.
+New Leader node 1 waiting for Old Leader Lease to timeout.
+Resetting election timer for 1, new timeout: 7.032553648850189
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Node 1 election timer timed out, Starting election For Term 10.
+1 Stepping down: Leader Lease Timeout, Stepping down as leader.
+Node 1 became the leader for term 10.
+New Leader node 1 waiting for Old Leader Lease to timeout.
+Resetting election timer for 1, new timeout: 7.935195427425635
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Node 1 election timer timed out, Starting election For Term 11.
+1 Stepping down: Leader Lease Timeout, Stepping down as leader.
+Node 1 became the leader for term 11.
+New Leader node 1 waiting for Old Leader Lease to timeout.
+Resetting election timer for 1, new timeout: 7.158953380560514
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Node 1 election timer timed out, Starting election For Term 12.
+1 Stepping down: Leader Lease Timeout, Stepping down as leader.
+Node 1 became the leader for term 12.
+New Leader node 1 waiting for Old Leader Lease to timeout.
+Resetting election timer for 1, new timeout: 5.270519905577621
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Node 1 election timer timed out, Starting election For Term 13.
+1 Stepping down: Leader Lease Timeout, Stepping down as leader.
+Node 1 became the leader for term 13.
+New Leader node 1 waiting for Old Leader Lease to timeout.
+Resetting election timer for 1, new timeout: 5.669996380817114
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Node 1 election timer timed out, Starting election For Term 14.
+1 Stepping down: Leader Lease Timeout, Stepping down as leader.
+Node 1 became the leader for term 14.
+New Leader node 1 waiting for Old Leader Lease to timeout.
+Resetting election timer for 1, new timeout: 9.709233766352561
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Node 1 election timer timed out, Starting election For Term 15.
+1 Stepping down: Leader Lease Timeout, Stepping down as leader.
+Node 1 became the leader for term 15.
+New Leader node 1 waiting for Old Leader Lease to timeout.
+Resetting election timer for 1, new timeout: 6.135802511470758
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Node 1 election timer timed out, Starting election For Term 16.
+1 Stepping down: Leader Lease Timeout, Stepping down as leader.
+Node 1 became the leader for term 16.
+New Leader node 1 waiting for Old Leader Lease to timeout.
+Resetting election timer for 1, new timeout: 6.330020274480454
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Node 1 election timer timed out, Starting election For Term 17.
+1 Stepping down: Leader Lease Timeout, Stepping down as leader.
+Node 1 became the leader for term 17.
+New Leader node 1 waiting for Old Leader Lease to timeout.
+Resetting election timer for 1, new timeout: 9.552394683450384
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Node 1 election timer timed out, Starting election For Term 18.
+1 Stepping down: Leader Lease Timeout, Stepping down as leader.
+Node 1 became the leader for term 18.
+New Leader node 1 waiting for Old Leader Lease to timeout.
+Resetting election timer for 1, new timeout: 9.550251937952709
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
+Leader 1 sending heartbeat & Renewing Lease
