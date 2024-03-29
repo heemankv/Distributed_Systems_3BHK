@@ -1,3 +1,3 @@
-commitLength: 0
-term: 18
-voted_for: 1
+commitLength: 70
+term: 67
+voted_for: 2

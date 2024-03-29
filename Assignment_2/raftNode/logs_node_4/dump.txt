@@ -1,0 +1,1057 @@
+Node 4 received RequestVote RPC from 2 in term 1.
+Resetting election timer for Node 4, new timeout: 8.188842628995571
+Vote granted for Node 2 in term 1
+Resetting election timer for Node 4, new timeout: 8.427351092499633
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 6.622710782341272
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 8.314970225561702
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 5.417861969958747
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 9.17674591256725
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 6.103906957528348
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 5.890030058709735
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 8.879842341328272
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 8.807724619118346
+Node 4 accepted AppendEntries RPC from 2.
+Node 4 received RequestVote RPC from 2 in term 2.
+Resetting election timer for Node 4, new timeout: 6.394997532306981
+Vote granted for Node 2 in term 2
+Resetting election timer for Node 4, new timeout: 9.05929855463918
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 9.827849427416215
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 9.420973108164958
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 7.337103065824957
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 8.112101886164488
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 5.949660821722822
+Node 4 accepted AppendEntries RPC from 2.
+Node 4 received RequestVote RPC from 2 in term 3.
+Resetting election timer for Node 4, new timeout: 8.179590199510379
+Vote granted for Node 2 in term 3
+Resetting election timer for Node 4, new timeout: 9.963288134849124
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 7.274080317415274
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 8.839588539022271
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 7.265677859390541
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 9.65794061458605
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 5.002840103941024
+Node 4 accepted AppendEntries RPC from 2.
+Node 4 received RequestVote RPC from 2 in term 4.
+Resetting election timer for Node 4, new timeout: 6.7498671220945905
+Vote granted for Node 2 in term 4
+Resetting election timer for Node 4, new timeout: 5.450500661731019
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 7.080351912121942
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 7.322993273871443
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 6.5890322390213605
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 5.806066451656485
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 5.199162460928494
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 5.0381100186110555
+Node 4 accepted AppendEntries RPC from 2.
+Node 4 received RequestVote RPC from 2 in term 5.
+Resetting election timer for Node 4, new timeout: 9.386670859786275
+Vote granted for Node 2 in term 5
+Resetting election timer for Node 4, new timeout: 8.588482709639495
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 5.478121579307077
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 9.303138412377423
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 5.249160066106176
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 7.117650276857761
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 5.462154055173102
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 8.790005734786607
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 6.21950900820569
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 6.841767789072653
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 8.687320210877086
+Node 4 accepted AppendEntries RPC from 2.
+Node 4 received RequestVote RPC from 2 in term 6.
+Resetting election timer for Node 4, new timeout: 9.876858768092813
+Vote granted for Node 2 in term 6
+Resetting election timer for Node 4, new timeout: 8.442340535540554
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 5.741535173145261
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 6.1553307422810875
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 7.723410261958454
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 6.266486121426661
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 7.458702003484493
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 7.53862386552187
+Node 4 accepted AppendEntries RPC from 2.
+Node 4 received RequestVote RPC from 2 in term 7.
+Resetting election timer for Node 4, new timeout: 5.112706970131913
+Vote granted for Node 2 in term 7
+Resetting election timer for Node 4, new timeout: 5.92366026258581
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 5.863080670635067
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 6.941240344518465
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 7.454561370561548
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 9.622622001639431
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 5.768190065178575
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 9.847869218139525
+Node 4 accepted AppendEntries RPC from 2.
+Node 4 received RequestVote RPC from 2 in term 8.
+Resetting election timer for Node 4, new timeout: 5.8020820946073055
+Vote granted for Node 2 in term 8
+Resetting election timer for Node 4, new timeout: 9.70493475891929
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 5.118887520942342
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 6.728245006754614
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 7.063320956220973
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 5.706889720653763
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 6.593195278328917
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 6.381587223741039
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 8.910456035610832
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 7.572149736482504
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 6.804659744242555
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 8.296181652392482
+Node 4 accepted AppendEntries RPC from 2.
+Node 4 received RequestVote RPC from 2 in term 9.
+Resetting election timer for Node 4, new timeout: 8.603399088489946
+Vote granted for Node 2 in term 9
+Resetting election timer for Node 4, new timeout: 6.835571387678385
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 8.234401241091165
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 9.312434342957207
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 9.520072045247657
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 5.135762294524195
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 5.884494296826987
+Node 4 accepted AppendEntries RPC from 2.
+Node 4 received RequestVote RPC from 2 in term 10.
+Resetting election timer for Node 4, new timeout: 6.536686662929983
+Vote granted for Node 2 in term 10
+Resetting election timer for Node 4, new timeout: 9.262720594551215
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 7.648477514241359
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 6.496206440693243
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 8.299369475888753
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 8.567191042657672
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 5.775677625928391
+Node 4 accepted AppendEntries RPC from 2.
+Node 4 received RequestVote RPC from 2 in term 11.
+Resetting election timer for Node 4, new timeout: 9.29659005114137
+Vote granted for Node 2 in term 11
+Resetting election timer for Node 4, new timeout: 8.959774310038966
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 8.94502310988354
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 7.880944864683448
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 8.95592341226523
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 8.181333512206265
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 5.030902578649233
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 5.189807158654952
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 7.346466592921704
+Node 4 accepted AppendEntries RPC from 2.
+Node 4 received RequestVote RPC from 2 in term 12.
+Resetting election timer for Node 4, new timeout: 9.203476349834304
+Vote granted for Node 2 in term 12
+Resetting election timer for Node 4, new timeout: 8.381006472159168
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 8.397567708771216
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 7.845868582522555
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 8.415770695317796
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 9.76524166402072
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 9.188841434975707
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 5.874971752337689
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 9.311525922031866
+Node 4 accepted AppendEntries RPC from 2.
+Node 4 received RequestVote RPC from 2 in term 13.
+Resetting election timer for Node 4, new timeout: 5.791627663581778
+Vote granted for Node 2 in term 13
+Resetting election timer for Node 4, new timeout: 7.410729198986187
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 7.128493338991733
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 6.928886984491358
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 7.098756631304923
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 6.090595542197736
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 6.803832882885068
+Node 4 accepted AppendEntries RPC from 2.
+Node 4 received RequestVote RPC from 2 in term 14.
+Resetting election timer for Node 4, new timeout: 9.981205268426994
+Vote granted for Node 2 in term 14
+Resetting election timer for Node 4, new timeout: 5.70004047359034
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 7.165523672194471
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 9.189630544222032
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 7.286474662185431
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 7.810446053477781
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 5.293721593524909
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 5.2828283963096245
+Node 4 accepted AppendEntries RPC from 2.
+Node 4 received RequestVote RPC from 2 in term 15.
+Resetting election timer for Node 4, new timeout: 9.1129693454596
+Vote granted for Node 2 in term 15
+Resetting election timer for Node 4, new timeout: 9.793096095024834
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 6.384658944962618
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 9.872658238573749
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 7.121058882924148
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 7.572786637157906
+Node 4 rejected AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 8.659963543791907
+Node 4 rejected AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 8.26502609567291
+Node 4 rejected AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 7.295902913485477
+Node 4 rejected AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 7.986370247220173
+Node 4 rejected AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 7.915471756740439
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 8.154254826983866
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 9.639330544767315
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 9.237058547258979
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 8.722820878115824
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 8.257358563895007
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 7.102086183868357
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 8.441392298051206
+Node 4 accepted AppendEntries RPC from 2.
+Node 4 received RequestVote RPC from 2 in term 20.
+Resetting election timer for Node 4, new timeout: 6.20193719204244
+Vote granted for Node 2 in term 20
+Resetting election timer for Node 4, new timeout: 6.918053384121498
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 9.986041419355278
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 5.047798292421031
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 7.432124554166399
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 6.512255093959936
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 8.048704748191657
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 9.795170640972684
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 5.716751068229865
+Node 4 accepted AppendEntries RPC from 2.
+Node 4 received RequestVote RPC from 2 in term 21.
+Resetting election timer for Node 4, new timeout: 9.524811174758714
+Vote granted for Node 2 in term 21
+Resetting election timer for Node 4, new timeout: 8.162452293923842
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 7.712211430652879
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 9.851984678461996
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 9.209984258744747
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 8.17740297225163
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 5.242049049058185
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 9.981613956916851
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 5.719312836110642
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 8.56323968516201
+Node 4 accepted AppendEntries RPC from 2.
+Node 4 received RequestVote RPC from 2 in term 22.
+Resetting election timer for Node 4, new timeout: 9.870703271148546
+Vote granted for Node 2 in term 22
+Resetting election timer for Node 4, new timeout: 7.5351534352672545
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 8.632593377156827
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 9.785397653979572
+Node 4 accepted AppendEntries RPC from 2.
+Resetting election timer for Node 4, new timeout: 8.914877326979529
+Node 4 accepted AppendEntries RPC from 2.
+Node 4 received RequestVote RPC from 5 in term 23.
+Resetting election timer for Node 4, new timeout: 8.013779063461657
+Vote granted for Node 5 in term 23
+Resetting election timer for Node 4, new timeout: 9.835585515957888
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 6.555078963371274
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 8.71500309847917
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 6.066836790213723
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 8.984512134026861
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 7.84740445595358
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 6.279319711738047
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 9.774971095668016
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 7.424740257222183
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 9.905620355789335
+Node 4 accepted AppendEntries RPC from 5.
+Node 4 received RequestVote RPC from 5 in term 24.
+Resetting election timer for Node 4, new timeout: 8.064634726668896
+Vote granted for Node 5 in term 24
+Resetting election timer for Node 4, new timeout: 9.856400004455502
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 7.182986084897827
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 8.533525800540472
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 9.442645633022822
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 8.596914804950014
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 8.322962807627597
+Node 4 accepted AppendEntries RPC from 5.
+Node 4 received RequestVote RPC from 5 in term 25.
+Resetting election timer for Node 4, new timeout: 8.393065117866845
+Vote granted for Node 5 in term 25
+Resetting election timer for Node 4, new timeout: 6.541976676229554
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 9.225707744685657
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 8.280654954585792
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 9.732483979870164
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 9.40623233047047
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 5.817820505856361
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 8.184480518125207
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 6.824182891228775
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 8.51434710598062
+Node 4 accepted AppendEntries RPC from 5.
+Node 4 received RequestVote RPC from 5 in term 26.
+Resetting election timer for Node 4, new timeout: 9.6564522292189
+Vote granted for Node 5 in term 26
+Resetting election timer for Node 4, new timeout: 7.857909662325584
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 8.889395986629456
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 9.38284647828796
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 6.723350170207798
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 7.365863131723069
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 9.501001595131392
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 7.080234042848536
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 8.070511700095176
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 6.034972727464225
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 6.532279377847469
+Node 4 accepted AppendEntries RPC from 5.
+Node 4 received RequestVote RPC from 5 in term 27.
+Resetting election timer for Node 4, new timeout: 5.762317683176331
+Vote granted for Node 5 in term 27
+Resetting election timer for Node 4, new timeout: 5.867682935036205
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 7.865717086453328
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 7.621784294789733
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 9.756104737488887
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 7.4452942675986895
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 9.750666562330732
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 6.177999681684137
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 9.50628813623429
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 5.712028803340129
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 5.570549721101567
+Node 4 accepted AppendEntries RPC from 5.
+Node 4 received RequestVote RPC from 5 in term 28.
+Resetting election timer for Node 4, new timeout: 8.112861763455154
+Vote granted for Node 5 in term 28
+Resetting election timer for Node 4, new timeout: 8.149083638047049
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 7.944672460759478
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 9.022271189006599
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 7.047647280753925
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 9.370574816536264
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 5.459443432559859
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 7.9176833807139335
+Node 4 accepted AppendEntries RPC from 5.
+Node 4 received RequestVote RPC from 5 in term 29.
+Resetting election timer for Node 4, new timeout: 8.996928807310052
+Vote granted for Node 5 in term 29
+Resetting election timer for Node 4, new timeout: 9.637632399200113
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 9.613143563632594
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 9.166208595464045
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 7.836736274843203
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 5.972390001609085
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 9.728214382946263
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 5.380437865434965
+Node 4 accepted AppendEntries RPC from 5.
+Node 4 received RequestVote RPC from 5 in term 30.
+Resetting election timer for Node 4, new timeout: 9.75033576190263
+Vote granted for Node 5 in term 30
+Resetting election timer for Node 4, new timeout: 7.65440069642351
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 5.1554923075689585
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 9.65203545768026
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 5.810344140511316
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 9.195462537168563
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 8.903998423983595
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 7.28718947722408
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 8.066086830473719
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 8.78833268870463
+Node 4 accepted AppendEntries RPC from 5.
+Node 4 received RequestVote RPC from 5 in term 31.
+Resetting election timer for Node 4, new timeout: 7.906620184935927
+Vote granted for Node 5 in term 31
+Resetting election timer for Node 4, new timeout: 9.839312432547697
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 5.307786006753995
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 6.300621302906032
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 9.88112985243171
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 9.14930173863236
+Node 4 accepted AppendEntries RPC from 5.
+Node 4 received RequestVote RPC from 5 in term 32.
+Resetting election timer for Node 4, new timeout: 9.15227259744426
+Vote granted for Node 5 in term 32
+Resetting election timer for Node 4, new timeout: 9.486395252530478
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 5.868004992912904
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 9.833596045745507
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 6.646143982028099
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 5.103495074769282
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 5.177201075834648
+Node 4 accepted AppendEntries RPC from 5.
+Node 4 received RequestVote RPC from 5 in term 33.
+Resetting election timer for Node 4, new timeout: 7.4308546003320295
+Vote granted for Node 5 in term 33
+Resetting election timer for Node 4, new timeout: 5.273699292842311
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 6.8393836583746
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 6.8592716944548755
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 9.10740055066912
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 9.682476108086078
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 5.436225788023313
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 6.10720231203879
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 8.261386919688437
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 7.128940582396455
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 5.192864214029077
+Node 4 accepted AppendEntries RPC from 5.
+Node 4 received RequestVote RPC from 5 in term 34.
+Resetting election timer for Node 4, new timeout: 5.997735885493579
+Vote granted for Node 5 in term 34
+Resetting election timer for Node 4, new timeout: 6.442595695335692
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 7.402645076994823
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 5.119352498041694
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 6.211720695479572
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 9.746544855592663
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 8.837022691649123
+Node 4 accepted AppendEntries RPC from 5.
+Node 4 received RequestVote RPC from 5 in term 35.
+Resetting election timer for Node 4, new timeout: 6.475670439446841
+Vote granted for Node 5 in term 35
+Resetting election timer for Node 4, new timeout: 6.537674250087064
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 5.825393871626512
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 7.309828577866004
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 6.627599987266478
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 9.409232338454899
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 8.708684167725238
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 5.3038765494026965
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 7.327707636694878
+Node 4 accepted AppendEntries RPC from 5.
+Node 4 received RequestVote RPC from 5 in term 36.
+Resetting election timer for Node 4, new timeout: 9.011549354514468
+Vote granted for Node 5 in term 36
+Resetting election timer for Node 4, new timeout: 9.808365606874883
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 9.80738892582428
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 5.268475951396598
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 5.498174006873958
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 8.040488079676743
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 8.897914409518311
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 6.226252199914747
+Node 4 accepted AppendEntries RPC from 5.
+Node 4 received RequestVote RPC from 5 in term 37.
+Resetting election timer for Node 4, new timeout: 8.013676683983544
+Vote granted for Node 5 in term 37
+Resetting election timer for Node 4, new timeout: 5.952022726415782
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 7.783441926038082
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 6.203320367627509
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 6.155956666985203
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 6.398277100200337
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 9.687275255979475
+Node 4 accepted AppendEntries RPC from 5.
+Node 4 received RequestVote RPC from 5 in term 38.
+Resetting election timer for Node 4, new timeout: 5.361964457971576
+Vote granted for Node 5 in term 38
+Resetting election timer for Node 4, new timeout: 9.73463717567558
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 8.149966068316653
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 7.52993704646644
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 7.7967495957961646
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 5.723166819439
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 8.751541926569839
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 5.594540112871785
+Node 4 accepted AppendEntries RPC from 5.
+Node 4 received RequestVote RPC from 5 in term 39.
+Resetting election timer for Node 4, new timeout: 5.362836823268506
+Vote granted for Node 5 in term 39
+Resetting election timer for Node 4, new timeout: 5.188934353278619
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 8.098472699249257
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 8.755514394732964
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 8.022880504321906
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 6.454516676497503
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 7.416026841867932
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 5.3829246836485085
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 6.002189314040114
+Node 4 accepted AppendEntries RPC from 5.
+Node 4 received RequestVote RPC from 5 in term 40.
+Resetting election timer for Node 4, new timeout: 5.5357860770590825
+Vote granted for Node 5 in term 40
+Resetting election timer for Node 4, new timeout: 6.949883057795575
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 5.626897677587107
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 7.272106094777308
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 8.25408005135749
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 6.385405990192288
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 8.426209195997895
+Node 4 accepted AppendEntries RPC from 5.
+Node 4 received RequestVote RPC from 5 in term 41.
+Resetting election timer for Node 4, new timeout: 5.194841761947463
+Vote granted for Node 5 in term 41
+Resetting election timer for Node 4, new timeout: 8.848074734178791
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 9.982499342984827
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 7.150455430330144
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 8.119589537106329
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 8.901180205547998
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 7.5462984356934015
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 5.887892413285053
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 7.015738379681765
+Node 4 accepted AppendEntries RPC from 5.
+Node 4 received RequestVote RPC from 5 in term 42.
+Resetting election timer for Node 4, new timeout: 8.68021837435571
+Vote granted for Node 5 in term 42
+Resetting election timer for Node 4, new timeout: 9.773415935538079
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 6.129974494048408
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 5.693085997219558
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 9.815425252511972
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 6.186058871400361
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 6.002522287482051
+Node 4 accepted AppendEntries RPC from 5.
+Node 4 received RequestVote RPC from 5 in term 43.
+Resetting election timer for Node 4, new timeout: 5.633817363749244
+Vote granted for Node 5 in term 43
+Resetting election timer for Node 4, new timeout: 9.926298226088019
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 5.197704111073401
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 9.981655357774681
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 7.6669121838093055
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 7.3433911397602
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 8.809388122645316
+Node 4 accepted AppendEntries RPC from 5.
+Node 4 received RequestVote RPC from 5 in term 44.
+Resetting election timer for Node 4, new timeout: 9.049163581644898
+Vote granted for Node 5 in term 44
+Resetting election timer for Node 4, new timeout: 5.976736306379053
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 9.604676759592731
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 5.2044662018235845
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 7.269207844239922
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 9.101392370989341
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 9.093429757194766
+Node 4 accepted AppendEntries RPC from 5.
+Node 4 received RequestVote RPC from 5 in term 45.
+Resetting election timer for Node 4, new timeout: 8.507470411378929
+Vote granted for Node 5 in term 45
+Resetting election timer for Node 4, new timeout: 8.608240550854664
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 9.449130782546812
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 6.707647023134813
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 7.181313949967393
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 8.49126753116995
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 9.350353673733057
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 8.945203973167446
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 6.471056013820025
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 8.171008092654517
+Node 4 accepted AppendEntries RPC from 5.
+Node 4 received RequestVote RPC from 5 in term 46.
+Resetting election timer for Node 4, new timeout: 8.123558880622781
+Vote granted for Node 5 in term 46
+Resetting election timer for Node 4, new timeout: 6.978894773806225
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 7.2946385143775405
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 9.531829167447409
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 5.505761358292686
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 5.846330084992956
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 7.965010162373287
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 6.957007573317642
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 9.694763300580965
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 5.663533447687318
+Node 4 accepted AppendEntries RPC from 5.
+Node 4 received RequestVote RPC from 5 in term 47.
+Resetting election timer for Node 4, new timeout: 8.26284710462282
+Vote granted for Node 5 in term 47
+Resetting election timer for Node 4, new timeout: 8.998443251139957
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 9.230252900217982
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 6.749430954392249
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 6.847137731061423
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 9.56266576478932
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 7.98415400631872
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 7.71045684119893
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 6.496375747989931
+Node 4 accepted AppendEntries RPC from 5.
+Node 4 received RequestVote RPC from 5 in term 48.
+Resetting election timer for Node 4, new timeout: 8.255812688837093
+Vote granted for Node 5 in term 48
+Resetting election timer for Node 4, new timeout: 5.500987966865253
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 6.706518508483155
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 8.235721996892337
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 9.476404394481126
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 9.154870978369102
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 5.163043765329307
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 5.852396874699092
+Node 4 accepted AppendEntries RPC from 5.
+Node 4 received RequestVote RPC from 5 in term 49.
+Resetting election timer for Node 4, new timeout: 9.864252942647447
+Vote granted for Node 5 in term 49
+Resetting election timer for Node 4, new timeout: 7.687184183194855
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 5.203604471234521
+Node 4 accepted AppendEntries RPC from 5.
+Node 4 (follower) received a GET X request.
+Node 4 election timer timed out, Starting election For Term 50.
+Error occurred while sending VoteRequest RPC to Node 1, and ip peerAddress: 127.0.0.1:5000
+Error occurred while sending VoteRequest RPC to Node 2, and ip peerAddress: 127.0.0.1:5001
+Error occurred while sending VoteRequest RPC to Node 3, and ip peerAddress: 127.0.0.1:5002
+Resetting election timer for Node 4, new timeout: 6.837977331329164
+Node 4 received RequestVote RPC from 5 in term 51.
+Resetting election timer for Node 4, new timeout: 5.032629695575991
+Vote granted for Node 5 in term 51
+Node 4 (follower) received a GET X request.
+Node 4 election timer timed out, Starting election For Term 52.
+Error occurred while sending VoteRequest RPC to Node 1, and ip peerAddress: 127.0.0.1:5000
+Error occurred while sending VoteRequest RPC to Node 2, and ip peerAddress: 127.0.0.1:5001
+Error occurred while sending VoteRequest RPC to Node 3, and ip peerAddress: 127.0.0.1:5002
+Resetting election timer for Node 4, new timeout: 8.64873999155868
+Node 4 (follower) received a GET X request.
+Node 4 received RequestVote RPC from 5 in term 53.
+Resetting election timer for Node 4, new timeout: 7.51359899497343
+Vote granted for Node 5 in term 53
+Resetting election timer for Node 4, new timeout: 9.59611703182711
+Node 4 accepted AppendEntries RPC from 5.
+Node 4 (follower) received a GET X request.
+Resetting election timer for Node 4, new timeout: 9.772237808054157
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 7.47930221072474
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 5.352696814174025
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 5.3809475447551955
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 5.2274483323026715
+Node 4 accepted AppendEntries RPC from 5.
+Node 4 received RequestVote RPC from 5 in term 54.
+Resetting election timer for Node 4, new timeout: 5.631690055092647
+Vote granted for Node 5 in term 54
+Node 4 election timer timed out, Starting election For Term 55.
+Error occurred while sending VoteRequest RPC to Node 1, and ip peerAddress: 127.0.0.1:5000
+Error occurred while sending VoteRequest RPC to Node 2, and ip peerAddress: 127.0.0.1:5001
+Error occurred while sending VoteRequest RPC to Node 3, and ip peerAddress: 127.0.0.1:5002
+Error occurred while sending VoteRequest RPC to Node 5, and ip peerAddress: 127.0.0.1:5004
+Resetting election timer for Node 4, new timeout: 8.658098880282495
+Node 4 received RequestVote RPC from 5 in term 56.
+Resetting election timer for Node 4, new timeout: 5.9567192716234025
+Vote granted for Node 5 in term 56
+Resetting election timer for Node 4, new timeout: 6.791777665727871
+Node 4 rejected AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 5.87862627178965
+Node 4 rejected AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 5.574711361416677
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 9.840530961945227
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 9.20031231106518
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 7.604978051245796
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 9.945105277012578
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 9.912955324934483
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 5.504553388816611
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 5.901170747216718
+Node 4 accepted AppendEntries RPC from 5.
+Node 4 received RequestVote RPC from 5 in term 57.
+Resetting election timer for Node 4, new timeout: 8.071942046842597
+Vote granted for Node 5 in term 57
+Resetting election timer for Node 4, new timeout: 8.92817924792174
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 8.106521874016366
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 7.784494160799243
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 7.493323461533548
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 8.960390611119792
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 9.197318379632843
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 8.334683449860185
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 5.922680700704506
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 7.630749141449887
+Node 4 accepted AppendEntries RPC from 5.
+Node 4 received RequestVote RPC from 5 in term 58.
+Resetting election timer for Node 4, new timeout: 7.932773953118216
+Vote granted for Node 5 in term 58
+Resetting election timer for Node 4, new timeout: 7.040394300973378
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 5.363394774582183
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 9.556758055613201
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 7.565475555715575
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 6.136987429892123
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 6.952081312043248
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 9.275734150710893
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 6.432672586819352
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 8.900228322296334
+Node 4 accepted AppendEntries RPC from 5.
+Node 4 received RequestVote RPC from 5 in term 59.
+Resetting election timer for Node 4, new timeout: 7.744244054177872
+Vote granted for Node 5 in term 59
+Resetting election timer for Node 4, new timeout: 9.76879534708831
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 6.785940170873015
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 9.568400086254247
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 9.33068067027173
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 5.333134566203238
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 7.874399115993672
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 8.062337577529602
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 6.7215970939627745
+Node 4 accepted AppendEntries RPC from 5.
+Node 4 received RequestVote RPC from 5 in term 60.
+Resetting election timer for Node 4, new timeout: 5.904885903254983
+Vote granted for Node 5 in term 60
+Resetting election timer for Node 4, new timeout: 7.977612663505757
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 6.775142095864789
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 8.53961924647019
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 6.9203868568341225
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 6.909049861819003
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 9.324726088867191
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 6.200764178171306
+Node 4 accepted AppendEntries RPC from 5.
+Node 4 received RequestVote RPC from 5 in term 61.
+Resetting election timer for Node 4, new timeout: 7.547896408268684
+Vote granted for Node 5 in term 61
+Resetting election timer for Node 4, new timeout: 9.090782568109212
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 7.329597084314667
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 9.862155918617947
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 9.291555259372508
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 8.427372054526437
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 8.389827404789564
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 5.252984909881553
+Node 4 accepted AppendEntries RPC from 5.
+Node 4 received RequestVote RPC from 5 in term 62.
+Resetting election timer for Node 4, new timeout: 6.730302251272931
+Vote granted for Node 5 in term 62
+Resetting election timer for Node 4, new timeout: 6.32642487658126
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 9.454274906612106
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 6.187347463783409
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 9.802781712620767
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 9.019660249329148
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 7.734038396629346
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 9.0909259709946
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 5.748602456572687
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 5.646799779103396
+Node 4 accepted AppendEntries RPC from 5.
+Node 4 received RequestVote RPC from 5 in term 63.
+Resetting election timer for Node 4, new timeout: 9.55211034366507
+Vote granted for Node 5 in term 63
+Resetting election timer for Node 4, new timeout: 9.289134437642506
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 9.920611286324764
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 8.979053132628085
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 6.634518139084532
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 7.425543012315789
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 6.87533681096969
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 9.25347055890266
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 7.7398283062367526
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 8.88232127200703
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 8.331420399269128
+Node 4 accepted AppendEntries RPC from 5.
+Node 4 received RequestVote RPC from 5 in term 64.
+Resetting election timer for Node 4, new timeout: 5.8308260198143405
+Vote granted for Node 5 in term 64
+Resetting election timer for Node 4, new timeout: 8.783633772449607
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 7.294438161510191
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 6.367254699345482
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 8.446034092437987
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 9.590735174086596
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 5.5639577654294134
+Node 4 accepted AppendEntries RPC from 5.
+Node 4 received RequestVote RPC from 5 in term 65.
+Resetting election timer for Node 4, new timeout: 7.829104816560425
+Vote granted for Node 5 in term 65
+Resetting election timer for Node 4, new timeout: 7.941588367851006
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 7.514257467591866
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 9.100449507365223
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 6.056813056906645
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 9.485795649475948
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 8.509397395825005
+Node 4 accepted AppendEntries RPC from 5.
+Node 4 received RequestVote RPC from 5 in term 66.
+Resetting election timer for Node 4, new timeout: 7.894430133653033
+Vote granted for Node 5 in term 66
+Resetting election timer for Node 4, new timeout: 9.26710154704297
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 6.953043374455676
+Node 4 accepted AppendEntries RPC from 5.
+Resetting election timer for Node 4, new timeout: 7.31905206347199
+Node 4 accepted AppendEntries RPC from 5.
