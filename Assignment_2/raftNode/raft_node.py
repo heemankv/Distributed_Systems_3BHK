@@ -23,7 +23,6 @@ def election_timeout():
     return random.uniform(5, 10)
 
 '''
-TODO: Decide on a approach for leader lease. 
 PROBLEM: 
 Currently whenever a node becomes a leader, it needs to wait for the old leader lease to end.
 While waiting it is possible that the election timer of another node might end. This new node hence becomes leader.
@@ -44,7 +43,6 @@ Solution:
 '''
 
 # TODO: Threading (@heemank bsdk)
-# TODO: Followers not dumping commit msg
 # TODO: Invalid client requests not being handled
 
 #Assumptions:
@@ -430,7 +428,8 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
                 self.update_log(suffix[i])
         
         if leader_commit_len > self.commit_index:
-            for i in range(self.commit_index, leader_commit_len-1):
+            for i in range(self.commit_index, leader_commit_len):
+                self.dump(f'Node {self.node_id} ({self.state}) committed entry {self.log[i]} to the state machine.')                    
                 operation=self.log[i].split()[0]
                 if(operation=="SET"):
                     self.internal_set_handler(self.log[i])                

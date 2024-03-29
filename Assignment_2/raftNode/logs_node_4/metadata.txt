@@ -1,3 +1,0 @@
-commitLength: 70
-term: 66
-voted_for: None
