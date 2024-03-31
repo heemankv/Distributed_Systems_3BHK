@@ -15,7 +15,7 @@ from concurrent import futures
 import threading
 import random
 from datetime import datetime, timezone, timedelta
-from utils import  run_thread_returnable
+from utils import run_thread
 
 leader_lease_timeout = 4
 
@@ -506,7 +506,7 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
         except Exception as e:
             print(f"Node {followerID} down")    
             self.dump(f'Error occurred while sending AppendEntries RPC to Node {followerID}, and ip peerAddress: {followerAddress}')
-            return replicatedLogResponse | None
+            # return replicatedLogResponse | None
 
 
     def acks(self,length):
@@ -552,7 +552,7 @@ class RaftNode(raftNode_pb2_grpc.RaftNodeServiceServicer):
                 # https://alexandra-zaharia.github.io/posts/how-to-return-a-result-from-a-python-thread/
                 # TODO: @Heemank, use this type of threading mannnnnnn
                 # self.ReplicateLog(self.node_id, followerID, followerAddress)
-                run_thread_returnable(
+                run_thread(
                     fn=self.ReplicateLog, args=(self.node_id, followerID, followerAddress)) 
                 
             return raftNode_pb2.ServeClientResponse(data = "OK", leaderId=self.leaderId, success=True)                                

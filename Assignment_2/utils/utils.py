@@ -14,5 +14,5 @@ def run_thread_returnable(fn, args):
     # my_thread.daemon = True
     thread1.start()
     result = thread1.join()
-    print(f'returns ({args}) = {result}')
+    # print(f'returns ({args}) = {result}')
     return result
