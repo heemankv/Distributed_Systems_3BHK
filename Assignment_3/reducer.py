@@ -39,7 +39,7 @@ class Reducer(kmeans_pb2_grpc.ReducerServiceServicer):
             
             reducerReponse = kmeans_pb2.ReducerResponse(reducer_id = request.reducer_id, success=True, message = "SUCCESS")
             print(new_centroids)
-            for i in range(len(new_centroids)):
+            for i in new_centroids.keys():
                 reducerReponse.new_centroids[i].key = 0
                 reducerReponse.new_centroids[i].values.extend(new_centroids[i])
 

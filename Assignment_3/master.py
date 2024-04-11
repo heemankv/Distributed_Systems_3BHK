@@ -7,6 +7,8 @@ import time, os
 import math
 from dotenv import load_dotenv
 
+# TODO: Implement Fault Tolerance
+
 class Master:
     def __init__(self, n_mappers, n_reducers, data_file, k, max_iters):
         self.n_mappers = n_mappers
@@ -28,7 +30,8 @@ class Master:
             centroids.append(self.get_random_data_point())            
         return centroids
 
-    def get_random_data_point(self):        
+    def get_random_data_point(self): 
+        #TODO: centroids should not be same
         return (sample(range(10), 1)[0], sample(range(10), 1)[0])
 
     def read_data_points(self):
@@ -44,6 +47,7 @@ class Master:
         return mapper_stubs
 
     def split_data_for_mappers(self):
+        # TODO: Could be randomized, let's see
         data_points = self.read_data_points()
         split_size = len(data_points) // len(self.mapper_ids)        
         split_indices = [(i * split_size, (i + 1) * split_size) for i in range(len(self.mapper_ids))]
@@ -89,7 +93,8 @@ class Master:
             reduce_responses.append(response)
         return reduce_responses
 
-    def execute(self):        
+    def execute(self):       
+        # TODO: Stop when the centroids converge 
         for iter in range(self.max_iters):
             with open('Data/centroids.txt', 'w') as f:
                 f.write(str(self.centroids))
@@ -147,7 +152,7 @@ if __name__ == '__main__':
     n_reducers = int(os.getenv("n_reducers"))
 
     # master = Master(mapper_ids=[1,2], reducer_ids = [1,2], data_file='Data/Input/points.txt', k=3, max_iters=1)
-    master = Master(n_mappers = n_mappers, n_reducers = n_reducers, data_file='Data/Input/points.txt', k=3, max_iters=10)
+    master = Master(n_mappers = n_mappers, n_reducers = n_reducers, data_file='Data/Input/points.txt', k=5, max_iters=10)
 
     master.execute()
             

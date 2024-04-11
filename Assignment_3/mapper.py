@@ -30,8 +30,8 @@ class Mapper(kmeans_pb2_grpc.MapperServiceServicer):
                 assignments.append((closest_centroid, data_point))
             
             partitions = self.create_partitions(assignments, no_of_reducers=int(os.getenv('n_reducers')))
-            self.create_partition_files(partitions, self.mapper_id)            
-
+            self.create_partition_files(partitions, self.mapper_id)   
+                                    
             return kmeans_pb2.MapResponse(success=True, message='Mapping completed successfully.')
         except Exception as e:
             return kmeans_pb2.MapResponse(success=False, message=str(e))
