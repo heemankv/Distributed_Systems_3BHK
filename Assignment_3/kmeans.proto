@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package kmeans;
+
+service MapperService {  
+  rpc RunMap(MapRequest) returns (MapResponse) {}
+}
+
+message MapRequest {
+  int32 mapper_id = 1;
+  repeated double centroids = 2; // Flatten the centroids into a 1D array for simplicity
+  int32 index_start = 3; 
+  int32 index_end = 4;
+}
+
+message MapResponse {
+  bool success = 1;
+  string message = 2; // Include error message if not successful
+}
