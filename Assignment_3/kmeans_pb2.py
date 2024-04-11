@@ -14,17 +14,33 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0ckmeans.proto\x12\x06kmeans\"Z\n\nMapRequest\x12\x11\n\tmapper_id\x18\x01 \x01(\x05\x12\x11\n\tcentroids\x18\x02 \x03(\x01\x12\x13\n\x0bindex_start\x18\x03 \x01(\x05\x12\x11\n\tindex_end\x18\x04 \x01(\x05\"/\n\x0bMapResponse\x12\x0f\n\x07success\x18\x01 \x01(\x08\x12\x0f\n\x07message\x18\x02 \x01(\t2D\n\rMapperService\x12\x33\n\x06RunMap\x12\x12.kmeans.MapRequest\x1a\x13.kmeans.MapResponse\"\x00\x62\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0ckmeans.proto\x12\x06kmeans\"Z\n\nMapRequest\x12\x11\n\tmapper_id\x18\x01 \x01(\x05\x12\x11\n\tcentroids\x18\x02 \x03(\x01\x12\x13\n\x0bindex_start\x18\x03 \x01(\x05\x12\x11\n\tindex_end\x18\x04 \x01(\x05\"/\n\x0bMapResponse\x12\x0f\n\x07success\x18\x01 \x01(\x08\x12\x0f\n\x07message\x18\x02 \x01(\t\"-\n\x17IntermediateDataRequest\x12\x12\n\nreducer_id\x18\x01 \x01(\x05\"K\n\x18IntermediateDataResponse\x12\x0f\n\x07success\x18\x01 \x01(\x08\x12\x0f\n\x07message\x18\x02 \x01(\t\x12\r\n\x05pairs\x18\x03 \x03(\t\">\n\x0eReducerRequest\x12\x12\n\nreducer_id\x18\x01 \x01(\x05\x12\x18\n\x10mapper_addresses\x18\x02 \x03(\t\"+\n\x0cKeyValuePair\x12\x0b\n\x03key\x18\x01 \x01(\x05\x12\x0e\n\x06values\x18\x02 \x03(\x02\"\xd4\x01\n\x0fReducerResponse\x12\x12\n\nreducer_id\x18\x01 \x01(\x05\x12\x0f\n\x07success\x18\x02 \x01(\x08\x12\x0f\n\x07message\x18\x03 \x01(\t\x12@\n\rnew_centroids\x18\x04 \x03(\x0b\x32).kmeans.ReducerResponse.NewCentroidsEntry\x1aI\n\x11NewCentroidsEntry\x12\x0b\n\x03key\x18\x01 \x01(\x05\x12#\n\x05value\x18\x02 \x01(\x0b\x32\x14.kmeans.KeyValuePair:\x02\x38\x01\x32\xa0\x01\n\rMapperService\x12\x33\n\x06RunMap\x12\x12.kmeans.MapRequest\x1a\x13.kmeans.MapResponse\"\x00\x12Z\n\x13GetIntermediateData\x12\x1f.kmeans.IntermediateDataRequest\x1a .kmeans.IntermediateDataResponse\"\x00\x32Q\n\x0eReducerService\x12?\n\nRunReducer\x12\x16.kmeans.ReducerRequest\x1a\x17.kmeans.ReducerResponse\"\x00\x62\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'kmeans_pb2', _globals)
 if _descriptor._USE_C_DESCRIPTORS == False:
   DESCRIPTOR._options = None
+  _globals['_REDUCERRESPONSE_NEWCENTROIDSENTRY']._options = None
+  _globals['_REDUCERRESPONSE_NEWCENTROIDSENTRY']._serialized_options = b'8\001'
   _globals['_MAPREQUEST']._serialized_start=24
   _globals['_MAPREQUEST']._serialized_end=114
   _globals['_MAPRESPONSE']._serialized_start=116
   _globals['_MAPRESPONSE']._serialized_end=163
-  _globals['_MAPPERSERVICE']._serialized_start=165
-  _globals['_MAPPERSERVICE']._serialized_end=233
+  _globals['_INTERMEDIATEDATAREQUEST']._serialized_start=165
+  _globals['_INTERMEDIATEDATAREQUEST']._serialized_end=210
+  _globals['_INTERMEDIATEDATARESPONSE']._serialized_start=212
+  _globals['_INTERMEDIATEDATARESPONSE']._serialized_end=287
+  _globals['_REDUCERREQUEST']._serialized_start=289
+  _globals['_REDUCERREQUEST']._serialized_end=351
+  _globals['_KEYVALUEPAIR']._serialized_start=353
+  _globals['_KEYVALUEPAIR']._serialized_end=396
+  _globals['_REDUCERRESPONSE']._serialized_start=399
+  _globals['_REDUCERRESPONSE']._serialized_end=611
+  _globals['_REDUCERRESPONSE_NEWCENTROIDSENTRY']._serialized_start=538
+  _globals['_REDUCERRESPONSE_NEWCENTROIDSENTRY']._serialized_end=611
+  _globals['_MAPPERSERVICE']._serialized_start=614
+  _globals['_MAPPERSERVICE']._serialized_end=774
+  _globals['_REDUCERSERVICE']._serialized_start=776
+  _globals['_REDUCERSERVICE']._serialized_end=857
 # @@protoc_insertion_point(module_scope)

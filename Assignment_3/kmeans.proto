@@ -3,7 +3,15 @@ syntax = "proto3";
 package kmeans;
 
 service MapperService {  
+  // Sends a mapping request to a mapper
   rpc RunMap(MapRequest) returns (MapResponse) {}
+  // Sends a request to a mapper to get the intermediate data from the reducer
+  rpc GetIntermediateData(IntermediateDataRequest) returns (IntermediateDataResponse) {}
+}
+
+service ReducerService {
+  // Sends a request to a reducer to get the final centroids
+  rpc RunReducer(ReducerRequest) returns (ReducerResponse) {}
 }
 
 message MapRequest {
@@ -16,4 +24,31 @@ message MapRequest {
 message MapResponse {
   bool success = 1;
   string message = 2; // Include error message if not successful
+}
+
+message IntermediateDataRequest {
+  int32 reducer_id = 1;
+}
+
+message IntermediateDataResponse {
+  bool success = 1;
+  string message = 2; // Include error message if not successful  
+  repeated string pairs = 3; // Grouped intermediate key-value pairs
+}
+
+message ReducerRequest {
+  int32 reducer_id = 1;
+  repeated string mapper_addresses = 2; // Grouped intermediate key-value pairs
+}
+
+message KeyValuePair {
+  int32 key = 1;
+  repeated float values = 2;
+}
+
+message ReducerResponse {
+  int32 reducer_id = 1;
+  bool success = 2;
+  string message = 3; // Include error message if not successful
+  map<int32, KeyValuePair> new_centroids = 4; // New centroids calculated by the reducer
 }

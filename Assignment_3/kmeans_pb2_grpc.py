@@ -19,13 +19,26 @@ class MapperServiceStub(object):
                 request_serializer=kmeans__pb2.MapRequest.SerializeToString,
                 response_deserializer=kmeans__pb2.MapResponse.FromString,
                 )
+        self.GetIntermediateData = channel.unary_unary(
+                '/kmeans.MapperService/GetIntermediateData',
+                request_serializer=kmeans__pb2.IntermediateDataRequest.SerializeToString,
+                response_deserializer=kmeans__pb2.IntermediateDataResponse.FromString,
+                )
 
 
 class MapperServiceServicer(object):
     """Missing associated documentation comment in .proto file."""
 
     def RunMap(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Sends a mapping request to a mapper
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GetIntermediateData(self, request, context):
+        """Sends a request to a mapper to get the intermediate data from the reducer
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
@@ -37,6 +50,11 @@ def add_MapperServiceServicer_to_server(servicer, server):
                     servicer.RunMap,
                     request_deserializer=kmeans__pb2.MapRequest.FromString,
                     response_serializer=kmeans__pb2.MapResponse.SerializeToString,
+            ),
+            'GetIntermediateData': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetIntermediateData,
+                    request_deserializer=kmeans__pb2.IntermediateDataRequest.FromString,
+                    response_serializer=kmeans__pb2.IntermediateDataResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -62,5 +80,84 @@ class MapperService(object):
         return grpc.experimental.unary_unary(request, target, '/kmeans.MapperService/RunMap',
             kmeans__pb2.MapRequest.SerializeToString,
             kmeans__pb2.MapResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def GetIntermediateData(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/kmeans.MapperService/GetIntermediateData',
+            kmeans__pb2.IntermediateDataRequest.SerializeToString,
+            kmeans__pb2.IntermediateDataResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+
+class ReducerServiceStub(object):
+    """Missing associated documentation comment in .proto file."""
+
+    def __init__(self, channel):
+        """Constructor.
+
+        Args:
+            channel: A grpc.Channel.
+        """
+        self.RunReducer = channel.unary_unary(
+                '/kmeans.ReducerService/RunReducer',
+                request_serializer=kmeans__pb2.ReducerRequest.SerializeToString,
+                response_deserializer=kmeans__pb2.ReducerResponse.FromString,
+                )
+
+
+class ReducerServiceServicer(object):
+    """Missing associated documentation comment in .proto file."""
+
+    def RunReducer(self, request, context):
+        """Sends a request to a reducer to get the final centroids
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+
+def add_ReducerServiceServicer_to_server(servicer, server):
+    rpc_method_handlers = {
+            'RunReducer': grpc.unary_unary_rpc_method_handler(
+                    servicer.RunReducer,
+                    request_deserializer=kmeans__pb2.ReducerRequest.FromString,
+                    response_serializer=kmeans__pb2.ReducerResponse.SerializeToString,
+            ),
+    }
+    generic_handler = grpc.method_handlers_generic_handler(
+            'kmeans.ReducerService', rpc_method_handlers)
+    server.add_generic_rpc_handlers((generic_handler,))
+
+
+ # This class is part of an EXPERIMENTAL API.
+class ReducerService(object):
+    """Missing associated documentation comment in .proto file."""
+
+    @staticmethod
+    def RunReducer(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/kmeans.ReducerService/RunReducer',
+            kmeans__pb2.ReducerRequest.SerializeToString,
+            kmeans__pb2.ReducerResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

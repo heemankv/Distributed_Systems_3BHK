@@ -4,10 +4,12 @@ import kmeans_pb2_grpc
 from concurrent import futures
 import sys
 import os
+from dotenv import load_dotenv
 class Mapper(kmeans_pb2_grpc.MapperServiceServicer):
     def __init__(self, mapper_id):
         self.mapper_id = mapper_id
         self.create_directory()
+        print(f"Mapper {self.mapper_id} started.")
     
     def create_directory(self):
         path = f'Data/Mappers/M{self.mapper_id}/'
@@ -16,21 +18,19 @@ class Mapper(kmeans_pb2_grpc.MapperServiceServicer):
 
     def RunMap(self, request, context):
         try:
-            centroids = self._parse_centroids(request.centroids)
+            self.centroids = self._parse_centroids(request.centroids)
             index_start = request.index_start
             index_end = request.index_end
             points = self.read_data_points(index_start, index_end)
-            print("Centroids: ", centroids)            
+            # print("Centroids: ", self.centroids)            
             
             assignments = []
             for data_point in points:
-                closest_centroid = self.find_closest_centroid(data_point, centroids)
+                closest_centroid = self.find_closest_centroid(data_point, self.centroids)
                 assignments.append((closest_centroid, data_point))
             
-            partitions = self.create_partitions(assignments, no_of_reducers=3)
-            self.create_partition_files(partitions, self.mapper_id)
-            
-            # print("Assignments: ", assignments)
+            partitions = self.create_partitions(assignments, no_of_reducers=int(os.getenv('n_reducers')))
+            self.create_partition_files(partitions, self.mapper_id)            
 
             return kmeans_pb2.MapResponse(success=True, message='Mapping completed successfully.')
         except Exception as e:
@@ -51,12 +51,10 @@ class Mapper(kmeans_pb2_grpc.MapperServiceServicer):
             partitions[partition_idx].append(assignment)
         return partitions
 
-    def create_partition_files(self, partitions, mapper_id):    
-        print(partitions)    
+    def create_partition_files(self, partitions, mapper_id):            
         for partition_idx, partition in partitions.items():
             with open(f'Data/Mappers/M{mapper_id}/partition_{partition_idx}.txt', 'w') as f:
-                for assignment in partition:
-                    print(assignment)
+                for assignment in partition:                    
                     f.write(f"{str(assignment)}\n")
 
     def find_closest_centroid(self, data_point, centroids):
@@ -75,8 +73,7 @@ class Mapper(kmeans_pb2_grpc.MapperServiceServicer):
     def euclidean_distance(self, p1, p2):
         return ((p1[0] - p2[0]) ** 2 + (p1[1] - p2[1]) ** 2) ** 0.5
     
-    def read_data_points(self, index_start, index_end):
-        # Read data points from Data/Input/points.txt from line index_start to line index_end
+    def read_data_points(self, index_start, index_end):        
         with open('Data/Input/points.txt', 'r') as f:
             data_points = [tuple(map(float, line.strip().split(','))) for line in f][index_start:index_end]   
         return data_points
@@ -84,7 +81,14 @@ class Mapper(kmeans_pb2_grpc.MapperServiceServicer):
     def _parse_centroids(self, centroids_flat_list):        
         it = iter(centroids_flat_list)
         return [(x, next(it)) for x in it]
-    
+
+    def GetIntermediateData(self, request, context):
+        print("Recieving Intermediate Request RPC from Reducer: ", request.reducer_id)   
+            
+        with open(f'Data/Mappers/M{self.mapper_id}/partition_{request.reducer_id-1}.txt', 'r') as f:            
+            intermediate_data = f.readlines()        
+        return kmeans_pb2.IntermediateDataResponse(success=True, pairs=intermediate_data)
+
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     mapper_address = mapper_id_to_address[int(sys.argv[1])]        
@@ -94,5 +98,6 @@ def serve():
     server.wait_for_termination()
 
 if __name__ == '__main__':
-    mapper_id_to_address = {1: 'localhost:50051', 2: 'localhost:50052'}
+    mapper_id_to_address = {1: 'localhost:50051', 2: 'localhost:50052', 3: 'localhost:50053'}
+    load_dotenv()
     serve()
