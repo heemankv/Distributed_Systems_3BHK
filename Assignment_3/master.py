@@ -3,38 +3,18 @@ import kmeans_pb2
 import kmeans_pb2_grpc
 from concurrent import futures
 from random import sample
-import time, os
-import math
-import multiprocessing
+import  os
 from concurrent.futures import ThreadPoolExecutor
 from dotenv import load_dotenv
+import time
 
-
-# TODO: Implement Fault Tolerance
-
-def call_rpc(id, centroids_flat, split, mapper_stubs):
-    future = mapper_stubs[id].RunMap.future(
-        kmeans_pb2.MapRequest(
-            mapper_id=id,
-            centroids=centroids_flat,
-            index_start=split[0],
-            index_end=split[1]
-        )
-    )
-    response = future.result()
-    status = "SUCCESS" if response.success else "FAILURE"
-    print(f"Received {status} from Mapper: {id}")
-    return response
-
-def call_rpc_wrapper(args):
-    id, centroids_flat, split, mapper_stubs = args
-    return call_rpc(id, centroids_flat, split, mapper_stubs)
 
 class Master:
     def __init__(self, n_mappers, n_reducers, data_file, k, max_iters):
         self.n_mappers = n_mappers
         self.n_reducers = n_reducers        
         self.mapper_ids = [i+1 for i in range(n_mappers)]
+        self.latest_mapper_ids = [i+1 for i in range(n_mappers)]
         self.reducer_ids = [i+1 for i in range(n_reducers)]
 
         self.data_file = data_file
@@ -42,7 +22,8 @@ class Master:
         self.max_iters = max_iters
         self.centroids = self.initialize_centroids()
         self.mapper_stubs = self.create_mapper_stubs()
-        self.reducer_stubs = self.create_reducer_stubs()   
+        self.reducer_stubs = self.create_reducer_stubs() 
+        self.remap_mappers_request = {}  
         self.prev_dist = None     
     
     def initialize_centroids(self):        
@@ -61,7 +42,9 @@ class Master:
     
     def create_mapper_stubs(self):
         mapper_stubs = {}
-        for id in self.mapper_ids:
+        
+
+        for id in self.latest_mapper_ids:
             channel = grpc.insecure_channel(mapper_id_to_address[id])
             stub = kmeans_pb2_grpc.MapperServiceStub(channel)
             mapper_stubs[id] = stub
@@ -70,18 +53,64 @@ class Master:
     def split_data_for_mappers(self):
         # TODO: Could be randomized, let's see
         data_points = self.read_data_points()
-        split_size = len(data_points) // len(self.mapper_ids)        
-        split_indices = [(i * split_size, (i + 1) * split_size) for i in range(len(self.mapper_ids))]
+        split_size = len(data_points) // len(self.latest_mapper_ids)        
+        split_indices = {mapper_id :  (i * split_size, (i + 1) * split_size) for i, mapper_id in enumerate(self.latest_mapper_ids)}
         return split_indices
-         
+
+
+    
+    # Retry decorator function
+    def retry(func):
+        def wrapper(*args, **kwargs):
+            max_retries = 1
+            retries = 0
+            while retries < max_retries:
+                try:
+                    return func(*args, **kwargs)
+                except Exception as e:
+                    print(f"Error: {e}")
+                    retries += 1
+                    if retries < max_retries:
+                        print("Retrying...")
+                        time.sleep(1)  # Wait for 1 second before retrying
+                    else:
+                        print("Max retries reached. Giving up on this Mapper, going to other.")
+                        # assign the task to another mapper
+                        return kmeans_pb2.MapResponse(success=False, message=str(e))
+                        # raise  # Re-raise the exception if max retries reached
+        return wrapper
+
+    # Modified call_rpc function with retry decorator
+    @retry 
+    def call_rpc(self, id, centroids_flat, split, mapper_stubs):
+        future = mapper_stubs[id].RunMap.future(
+            kmeans_pb2.MapRequest(
+                mapper_id=id,
+                centroids=centroids_flat,
+                index_start=split[0],
+                index_end=split[1]
+            )
+        )
+        response = future.result()
+        if response.success:
+            print(f"Received SUCCESS from Mapper: {id}")
+            return response
+        else:
+            self.remap_mappers_request[id] = True
+            raise Exception("RPC call failed")
+
+    def call_rpc_wrapper(self,args):
+        id, centroids_flat, split, mapper_stubs = args
+        print(f"Sending RPC to Mapper: {id}, Centroids: {centroids_flat}, Split: {split}, Mapper Stubs: {mapper_stubs}")
+        return self.call_rpc(id, centroids_flat, split, mapper_stubs)
     
     def run_map_phase(self, data_splits):
         map_responses = []
 
         with ThreadPoolExecutor() as executor:
             map_responses = list(executor.map(
-                call_rpc_wrapper,
-                [(id, [c for centroid in self.centroids for c in centroid], data_splits[id - 1], self.mapper_stubs)
+                self.call_rpc_wrapper,
+                [(id, [c for centroid in self.centroids for c in centroid], data_splits[id], self.mapper_stubs)
                 for id in self.mapper_stubs]
             ))
 
@@ -101,13 +130,29 @@ class Master:
             print(f"Sending RPC to Reducer: {id}")
             reduce_request = kmeans_pb2.ReducerRequest(
                 reducer_id=id,
-                mapper_addresses=[mapper_id_to_address[mapper_id] for mapper_id in self.mapper_ids]
+                mapper_addresses=[mapper_id_to_address[mapper_id] for mapper_id in self.latest_mapper_ids]
             )
             response = stub.RunReducer(reduce_request)
             status = "SUCCESS" if response.success else "FAILURE"
             print(f"Received {status} from Reducer: {id}")
             reduce_responses.append(response)
         return reduce_responses
+    
+    def remap_mappers(self):
+        new_mapper_ids = []
+        # deepcopy the mapper ids
+        for mapper_id in self.mapper_ids:
+            new_mapper_ids.append(mapper_id)
+        
+        # remove the mapper ids from the new_mapper_ids list if they are in the remap_mappers_request
+        for mapper_id in self.remap_mappers_request.keys():
+            new_mapper_ids.remove(mapper_id)
+
+        print(f"Old mappers: {self.mapper_ids}")
+        print(f"Remapped mappers: {new_mapper_ids}")
+        self.latest_mapper_ids = new_mapper_ids
+        self.mapper_stubs = self.create_mapper_stubs()
+
 
     def execute(self):       
         # TODO: Stop when the centroids converge 
@@ -115,12 +160,27 @@ class Master:
             with open('Data/centroids.txt', 'w') as f:
                 f.write(str(self.centroids))
             print(f'Iteration {iter + 1}, Centroids: {self.centroids}')
-            data_splits = self.split_data_for_mappers()            
-            map_responses = self.run_map_phase(data_splits)            
+            data_splits = self.split_data_for_mappers()  
+            print(f"Data splits: {data_splits}")          
+            map_responses = self.run_map_phase(data_splits)
+                        
+            remapping_flag = False
             for response in map_responses: 
                 if not response.success:
+                    remapping_flag = True
                     print(f'Error: {response.message} in Map phase')
+
+            if(remapping_flag):
+                print("Remapping mappers")
+                # decrease the iteration count, as to not count this iteration
+                iter -= 1
+                # remap the mappers
+                self.remap_mappers()
+                if len(self.latest_mapper_ids) == 0:
+                    print("All mappers failed. Exiting.")
                     return
+                # continue to next iteration
+                continue
         
             print('Map phase completed successfully')
             time.sleep(1)

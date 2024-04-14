@@ -1,3 +1,4 @@
+import random
 import grpc
 import kmeans_pb2
 import kmeans_pb2_grpc
@@ -5,6 +6,10 @@ from concurrent import futures
 import sys
 import os
 from dotenv import load_dotenv
+
+probabilistic = 0.1
+
+
 class Mapper(kmeans_pb2_grpc.MapperServiceServicer):
     def __init__(self, mapper_id):
         self.mapper_id = mapper_id
@@ -17,7 +22,15 @@ class Mapper(kmeans_pb2_grpc.MapperServiceServicer):
             os.makedirs(path)
 
     def RunMap(self, request, context):
+
         try:
+            # based on the variable probabilistic, the following code will sometimes execute and sometimes an error will be raised
+            # get random number between 0 and 1
+            random_number = random.random()
+            if random_number < probabilistic:
+                print("Random Error: ", random_number)
+                raise Exception("Random Error")
+
             self.centroids = self._parse_centroids(request.centroids)
             index_start = request.index_start
             index_end = request.index_end
