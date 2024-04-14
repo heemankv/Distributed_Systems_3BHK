@@ -8,6 +8,7 @@ from concurrent.futures import ThreadPoolExecutor
 from dotenv import load_dotenv
 import time
 
+#  TODO: We need to reset latest mappers to original mappers after a successful iteration -> done by @heemankv
 
 class Master:
     def __init__(self, n_mappers, n_reducers, data_file, k, max_iters):
@@ -196,7 +197,15 @@ class Master:
             for response in reduce_responses:
                 new_centroids[response.reducer_id] = response.new_centroids
             
-            self.parse_new_centroids(new_centroids)            
+            self.parse_new_centroids(new_centroids)    
+
+            # assign the deepcopy of original mappers to latest mappers
+            mapper_ids = []
+            for mapper_id in self.mapper_ids:
+                mapper_ids.append(mapper_id)
+            self.latest_mapper_ids = mapper_ids
+
+            print(f"Reassigning mappers: {self.latest_mapper_ids}")        
 
     def calculate_distance_from_centroids(self):
         dist = 0

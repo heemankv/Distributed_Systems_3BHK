@@ -7,7 +7,7 @@ import sys
 import os
 from dotenv import load_dotenv
 
-probabilistic = 0.1
+probabilistic = 0.3
 
 
 class Mapper(kmeans_pb2_grpc.MapperServiceServicer):
@@ -27,6 +27,7 @@ class Mapper(kmeans_pb2_grpc.MapperServiceServicer):
             # based on the variable probabilistic, the following code will sometimes execute and sometimes an error will be raised
             # get random number between 0 and 1
             random_number = random.random()
+            print("Random Number: ", random_number)
             if random_number < probabilistic:
                 print("Random Error: ", random_number)
                 raise Exception("Random Error")
