@@ -5,9 +5,30 @@ from concurrent import futures
 from random import sample
 import time, os
 import math
+import multiprocessing
+from concurrent.futures import ThreadPoolExecutor
 from dotenv import load_dotenv
 
+
 # TODO: Implement Fault Tolerance
+
+def call_rpc(id, centroids_flat, split, mapper_stubs):
+    future = mapper_stubs[id].RunMap.future(
+        kmeans_pb2.MapRequest(
+            mapper_id=id,
+            centroids=centroids_flat,
+            index_start=split[0],
+            index_end=split[1]
+        )
+    )
+    response = future.result()
+    status = "SUCCESS" if response.success else "FAILURE"
+    print(f"Received {status} from Mapper: {id}")
+    return response
+
+def call_rpc_wrapper(args):
+    id, centroids_flat, split, mapper_stubs = args
+    return call_rpc(id, centroids_flat, split, mapper_stubs)
 
 class Master:
     def __init__(self, n_mappers, n_reducers, data_file, k, max_iters):
@@ -53,22 +74,17 @@ class Master:
         split_indices = [(i * split_size, (i + 1) * split_size) for i in range(len(self.mapper_ids))]
         return split_indices
          
+    
     def run_map_phase(self, data_splits):
         map_responses = []
-        for id, stub in self.mapper_stubs.items():            
-            centroids_flat = [c for centroid in self.centroids for c in centroid]                            
-            split = data_splits[id-1]  
-            print(f"Sending RPC to Mapper: {id}")
-            map_request = kmeans_pb2.MapRequest(
-                mapper_id=id,
-                centroids=centroids_flat,
-                index_start = split[0],
-                index_end = split[1]
-            )
-            response = stub.RunMap(map_request)
-            status = "SUCCESS" if response.success else "FAILURE"
-            print(f"Received {status} from Mapper: {id}")
-            map_responses.append(response)
+
+        with ThreadPoolExecutor() as executor:
+            map_responses = list(executor.map(
+                call_rpc_wrapper,
+                [(id, [c for centroid in self.centroids for c in centroid], data_splits[id - 1], self.mapper_stubs)
+                for id in self.mapper_stubs]
+            ))
+
         return map_responses
 
     def create_reducer_stubs(self):

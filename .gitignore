@@ -14,3 +14,6 @@ __pycache__/
 *.py[cod]
 *.pyc
 *.pyo
+
+__pycache__
+dscd_a3

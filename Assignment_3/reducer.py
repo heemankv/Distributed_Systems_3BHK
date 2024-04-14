@@ -9,7 +9,13 @@ import time
 class Reducer(kmeans_pb2_grpc.ReducerServiceServicer):
     def __init__(self, reducer_id):
         self.reducer_id = reducer_id
+        self.create_directory()
         print(f"Reducer {self.reducer_id} started.")
+
+    def create_directory(self):
+        path = f'Data/Reducers'
+        if not os.path.exists(path):
+            os.makedirs(path)
     
     def get_mapper_stubs(self, mapper_addresses):
         mapper_stubs = {}
@@ -20,6 +26,7 @@ class Reducer(kmeans_pb2_grpc.ReducerServiceServicer):
         return mapper_stubs
     
     def RunReducer(self, request, context):
+        print(f"Reducer {request.mapper_addresses} received request.")
         try:         
             mapper_stubs = self.get_mapper_stubs(request.mapper_addresses)
             intermediate_data = {}
@@ -39,6 +46,7 @@ class Reducer(kmeans_pb2_grpc.ReducerServiceServicer):
             
             reducerReponse = kmeans_pb2.ReducerResponse(reducer_id = request.reducer_id, success=True, message = "SUCCESS")
             print(new_centroids)
+            # TODO: why is this happening?
             for i in new_centroids.keys():
                 reducerReponse.new_centroids[i].key = 0
                 reducerReponse.new_centroids[i].values.extend(new_centroids[i])

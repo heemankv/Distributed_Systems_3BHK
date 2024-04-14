@@ -26,9 +26,12 @@ class Mapper(kmeans_pb2_grpc.MapperServiceServicer):
             
             assignments = []
             for data_point in points:
-                closest_centroid = self.find_closest_centroid(data_point, self.centroids)
-                assignments.append((closest_centroid, data_point))
+                closest_centroid_idx = self.find_closest_centroid(data_point, self.centroids)
+                # This is actually the closest centroid index and not the centroid itself
+                assignments.append((closest_centroid_idx, data_point))
             
+            print(f"Mapper {self.mapper_id} working on data points from {index_start} to {index_end} resulting to {assignments} assignments.")
+            print(f"Mapper {self.mapper_id} completed mapping.")
             partitions = self.create_partitions(assignments, no_of_reducers=int(os.getenv('n_reducers')))
             self.create_partition_files(partitions, self.mapper_id)   
                                     
@@ -43,10 +46,14 @@ class Mapper(kmeans_pb2_grpc.MapperServiceServicer):
         Each partition is picked up by a specific reducer during shuffling and sorting.
         If there are M mappers and R reducers, each mapper should have R file partitions.
         '''
+        # number of partitions = number of reducers
         partitions = {}
         for i in range(no_of_reducers):
             partitions[i] = []
         for assignment in assignments:
+            # assignment[0] is the closest centroid index, which will be used to partition the data
+            # formula : assignment[0] % no_of_reducers
+            # explanation: if there are 3 reducers, then the closest centroid index will be divided by 3 and the remainder will be used to assign the partition
             partition_idx = assignment[0] % no_of_reducers
             partitions[partition_idx].append(assignment)
         return partitions
