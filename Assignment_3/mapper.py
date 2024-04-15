@@ -23,14 +23,18 @@ class Mapper(kmeans_pb2_grpc.MapperServiceServicer):
             os.makedirs(path)
 
     def RunMap(self, request, context):
-        print('Sleeping for 5 seconds')
-        time.sleep(5)
-        print('Woke up')
+        random_number = random.random()
+        print("Random Number for Sleeping: ", random_number)
+        if random_number < probabilistic:
+            print('Sleeping for 5 seconds')
+            time.sleep(5)
+            print('Woke up')
+        
         try:
             # based on the variable probabilistic, the following code will sometimes execute and sometimes an error will be raised
             # get random number between 0 and 1
             random_number = random.random()
-            print("Random Number: ", random_number)
+            print("Random Number  for Random Error: ", random_number)
             if random_number < probabilistic:
                 print("Random Error: ", random_number)
                 raise Exception("Random Error")
