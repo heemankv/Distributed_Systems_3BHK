@@ -10,13 +10,25 @@ class Reducer(kmeans_pb2_grpc.ReducerServiceServicer):
     def __init__(self, reducer_id):
         self.reducer_id = reducer_id
         self.create_directory()
+        
+        self.dump(f"Reducer {self.reducer_id} started.")
         print(f"Reducer {self.reducer_id} started.")
 
     def create_directory(self):
         path = f'Data/Reducers'
         if not os.path.exists(path):
             os.makedirs(path)
+
+        file_path = f'Data/Reducers/reducer_{self.reducer_id}_dump.txt'
+        if not os.path.exists(file_path):
+            with open(file_path, 'w') as f:
+                pass  
     
+    def dump(self,entry):
+        file_path = f'Data/Reducers/reducer_{self.reducer_id}_dump.txt'
+        with open(file_path, 'a') as f:
+            f.write(f"{entry}\n")
+
     def get_mapper_stubs(self, mapper_addresses):
         mapper_stubs = {}
         for id, address in enumerate(mapper_addresses):
@@ -26,25 +38,38 @@ class Reducer(kmeans_pb2_grpc.ReducerServiceServicer):
         return mapper_stubs
     
     def RunReducer(self, request, context):
-        print(f"Reducer {request.mapper_addresses} received request.")
+
+        # TODO: why mapper_addresses
+        self.dump(f"Reducer {self.reducer_id} received request")
+        print(f"Reducer {self.reducer_id} received request")
+        
         try:         
             mapper_stubs = self.get_mapper_stubs(request.mapper_addresses)
             intermediate_data = {}
             for id, stub in mapper_stubs.items(): 
+
+                self.dump(f"Sending Intermediate Request RPC to Mapper: {id}")
                 print(f"Sending Intermediate Request RPC to Mapper: {id}")
+
                 intermediate_data_request = kmeans_pb2.IntermediateDataRequest(reducer_id=request.reducer_id)                                                
                 response = stub.GetIntermediateData(intermediate_data_request)                
-                if response.success:                    
+                if response.success:                 
                     pairs = self.parseIntermediateData(response.pairs)                    
-                    intermediate_data[id] = pairs                    
+                    intermediate_data[id] = pairs  
+                    self.dump(f"Recieved Intermediate Data from Mapper: {id}")                    
                 else:
-                    raise ValueError("Failed to retrieve data from mapper.")  
-                time.sleep(1)                      
+                    self.dump(f"Failed to retrieve data from Mapper: {id}")
+                    raise ValueError(f"Failed to retrieve data from Mapper: {id}")  
+                time.sleep(1)        
+
             grouped_data = self.shuffle_and_sort(intermediate_data)
             new_centroids = self.calculate_new_centroids(grouped_data)
             self.write_centroids_to_file(new_centroids)
             
+            
             reducerReponse = kmeans_pb2.ReducerResponse(reducer_id = request.reducer_id, success=True, message = "SUCCESS")
+            self.dump(f"Reducer {self.reducer_id} sends SUCCESS response to Master")
+
             print(new_centroids)
             # TODO: why is this happening?
             for i in new_centroids.keys():
@@ -62,7 +87,8 @@ class Reducer(kmeans_pb2_grpc.ReducerServiceServicer):
     def write_centroids_to_file(self, centroids):
         with open(f'Data/Reducers/R_{self.reducer_id}.txt', 'w') as f:
             for key, value in centroids.items():
-                f.write(f"({key}, {str(value)})\n")                    
+                f.write(f"({key}, {str(value)})\n") 
+        self.dump("New centroids saved on disk")                   
     
     def parseIntermediateData(self, pairs):
         pair_list = []
@@ -89,6 +115,8 @@ class Reducer(kmeans_pb2_grpc.ReducerServiceServicer):
             grouped_data[key].append(value)
         
         sorted_keys = sorted(grouped_data.keys())
+
+        self.dump("Intermediate Data Shuffled and Sorted")
         return {key: grouped_data[key] for key in sorted_keys}        
  
     def calculate_new_centroids(self, grouped_data):
@@ -97,6 +125,7 @@ class Reducer(kmeans_pb2_grpc.ReducerServiceServicer):
             data_points = grouped_data[key]
             new_centroid = self.calculate_centroid(data_points)
             new_centroids[key] = new_centroid
+        self.dump(f"New Centroid Generated: {new_centroids}")
         return new_centroids
 
     def calculate_centroid(self, data_points):

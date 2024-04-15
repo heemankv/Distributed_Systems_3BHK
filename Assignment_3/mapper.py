@@ -15,12 +15,22 @@ class Mapper(kmeans_pb2_grpc.MapperServiceServicer):
     def __init__(self, mapper_id):
         self.mapper_id = mapper_id
         self.create_directory()
+        self.dump(f"Mapper {self.mapper_id} started.")
         print(f"Mapper {self.mapper_id} started.")
     
     def create_directory(self):
         path = f'Data/Mappers/M{self.mapper_id}/'
         if not os.path.exists(path):
             os.makedirs(path)
+        file_path = f'Data/Mappers/M{self.mapper_id}/mapper_{self.mapper_id}_dump.txt'
+        if not os.path.exists(file_path):
+            with open(file_path, 'w') as f:
+                pass  
+
+    def dump(self,entry):
+        file_path = f'Data/Mappers/M{self.mapper_id}/mapper_{self.mapper_id}_dump.txt'
+        with open(file_path, 'a') as f:
+            f.write(f"{entry}\n")
 
     def __random_sleeper(self):
         random_number = random.random()
@@ -44,27 +54,36 @@ class Mapper(kmeans_pb2_grpc.MapperServiceServicer):
         # self.__random_sleeper()
        
         try:
+            self.dump(f"Mapper {self.mapper_id} received job from master")
             self.__random_error()
             
             self.centroids = self._parse_centroids(request.centroids)
             index_start = request.index_start
             index_end = request.index_end
             points = self.read_data_points(index_start, index_end)
-            # print("Centroids: ", self.centroids)            
-            
+            # print("Centroids: ", self.centroids)   
+
+            print(f"Mapper {self.mapper_id} working on data points from {index_start} to {index_end} resulting to {assignments} assignments.")         
+            self.dump(f"Mapper {self.mapper_id} working on data points from {index_start} to {index_end} resulting to {assignments} assignments.")
+
             assignments = []
             for data_point in points:
                 closest_centroid_idx = self.find_closest_centroid(data_point, self.centroids)
                 # This is actually the closest centroid index and not the centroid itself
                 assignments.append((closest_centroid_idx, data_point))
-            
-            print(f"Mapper {self.mapper_id} working on data points from {index_start} to {index_end} resulting to {assignments} assignments.")
+
             print(f"Mapper {self.mapper_id} completed mapping.")
+            self.dump(f"Mapper {self.mapper_id} completed mapping.")
+
+
             partitions = self.create_partitions(assignments, no_of_reducers=int(os.getenv('n_reducers')))
-            self.create_partition_files(partitions, self.mapper_id)   
-                                    
+            self.create_partition_files(partitions, self.mapper_id)
+
+            self.dump(f"Mapper: {self.mapper_id} completed its job")                                       
             return kmeans_pb2.MapResponse(success=True, message='Mapping completed successfully.')
+        
         except Exception as e:
+            self.dump(f"Mapper: {self.mapper_id} encountered Error: {str(e)}")
             return kmeans_pb2.MapResponse(success=False, message=str(e))
     
     def create_partitions(self, assignments, no_of_reducers):
@@ -84,6 +103,9 @@ class Mapper(kmeans_pb2_grpc.MapperServiceServicer):
             # explanation: if there are 3 reducers, then the closest centroid index will be divided by 3 and the remainder will be used to assign the partition
             partition_idx = assignment[0] % no_of_reducers
             partitions[partition_idx].append(assignment)
+
+        self.dump(f"Partitions Created by Mapper: {self.mapper_id}")
+
         return partitions
 
     def create_partition_files(self, partitions, mapper_id):            
@@ -91,6 +113,8 @@ class Mapper(kmeans_pb2_grpc.MapperServiceServicer):
             with open(f'Data/Mappers/M{mapper_id}/partition_{partition_idx}.txt', 'w') as f:
                 for assignment in partition:                    
                     f.write(f"{str(assignment)}\n")
+
+        self.dump("Partition Data Stored On Disk")
 
     def find_closest_centroid(self, data_point, centroids):
         min_distance = float('inf')
@@ -118,7 +142,8 @@ class Mapper(kmeans_pb2_grpc.MapperServiceServicer):
         return [(x, next(it)) for x in it]
 
     def GetIntermediateData(self, request, context):
-        print("Recieving Intermediate Request RPC from Reducer: ", request.reducer_id)   
+        print("Recieving Intermediate Request RPC from Reducer: ", request.reducer_id)
+        self.dump(f'Recieving Intermediate Request RPC from Reducer: {request.reducer_id}')   
             
         with open(f'Data/Mappers/M{self.mapper_id}/partition_{request.reducer_id-1}.txt', 'r') as f:            
             intermediate_data = f.readlines()        

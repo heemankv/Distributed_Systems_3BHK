@@ -9,6 +9,17 @@ from dotenv import load_dotenv
 import time
 
 #  TODO: We need to reset latest mappers to original mappers after a successful iteration -> done by @heemankv
+#  TODO: Add dump statements for fault tolerance
+
+# Dump File Code:
+'''
+Print/Display the following data while executing the master program for each iteration:
+
+    Iteration number
+    Execution of gRPC calls to Mappers or Reducers
+    gRPC responses for each Mapper and Reducer function (SUCCESS/FAILURE)
+    Centroids generated after each iteration (including the randomly initialized centroids)
+'''
 
 class Master:
     def __init__(self, n_mappers, n_reducers, data_file, k, max_iters):
@@ -25,7 +36,19 @@ class Master:
         self.mapper_stubs = self.create_mapper_stubs()
         self.reducer_stubs = self.create_reducer_stubs() 
         self.remap_mappers_request = {}  
-        self.prev_dist = None     
+        self.prev_dist = None 
+
+        file_path = 'master_dump.txt'
+        if not os.path.exists(file_path):
+            with open(file_path, 'w') as f:
+                pass
+
+        self.dump("Master is started")  
+
+    def dump(self,entry):
+        file_path = 'master_dump.txt'
+        with open(file_path, 'a') as f:
+            f.write(f"{entry}\n")
     
     def initialize_centroids(self):        
         centroids = []
@@ -105,8 +128,21 @@ class Master:
 
     def call_rpc_wrapper(self,args):
         id, centroids_flat, split, mapper_stubs = args
-        print(f"Sending RPC to Mapper: {id}, Centroids: {centroids_flat}, Split: {split}")
-        return self.call_rpc(id, centroids_flat, split, mapper_stubs)
+
+        self.dump(f"Sending RPC to Mapper: {id}, Centroids: {centroids_flat}, Split: {split}")
+        print(f"Sending RPC to Mapper: {id}, Centroids: {centroids_flat}, Split: {split}, Mapper Stubs: {mapper_stubs}")
+        
+        response = self.call_rpc(id, centroids_flat, split, mapper_stubs)
+        
+        status = "SUCCESS" if response.success else "FAILURE"
+
+        self.dump(f"Received {status} from Mapper: {id}")
+
+        if(response.success==False):
+           errorMessage = response.message if isinstance(response.message, str) else response.details
+           self.dump(f'Error: {errorMessage} in Map Phase with Mapper: {id}')            
+
+        return response
     
     def run_map_phase(self, data_splits):
         map_responses = []
@@ -131,15 +167,22 @@ class Master:
     def run_reduce_phase(self): 
         reduce_responses = []
         for id, stub in self.reducer_stubs.items():
+
+            self.dump(f"Sending RPC to Reducer: {id}")
             print(f"Sending RPC to Reducer: {id}")
+
             reduce_request = kmeans_pb2.ReducerRequest(
                 reducer_id=id,
                 mapper_addresses=[mapper_id_to_address[mapper_id] for mapper_id in self.latest_mapper_ids]
             )
             response = stub.RunReducer(reduce_request)
             status = "SUCCESS" if response.success else "FAILURE"
+
+            self.dump(f"Received {status} from Reducer: {id}")
             print(f"Received {status} from Reducer: {id}")
+
             reduce_responses.append(response)
+            
         return reduce_responses
     
     def remap_mappers(self):
@@ -163,7 +206,10 @@ class Master:
         for iter in range(self.max_iters):
             with open('Data/centroids.txt', 'w') as f:
                 f.write(str(self.centroids))
+
+            self.dump(f'Iteration {iter + 1}, Centroids: {self.centroids}')
             print(f'Iteration {iter + 1}, Centroids: {self.centroids}')
+
             data_splits = self.split_data_for_mappers()  
             print(f"Data splits: {data_splits}")          
             map_responses = self.run_map_phase(data_splits)
@@ -189,8 +235,10 @@ class Master:
                     return
                 # continue to next iteration
                 continue
-        
+            
+            self.dump('Map phase completed successfully')
             print('Map phase completed successfully')
+
             time.sleep(1)
 
             reduce_responses = self.run_reduce_phase()
@@ -199,7 +247,9 @@ class Master:
                     print(f'Error: {response.message} in Reduce Phase')
                     return
 
+            self.dump('Reduce phase complete successfully')
             print('Reduce phase complete successfully')
+
             new_centroids = {}
             for response in reduce_responses:
                 new_centroids[response.reducer_id] = response.new_centroids
@@ -232,7 +282,10 @@ class Master:
     def parse_new_centroids(self, new_centroids):        
         for centroid in new_centroids.values():
             for key, value in centroid.items():
+                
+                self.dump(f"Centroid {key}: {value}")
                 print(f"Centroid {key}: {value}")
+
                 self.centroids[key] = value.values                                        
 
 
