@@ -1,4 +1,5 @@
 import random
+import time
 import grpc
 import kmeans_pb2
 import kmeans_pb2_grpc
@@ -22,7 +23,9 @@ class Mapper(kmeans_pb2_grpc.MapperServiceServicer):
             os.makedirs(path)
 
     def RunMap(self, request, context):
-
+        print('Sleeping for 5 seconds')
+        time.sleep(5)
+        print('Woke up')
         try:
             # based on the variable probabilistic, the following code will sometimes execute and sometimes an error will be raised
             # get random number between 0 and 1
