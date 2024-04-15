@@ -43,7 +43,6 @@ class Master:
     
     def create_mapper_stubs(self):
         mapper_stubs = {}
-        
 
         for id in self.latest_mapper_ids:
             channel = grpc.insecure_channel(mapper_id_to_address[id])
@@ -69,7 +68,6 @@ class Master:
                 try:
                     return func(*args, **kwargs)
                 except Exception as e:
-                    print(f"Error: {e}")
                     retries += 1
                     if retries < max_retries:
                         print("Retrying...")
@@ -107,7 +105,7 @@ class Master:
 
     def call_rpc_wrapper(self,args):
         id, centroids_flat, split, mapper_stubs = args
-        print(f"Sending RPC to Mapper: {id}, Centroids: {centroids_flat}, Split: {split}, Mapper Stubs: {mapper_stubs}")
+        print(f"Sending RPC to Mapper: {id}, Centroids: {centroids_flat}, Split: {split}")
         return self.call_rpc(id, centroids_flat, split, mapper_stubs)
     
     def run_map_phase(self, data_splits):
@@ -174,14 +172,18 @@ class Master:
             for response in map_responses: 
                 if not response.success:
                     remapping_flag = True
-                    print(f'Error: {response.message} in Map phase')
+                    # if response.message is a string then print it, if it is an object then print its response.message.details
+                    errorMessage = response.message if isinstance(response.message, str) else response.details
+                    print(f'Error: {errorMessage} in Map Phase')
 
             if(remapping_flag):
                 print("Remapping mappers")
                 # decrease the iteration count, as to not count this iteration
                 iter -= 1
+                
                 # remap the mappers
                 self.remap_mappers()
+                
                 if len(self.latest_mapper_ids) == 0:
                     print("All mappers failed. Exiting.")
                     return
@@ -209,6 +211,7 @@ class Master:
             for mapper_id in self.mapper_ids:
                 mapper_ids.append(mapper_id)
             self.latest_mapper_ids = mapper_ids
+            self.mapper_stubs = self.create_mapper_stubs()
 
             print(f"Reassigning mappers: {self.latest_mapper_ids}")        
 
