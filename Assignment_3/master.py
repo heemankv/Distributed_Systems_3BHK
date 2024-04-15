@@ -92,7 +92,12 @@ class Master:
                 index_end=split[1]
             )
         )
-        response = future.result()
+        #  we need to create a timeout for the RPC call
+        #  if the rpc call doesn't return in 5 seconds, we will raise Exception("RPC call failed")
+        #  and assign the task to another mapper
+        # response = future.result()
+        response = future.result(timeout=timeout_error_seconds)
+        
         if response.success:
             print(f"Received SUCCESS from Mapper: {id}")
             return response
@@ -235,6 +240,7 @@ if __name__ == '__main__':
     load_dotenv()
     n_mappers = int(os.getenv("n_mappers"))
     n_reducers = int(os.getenv("n_reducers"))
+    timeout_error_seconds = int(os.getenv("timeout_error_seconds"))
 
     # master = Master(mapper_ids=[1,2], reducer_ids = [1,2], data_file='Data/Input/points.txt', k=3, max_iters=1)
     master = Master(n_mappers = n_mappers, n_reducers = n_reducers, data_file='Data/Input/points.txt', k=5, max_iters=10)
