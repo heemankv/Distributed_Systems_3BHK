@@ -51,7 +51,7 @@ class Mapper(kmeans_pb2_grpc.MapperServiceServicer):
         
 
     def RunMap(self, request, context):
-        # self.__random_sleeper()
+        self.__random_sleeper()
        
         try:
             self.dump(f"Mapper {self.mapper_id} received job from master")

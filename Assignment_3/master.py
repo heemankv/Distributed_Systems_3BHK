@@ -3,13 +3,13 @@ import kmeans_pb2
 import kmeans_pb2_grpc
 from concurrent import futures
 from random import sample
-import  os
+import  time, os
 from concurrent.futures import ThreadPoolExecutor
 from dotenv import load_dotenv
-import time
 
-#  TODO: We need to reset latest mappers to original mappers after a successful iteration -> done by @heemankv
-#  TODO: Add dump statements for fault tolerance
+# TODO: We need to reset latest mappers to original mappers after a successful iteration -> done by @heemankv
+# TODO: remap_mappers_request always remains filled, might need to reset it after remapping
+# TODO: Add dump statements for fault tolerance
 
 # Dump File Code:
 '''
@@ -36,8 +36,7 @@ class Master:
         self.mapper_stubs = self.create_mapper_stubs()
         self.reducer_stubs = self.create_reducer_stubs() 
         self.remap_mappers_request = {}  
-        self.prev_dist = None 
-
+        self.permanent_remap_mappers_request = {}
         file_path = 'master_dump.txt'
         if not os.path.exists(file_path):
             with open(file_path, 'w') as f:
@@ -117,8 +116,23 @@ class Master:
         #  if the rpc call doesn't return in 5 seconds, we will raise Exception("RPC call failed")
         #  and assign the task to another mapper
         # response = future.result()
-        response = future.result(timeout=timeout_error_seconds)
         
+        # TODO: so when this guy crashed, it raised the error directly 
+        # but did not raise the remapping flag hence it was included in the next iteration and again failed
+        # so we need a callback fucntion to execute when the future is done
+        # if the future is done and the response is not successful, then we raise the remapping flag
+        # code below
+
+        try:
+            response = future.result(timeout=timeout_error_seconds)
+        except Exception as e:
+            print(f"Error: {e} and Code :{str(e.code())}")
+            if str(e.code()) == 'StatusCode.UNAVAILABLE':
+                # process unavailable status
+                print(" I am hereeeeee")
+                self.permanent_remap_mappers_request[id] = True
+                raise Exception("RPC call failed")
+            
         if response.success:
             print(f"Received SUCCESS from Mapper: {id}")
             return response
@@ -194,6 +208,10 @@ class Master:
         # remove the mapper ids from the new_mapper_ids list if they are in the remap_mappers_request
         for mapper_id in self.remap_mappers_request.keys():
             new_mapper_ids.remove(mapper_id)
+        
+        for mapper_id in self.permanent_remap_mappers_request.keys():
+            new_mapper_ids.remove(mapper_id)
+        
 
         print(f"Old mappers: {self.mapper_ids}")
         print(f"Remapped mappers: {new_mapper_ids}")
@@ -260,6 +278,10 @@ class Master:
             mapper_ids = []
             for mapper_id in self.mapper_ids:
                 mapper_ids.append(mapper_id)
+
+            for mapper_id in self.permanent_remap_mappers_request.keys():
+                mapper_ids.remove(mapper_id)
+        
             self.latest_mapper_ids = mapper_ids
             self.mapper_stubs = self.create_mapper_stubs()
 
