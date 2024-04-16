@@ -330,10 +330,17 @@ class Master:
             if(prev_centroids==None):
                 pass
             else:
+                print(f"Prev Centroids: {prev_centroids}")
+                print(f"Current Centroids: {self.centroids}")
                 if(prev_centroids==self.centroids):
                     self.dump('Centroids have converged, stopping the iterations')
                     print(f'Centroids have converged, stopping the iterations')
                     break
+
+            
+            prev_centroids = []
+            for item in self.centroids:
+                prev_centroids.append(item)
                    
 
             self.dump(f'Iteration {iter + 1}, Centroids: {self.centroids}')
@@ -407,7 +414,6 @@ class Master:
             self.dump('Reduce phase complete successfully')
             print('Reduce phase complete successfully')
 
-            prev_centroids=self.centroids  
 
             new_centroids = {}
             for response in reduce_responses:

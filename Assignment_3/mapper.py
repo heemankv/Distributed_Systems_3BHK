@@ -8,7 +8,7 @@ import sys
 import os
 from dotenv import load_dotenv
 
-probabilistic = -1
+probabilistic = 0.3
 
 
 class Mapper(kmeans_pb2_grpc.MapperServiceServicer):
@@ -51,11 +51,11 @@ class Mapper(kmeans_pb2_grpc.MapperServiceServicer):
         
 
     def RunMap(self, request, context):
-        self.__random_sleeper()
+        # self.__random_sleeper()
        
         try:
             self.dump(f"Mapper {self.mapper_id} received job from master")
-            self.__random_error()
+            # self.__random_error()
             
             self.centroids = self._parse_centroids(request.centroids)
             index_start = request.index_start
