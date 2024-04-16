@@ -108,16 +108,20 @@ class Master:
         def wrapper(*args, **kwargs):
             max_retries = 1
             retries = 0
+            obj=args[0]
+            id=args[1]
             while retries < max_retries:
                 try:
                     return func(*args, **kwargs)
                 except Exception as e:
                     retries += 1
                     if retries < max_retries:
-                        print("Retrying...")
+                        obj.dump(f"Retrying.. for Mapper {id}")
+                        print(f"Retrying.. for Mapper {id}")
                         time.sleep(1)  # Wait for 1 second before retrying
                     else:
-                        print("Max retries reached. Giving up on this Mapper, going to other.")
+                        obj.dump(f"Mapper {id}:  Max retries reached. Giving up on this Mapper, going to other.")
+                        print(f"Mapper {id}:  Max retries reached. Giving up on this Mapper, going to other.")
                         # assign the task to another mapper
                         return kmeans_pb2.MapResponse(success=False, message=str(e))
                         # raise  # Re-raise the exception if max retries reached
@@ -128,16 +132,21 @@ class Master:
         def wrapper(*args, **kwargs):
             max_retries = 1
             retries = 0
+            obj=args[0]
+            id=args[1]
             while retries < max_retries:
                 try:
                     return func(*args, **kwargs)
                 except Exception as e:
                     retries += 1
                     if retries < max_retries:
-                        print("Retrying...")
+                        obj.dump(f"Retrying.. for Reducer {id}")
+                        print(f"Retrying.. for Reducer {id}")
                         time.sleep(1)  # Wait for 1 second before retrying
                     else:
-                        print("Max retries reached. Giving up on this Reducer, going to other.")
+                        
+                        obj.dump(f"Reducer {id}:  Max retries reached. Giving up on this Reducer, going to other.")
+                        print(f"Reducer {id}:  Max retries reached. Giving up on this Reducer, going to other.")
                         # assign the task to another mapper
                         return kmeans_pb2.ReducerResponse(success=False, message=str(e))
                         # raise  # Re-raise the exception if max retries reached
@@ -304,9 +313,11 @@ class Master:
         for mapper_id in self.permanent_remap_mappers_request.keys():
             new_mapper_ids.remove(mapper_id)
         
-
+        self.dump(f"Old mappers: {self.mapper_ids}")
+        self.dump(f"Remapped mappers: {new_mapper_ids}")
         print(f"Old mappers: {self.mapper_ids}")
         print(f"Remapped mappers: {new_mapper_ids}")
+
         self.latest_mapper_ids = new_mapper_ids
         self.mapper_stubs = self.create_mapper_stubs()
 
@@ -323,9 +334,12 @@ class Master:
         
         for reducer_id in self.permanent_remap_reducers_request.keys():
             new_reducer_ids.remove(reducer_id)
-
+        
+        self.dump(f"Old reducers: {self.reducer_ids}")
+        self.dump(f"Remapped reducers: {new_reducer_ids}")
         print(f"Old reducers: {self.reducer_ids}")
         print(f"Remapped reducers: {new_reducer_ids}")
+        
         self.latest_reducer_ids = new_reducer_ids
         self.reducer_stubs = self.create_reducer_stubs()
 
@@ -339,8 +353,11 @@ class Master:
             if(prev_centroids==None):
                 pass
             else:
+                self.dump(f"Prev Centroids: {prev_centroids}")
+                self.dump(f"Current Centroids: {self.centroids}")
                 print(f"Prev Centroids: {prev_centroids}")
                 print(f"Current Centroids: {self.centroids}")
+                
                 if(prev_centroids==self.centroids):
                     self.dump('Centroids have converged, stopping the iterations')
                     print(f'Centroids have converged, stopping the iterations')
@@ -373,6 +390,7 @@ class Master:
                 
                 if len(self.latest_mapper_ids) == 0:
                     print("All mappers failed. Exiting.")
+                    self.dump( "All mappers failed. Exiting.")
                     return
                 # continue to next iteration
                 continue
@@ -407,6 +425,7 @@ class Master:
                 
                 if len(self.latest_reducer_ids) == 0:
                     print("All reducers failed. Exiting.")
+                    self.dump("All reducers failed. Exiting.")
                     return
                 # continue to next iteration
                 continue
@@ -436,6 +455,7 @@ class Master:
             self.latest_mapper_ids = mapper_ids
             self.mapper_stubs = self.create_mapper_stubs()
 
+            self.dump(f'Reassigning mappers: {self.latest_mapper_ids}')
             print(f"Reassigning mappers: {self.latest_mapper_ids}") 
 
             # assign the deepcopy of original reducers to latest reducers
@@ -449,6 +469,7 @@ class Master:
             self.latest_reducer_ids = reducer_ids
             self.reducer_stubs = self.create_reducer_stubs()
 
+            self.dump(f"Reassigning reducers: {self.latest_reducer_ids}")
             print(f"Reassigning reducers: {self.latest_reducer_ids}")
             iter+=1
 
@@ -482,8 +503,8 @@ class Master:
 
 
 if __name__ == '__main__':
-    mapper_id_to_address = {1: 'localhost:50051', 2: 'localhost:50052', 3: 'localhost:50053'}
-    reducer_id_to_address = {1: 'localhost:50061', 2: 'localhost:50062', 3: 'localhost:50063'}
+    mapper_id_to_address = {1: 'localhost:5051', 2: 'localhost:5052', 3: 'localhost:5053'}
+    reducer_id_to_address = {1: 'localhost:5061', 2: 'localhost:5062', 3: 'localhost:5063'}
 
     load_dotenv()
     n_mappers = int(os.getenv("n_mappers"))

@@ -37,8 +37,10 @@ class Mapper(kmeans_pb2_grpc.MapperServiceServicer):
         print("Random Number for Sleeping: ", random_number)
         if random_number < probabilistic:
             print('Sleeping for 5 seconds')
+            self.dump('Sleeping for 5 seconds')
             time.sleep(5)
             print('Woke up')
+            self.dump('Woke up')
     
     def __random_error(self):
         # based on the variable probabilistic, the following code will sometimes execute and sometimes an error will be raised
@@ -51,7 +53,7 @@ class Mapper(kmeans_pb2_grpc.MapperServiceServicer):
         
 
     def RunMap(self, request, context):
-        # self.__random_sleeper()
+        self.__random_sleeper()
        
         try:
             self.dump(f"Mapper {self.mapper_id} received job from master")
@@ -146,7 +148,9 @@ class Mapper(kmeans_pb2_grpc.MapperServiceServicer):
         self.dump(f'Recieving Intermediate Request RPC from Reducer: {request.reducer_id}')   
             
         with open(f'Data/Mappers/M{self.mapper_id}/partition_{request.reducer_id-1}.txt', 'r') as f:            
-            intermediate_data = f.readlines()        
+            intermediate_data = f.readlines() 
+
+        self.dump(f'Sending Intermediate Data as response to Reducer: {request.reducer_id}')          
         return kmeans_pb2.IntermediateDataResponse(success=True, pairs=intermediate_data)
 
 def serve():
@@ -158,6 +162,6 @@ def serve():
     server.wait_for_termination()
 
 if __name__ == '__main__':
-    mapper_id_to_address = {1: 'localhost:50051', 2: 'localhost:50052', 3: 'localhost:50053'}
+    mapper_id_to_address = {1: 'localhost:5051', 2: 'localhost:5052', 3: 'localhost:5053'}
     load_dotenv()
     serve()

@@ -7,7 +7,7 @@ import sys
 import os
 import time
 
-probabilistic = 0.3
+probabilistic = 0.5
 
 
 class Reducer(kmeans_pb2_grpc.ReducerServiceServicer):
@@ -38,7 +38,9 @@ class Reducer(kmeans_pb2_grpc.ReducerServiceServicer):
         print("Random Number for Sleeping: ", random_number)
         if random_number < probabilistic:
             print('Sleeping for 5 seconds')
+            self.dump('Sleeping for 5 seconds')
             time.sleep(5)
+            self.dump('Woke up')
             print('Woke up')
     
     def __random_error(self):
@@ -79,7 +81,7 @@ class Reducer(kmeans_pb2_grpc.ReducerServiceServicer):
                 if response.success:                 
                     pairs = self.parseIntermediateData(response.pairs)                    
                     intermediate_data[id] = pairs  
-                    self.dump(f"Recieved Intermediate Data from Mapper: {id}")                    
+                    self.dump(f"SUCCESS: Recieved Intermediate Data from Mapper: {id}")                    
                 else:
                     self.dump(f"Failed to retrieve data from Mapper: {id}")
                     raise ValueError(f"Failed to retrieve data from Mapper: {id}")  
@@ -104,6 +106,7 @@ class Reducer(kmeans_pb2_grpc.ReducerServiceServicer):
             return reducerReponse
 
         except Exception as e:
+            self.dump(f"Reducer: {self.reducer_id} encountered Error: {str(e)}")
             print(e)
             return kmeans_pb2.ReducerResponse(success=False, message=str(e))
     
@@ -165,5 +168,5 @@ def serve():
     server.wait_for_termination()
 
 if __name__ == '__main__':
-    reducer_id_to_address = {1: 'localhost:50061', 2: 'localhost:50062'}
+    reducer_id_to_address = {1: 'localhost:5061', 2: 'localhost:5062'}
     serve()
