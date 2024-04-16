@@ -8,7 +8,7 @@ import sys
 import os
 from dotenv import load_dotenv
 
-probabilistic = 0.3
+probabilistic = -1
 
 
 class Mapper(kmeans_pb2_grpc.MapperServiceServicer):

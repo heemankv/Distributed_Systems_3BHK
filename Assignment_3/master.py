@@ -32,8 +32,11 @@ class Master:
         self.k = k
         self.max_iters = max_iters
         self.centroids = self.initialize_centroids()
-         
 
+        self.dump(f"Centroids added to Disk: {self.centroids}")
+        with open('Data/centroids.txt', 'w') as f:
+                f.write(str(self.centroids))  
+         
         # Fault Tolerance
         self.latest_mapper_ids = [i+1 for i in range(n_mappers)]
         self.remap_mappers_request = {}  
@@ -59,12 +62,16 @@ class Master:
     
     def initialize_centroids(self):        
         centroids = []
-        for i in range(self.k):
-            centroids.append(self.get_random_data_point())            
+        count=0
+        # TODO: Test in actual code, working in rough.py
+        while(count!=self.k):
+            points=self.get_random_data_point()
+            if(points not in centroids):
+                centroids.append(self.get_random_data_point())     
+                count+=1  
         return centroids
 
     def get_random_data_point(self): 
-        #TODO: centroids should not be same 
         return (sample(range(10), 1)[0], sample(range(10), 1)[0])
 
     def read_data_points(self):
@@ -83,6 +90,7 @@ class Master:
     def split_data_for_mappers(self):
         # TODO: Could be randomized, let's see
         data_points = self.read_data_points()
+        print(f"DATA POINTS: {data_points}")
         split_size = len(data_points) // len(self.latest_mapper_ids)        
         split_indices = {mapper_id :  (i * split_size, (i + 1) * split_size) for i, mapper_id in enumerate(self.latest_mapper_ids)}
         return split_indices
@@ -317,15 +325,25 @@ class Master:
 
     def execute(self):       
         # TODO: Stop when the centroids converge 
+        prev_centroids=None
         for iter in range(self.max_iters):
-            with open('Data/centroids.txt', 'w') as f:
-                f.write(str(self.centroids))
+            if(prev_centroids==None):
+                pass
+            else:
+                if(prev_centroids==self.centroids):
+                    self.dump('Centroids have converged, stopping the iterations')
+                    print(f'Centroids have converged, stopping the iterations')
+                    break
+                   
 
             self.dump(f'Iteration {iter + 1}, Centroids: {self.centroids}')
             print(f'Iteration {iter + 1}, Centroids: {self.centroids}')
 
-            data_splits = self.split_data_for_mappers()  
-            print(f"Data splits: {data_splits}")          
+            data_splits = self.split_data_for_mappers() 
+
+            self.dump(f'Splitting Data into Mapper Tasks Data splits: {data_splits}')
+            print(f"Data splits: {data_splits}")     
+
             map_responses = self.run_map_phase(data_splits)
                         
             remapping_flag = False
@@ -389,6 +407,8 @@ class Master:
             self.dump('Reduce phase complete successfully')
             print('Reduce phase complete successfully')
 
+            prev_centroids=self.centroids  
+
             new_centroids = {}
             for response in reduce_responses:
                 new_centroids[response.reducer_id] = response.new_centroids
@@ -443,7 +463,11 @@ class Master:
                 self.dump(f"Centroid {key}: {value}")
                 print(f"Centroid {key}: {value}")
 
-                self.centroids[key] = value.values                                        
+                self.centroids[key] = value.values 
+        
+        self.dump(f"New Centroids added to Disk: {self.centroids}")
+        with open('Data/centroids.txt', 'w') as f:
+                f.write(str(self.centroids))                                       
 
 
 if __name__ == '__main__':

@@ -55,3 +55,108 @@ Received FAILURE from Mapper: 2
 Received FAILURE from Mapper: 1
 Error: RPC call failed in Map Phase with Mapper: 2
 Error: RPC call failed in Map Phase with Mapper: 1
+Master is started
+Iteration 1, Centroids: [(5, 3), (0, 3), (0, 1), (8, 9), (5, 2)]
+Splitting Data into Mapper Tasks Data splits: {1: (0, 5), 2: (5, 10), 3: (10, 15)}
+Sending RPC to Mapper: 1, Centroids: [5, 3, 0, 3, 0, 1, 8, 9, 5, 2], Split: (0, 5)
+Sending RPC to Mapper: 2, Centroids: [5, 3, 0, 3, 0, 1, 8, 9, 5, 2], Split: (5, 10)
+Sending RPC to Mapper: 3, Centroids: [5, 3, 0, 3, 0, 1, 8, 9, 5, 2], Split: (10, 15)
+Received FAILURE from Mapper: 2
+Error: RPC call failed in Map Phase with Mapper: 2
+Received FAILURE from Mapper: 1
+Error: RPC call failed in Map Phase with Mapper: 1
+Received FAILURE from Mapper: 3
+Error: RPC call failed in Map Phase with Mapper: 3
+Centroids added to Disk: [(0, 0), (1, 5), (8, 3), (9, 9), (5, 8)]
+Master is started
+Iteration 1, Centroids: [(0, 0), (1, 5), (8, 3), (9, 9), (5, 8)]
+Splitting Data into Mapper Tasks Data splits: {1: (0, 5), 2: (5, 10), 3: (10, 15)}
+Sending RPC to Mapper: 1, Centroids: [0, 0, 1, 5, 8, 3, 9, 9, 5, 8], Split: (0, 5)
+Sending RPC to Mapper: 2, Centroids: [0, 0, 1, 5, 8, 3, 9, 9, 5, 8], Split: (5, 10)
+Sending RPC to Mapper: 3, Centroids: [0, 0, 1, 5, 8, 3, 9, 9, 5, 8], Split: (10, 15)
+Received FAILURE from Mapper: 2
+Received FAILURE from Mapper: 3
+Received FAILURE from Mapper: 1
+se with Mapper: 3
+Error: RPC call failed in Map Phase with Mapper: 2
+Error: RPC call failed in Map Phase with Mapper: 1
+Centroids added to Disk: [(4, 2), (3, 0), (0, 1), (6, 7), (2, 3)]
+Master is started
+Iteration 1, Centroids: [(4, 2), (3, 0), (0, 1), (6, 7), (2, 3)]
+Splitting Data into Mapper Tasks Data splits: {1: (0, 5), 2: (5, 10), 3: (10, 15)}
+Sending RPC to Mapper: 1, Centroids: [4, 2, 3, 0, 0, 1, 6, 7, 2, 3], Split: (0, 5)
+Sending RPC to Mapper: 2, Centroids: [4, 2, 3, 0, 0, 1, 6, 7, 2, 3], Split: (5, 10)
+Sending RPC to Mapper: 3, Centroids: [4, 2, 3, 0, 0, 1, 6, 7, 2, 3], Split: (10, 15)
+Received FAILURE from Mapper: 2
+Error: RPC call failed in Map Phase with Mapper: 2
+Received FAILURE from Mapper: 3
+Error: RPC call failed in Map Phase with Mapper: 3
+Received FAILURE from Mapper: 1
+Error: 'FutureTimeoutError' object has no attribute 'code' in Map Phase with Mapper: 1
+Iteration 2, Centroids: [(4, 2), (3, 0), (0, 1), (6, 7), (2, 3)]
+Splitting Data into Mapper Tasks Data splits: {1: (0, 15)}
+Sending RPC to Mapper: 1, Centroids: [4, 2, 3, 0, 0, 1, 6, 7, 2, 3], Split: (0, 15)
+Received FAILURE from Mapper: 1
+Error: RPC call failed in Map Phase with Mapper: 1
+Centroids added to Disk: [(3, 1), (2, 5), (4, 4), (5, 3), (1, 0)]
+Master is started
+Iteration 1, Centroids: [(3, 1), (2, 5), (4, 4), (5, 3), (1, 0)]
+Splitting Data into Mapper Tasks Data splits: {1: (0, 5), 2: (5, 10), 3: (10, 15)}
+Sending RPC to Mapper: 1, Centroids: [3, 1, 2, 5, 4, 4, 5, 3, 1, 0], Split: (0, 5)
+Sending RPC to Mapper: 2, Centroids: [3, 1, 2, 5, 4, 4, 5, 3, 1, 0], Split: (5, 10)
+Sending RPC to Mapper: 3, Centroids: [3, 1, 2, 5, 4, 4, 5, 3, 1, 0], Split: (10, 15)
+Received FAILURE from Mapper: 1
+Received FAILURE from Mapper: 2
+Error: RPC call failed in Map Phase with Mapper: 1
+Error: RPC call failed in Map Phase with Mapper: 2
+Received FAILURE from Mapper: 3
+Error: 'FutureTimeoutError' object has no attribute 'code' in Map Phase with Mapper: 3
+Iteration 2, Centroids: [(3, 1), (2, 5), (4, 4), (5, 3), (1, 0)]
+Splitting Data into Mapper Tasks Data splits: {3: (0, 15)}
+Sending RPC to Mapper: 3, Centroids: [3, 1, 2, 5, 4, 4, 5, 3, 1, 0], Split: (0, 15)
+Received FAILURE from Mapper: 3
+Error: RPC call failed in Map Phase with Mapper: 3
+Centroids added to Disk: [(8, 1), (7, 4), (1, 8), (5, 8), (3, 5)]
+Master is started
+Iteration 1, Centroids: [(8, 1), (7, 4), (1, 8), (5, 8), (3, 5)]
+Splitting Data into Mapper Tasks Data splits: {1: (0, 5), 2: (5, 10), 3: (10, 15)}
+Sending RPC to Mapper: 1, Centroids: [8, 1, 7, 4, 1, 8, 5, 8, 3, 5], Split: (0, 5)
+Sending RPC to Mapper: 2, Centroids: [8, 1, 7, 4, 1, 8, 5, 8, 3, 5], Split: (5, 10)
+Sending RPC to Mapper: 3, Centroids: [8, 1, 7, 4, 1, 8, 5, 8, 3, 5], Split: (10, 15)
+Received FAILURE from Mapper: 1
+Error: RPC call failed in Map Phase with Mapper: 1
+Received FAILURE from Mapper: 3
+Error: RPC call failed in Map Phase with Mapper: 3
+Received FAILURE from Mapper: 2
+Error: 'FutureTimeoutError' object has no attribute 'code' in Map Phase with Mapper: 2
+Iteration 2, Centroids: [(8, 1), (7, 4), (1, 8), (5, 8), (3, 5)]
+Splitting Data into Mapper Tasks Data splits: {2: (0, 15)}
+Sending RPC to Mapper: 2, Centroids: [8, 1, 7, 4, 1, 8, 5, 8, 3, 5], Split: (0, 15)
+Received FAILURE from Mapper: 2
+Error: RPC call failed in Map Phase with Mapper: 2
+Centroids added to Disk: [(8, 5), (7, 6), (1, 7), (6, 9), (8, 3)]
+Master is started
+Iteration 1, Centroids: [(8, 5), (7, 6), (1, 7), (6, 9), (8, 3)]
+Splitting Data into Mapper Tasks Data splits: {1: (0, 5), 2: (5, 10), 3: (10, 15)}
+Sending RPC to Mapper: 1, Centroids: [8, 5, 7, 6, 1, 7, 6, 9, 8, 3], Split: (0, 5)
+Sending RPC to Mapper: 2, Centroids: [8, 5, 7, 6, 1, 7, 6, 9, 8, 3], Split: (5, 10)
+Sending RPC to Mapper: 3, Centroids: [8, 5, 7, 6, 1, 7, 6, 9, 8, 3], Split: (10, 15)
+Received FAILURE from Mapper: 1
+Received FAILURE from Mapper: 2
+Error: RPC call failed in Map Phase with Mapper: 2
+Error: RPC call failed in Map Phase with Mapper: 1
+Received FAILURE from Mapper: 3
+Error: RPC call failed in Map Phase with Mapper: 3
+Centroids added to Disk: [(4, 1), (8, 5), (4, 2), (9, 8), (3, 3)]
+Master is started
+Iteration 1, Centroids: [(4, 1), (8, 5), (4, 2), (9, 8), (3, 3)]
+Splitting Data into Mapper Tasks Data splits: {1: (0, 5), 2: (5, 10), 3: (10, 15)}
+Sending RPC to Mapper: 1, Centroids: [4, 1, 8, 5, 4, 2, 9, 8, 3, 3], Split: (0, 5)
+Sending RPC to Mapper: 2, Centroids: [4, 1, 8, 5, 4, 2, 9, 8, 3, 3], Split: (5, 10)
+Sending RPC to Mapper: 3, Centroids: [4, 1, 8, 5, 4, 2, 9, 8, 3, 3], Split: (10, 15)
+Received FAILURE from Mapper: 2
+Error: RPC call failed in Map Phase with Mapper: 2
+Received FAILURE from Mapper: 1
+Error: RPC call failed in Map Phase with Mapper: 1
+Received FAILURE from Mapper: 3
+Error: RPC call failed in Map Phase with Mapper: 3
