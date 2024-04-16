@@ -61,9 +61,8 @@ class Reducer(kmeans_pb2_grpc.ReducerServiceServicer):
         return mapper_stubs
     
     def RunReducer(self, request, context):
-        self.__random_sleeper()
+        # self.__random_sleeper()
 
-        # TODO: why mapper_addresses
         self.dump(f"Reducer {self.reducer_id} received request")
         print(f"Reducer {self.reducer_id} received request")
         
@@ -96,7 +95,6 @@ class Reducer(kmeans_pb2_grpc.ReducerServiceServicer):
             self.dump(f"Reducer {self.reducer_id} sends SUCCESS response to Master")
 
             print(new_centroids)
-            # TODO: why is this happening?
             for i in new_centroids.keys():
                 reducerReponse.new_centroids[i].key = 0
                 reducerReponse.new_centroids[i].values.extend(new_centroids[i])
@@ -168,5 +166,5 @@ def serve():
     server.wait_for_termination()
 
 if __name__ == '__main__':
-    reducer_id_to_address = {1: 'localhost:5061', 2: 'localhost:5062'}
+    reducer_id_to_address = {1: 'localhost:50061', 2: 'localhost:50062'}
     serve()

@@ -162,6 +162,6 @@ def serve():
     server.wait_for_termination()
 
 if __name__ == '__main__':
-    mapper_id_to_address = {1: 'localhost:5051', 2: 'localhost:5052', 3: 'localhost:5053'}
+    mapper_id_to_address = {1: 'localhost:50051', 2: 'localhost:50052', 3: 'localhost:50053'}
     load_dotenv()
     serve()

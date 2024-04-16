@@ -7,8 +7,6 @@ import  time, os
 from concurrent.futures import ThreadPoolExecutor
 from dotenv import load_dotenv
 
-# TODO: We need to reset latest mappers to original mappers after a successful iteration -> done by @heemankv
-# TODO: remap_mappers_request always remains filled, might need to reset it after remapping
 # TODO: Add dump statements for fault tolerance
 
 # Dump File Code:
@@ -60,22 +58,13 @@ class Master:
         with open(file_path, 'a') as f:
             f.write(f"{entry}\n")
     
-    # def initialize_centroids(self):        
-    #     centroids = []
-    #     count=0
-    #     # TODO: Test in actual code, working in rough.py
-    #     while(count!=self.k):
-    #         points=self.get_random_data_point()
-    #         if(points not in centroids):
-    #             centroids.append(self.get_random_data_point())     
-    #             count+=1  
-    #     return centroids
+
     def initialize_centroids(self):   
         data_points = self.read_data_points()        
         random_indices = sample(range(len(data_points)), self.k)
         centroids = []
         for i in random_indices:
-            centroids.append(data_points[i])                    
+            centroids.append(data_points[i])  
         return centroids
 
     def get_random_data_point(self): 
@@ -95,7 +84,6 @@ class Master:
         return mapper_stubs
 
     def split_data_for_mappers(self):
-        # TODO: Could be randomized, let's see
         data_points = self.read_data_points()
         print(f"DATA POINTS: {data_points}")
         split_size = len(data_points) // len(self.latest_mapper_ids)        
@@ -168,7 +156,6 @@ class Master:
         #  and assign the task to another mapper
         # response = future.result()
         
-        # TODO: so when this guy crashed, it raised the error directly 
         # but did not raise the remapping flag hence it was included in the next iteration and again failed
         # so we need a callback fucntion to execute when the future is done
         # if the future is done and the response is not successful, then we raise the remapping flag
@@ -204,7 +191,6 @@ class Master:
         #  and assign the task to another mapper
         # response = future.result()
         
-        # TODO: so when this guy crashed, it raised the error directly 
         # but did not raise the remapping flag hence it was included in the next iteration and again failed
         # so we need a callback fucntion to execute when the future is done
         # if the future is done and the response is not successful, then we raise the remapping flag
@@ -230,7 +216,7 @@ class Master:
     def call_mapper_rpc_wrapper(self,args):
         id, centroids_flat, split, mapper_stubs = args
 
-        self.dump(f"Sending RPC to Mapper: {id}, Centroids: {centroids_flat}, Split: {split}")
+        self.dump(f"Sending RPC to Mapper: {id},Split: {split}")
         print(f"Sending RPC to Mapper: {id}, Centroids: {centroids_flat}, Split: {split}")
         
         response = self.call_mappers_rpc(id, centroids_flat, split, mapper_stubs)
@@ -345,7 +331,6 @@ class Master:
 
 
     def execute(self):       
-        # TODO: Stop when the centroids converge 
         prev_centroids=None
         iter = 0
         while iter < self.max_iters:
@@ -364,12 +349,11 @@ class Master:
                     break
             
             self.dump(f'Iteration {iter + 1}, Centroids: {self.centroids}')
-            print(f'Iteration {iter + 1}, Centroids: {self.centroids}')
+            print(f'Iteration {iter + 1}')
 
             data_splits = self.split_data_for_mappers() 
 
             self.dump(f'Splitting Data into Mapper Tasks Data splits: {data_splits}')
-            print(f"Data splits: {data_splits}")     
 
             map_responses = self.run_map_phase(data_splits)
                         
@@ -398,7 +382,7 @@ class Master:
             self.dump('Map phase completed successfully')
             print('Map phase completed successfully')
 
-            time.sleep(1)
+            time.sleep(0.2)
 
             reduce_responses = self.run_reduce_phase()
 
@@ -454,6 +438,7 @@ class Master:
         
             self.latest_mapper_ids = mapper_ids
             self.mapper_stubs = self.create_mapper_stubs()
+            self.remap_mappers_request = {}
 
             self.dump(f'Reassigning mappers: {self.latest_mapper_ids}')
             print(f"Reassigning mappers: {self.latest_mapper_ids}") 
@@ -468,6 +453,7 @@ class Master:
 
             self.latest_reducer_ids = reducer_ids
             self.reducer_stubs = self.create_reducer_stubs()
+            self.remap_reducers_request = {}
 
             self.dump(f"Reassigning reducers: {self.latest_reducer_ids}")
             print(f"Reassigning reducers: {self.latest_reducer_ids}")
@@ -503,8 +489,8 @@ class Master:
 
 
 if __name__ == '__main__':
-    mapper_id_to_address = {1: 'localhost:5051', 2: 'localhost:5052', 3: 'localhost:5053'}
-    reducer_id_to_address = {1: 'localhost:5061', 2: 'localhost:5062', 3: 'localhost:5063'}
+    mapper_id_to_address = {1: 'localhost:50051', 2: 'localhost:50052', 3: 'localhost:50053'}
+    reducer_id_to_address = {1: 'localhost:50061', 2: 'localhost:50062', 3: 'localhost:50063'}
 
     load_dotenv()
     n_mappers = int(os.getenv("n_mappers"))
