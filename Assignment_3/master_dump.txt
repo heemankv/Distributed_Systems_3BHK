@@ -39,3 +39,19 @@ Sending RPC to Reducer: 1
 Received FAILURE from Reducer: 1
 Sending RPC to Reducer: 2
 Received FAILURE from Reducer: 2
+Master is started
+Iteration 1, Centroids: [(6, 8), (3, 7), (7, 7), (5, 8), (8, 4)]
+Sending RPC to Mapper: 1, Centroids: [6, 8, 3, 7, 7, 7, 5, 8, 8, 4], Split: (0, 5)
+Sending RPC to Mapper: 2, Centroids: [6, 8, 3, 7, 7, 7, 5, 8, 8, 4], Split: (5, 10)
+Sending RPC to Mapper: 3, Centroids: [6, 8, 3, 7, 7, 7, 5, 8, 8, 4], Split: (10, 15)
+Master is started
+Iteration 1, Centroids: [(0, 3), (9, 2), (1, 9), (4, 8), (4, 0)]
+Sending RPC to Mapper: 1, Centroids: [0, 3, 9, 2, 1, 9, 4, 8, 4, 0], Split: (0, 5)
+Sending RPC to Mapper: 3, Centroids: [0, 3, 9, 2, 1, 9, 4, 8, 4, 0], Split: (10, 15)
+Sending RPC to Mapper: 2, Centroids: [0, 3, 9, 2, 1, 9, 4, 8, 4, 0], Split: (5, 10)
+Received FAILURE from Mapper: 3
+Error: RPC call failed in Map Phase with Mapper: 3
+Received FAILURE from Mapper: 2
+Received FAILURE from Mapper: 1
+Error: RPC call failed in Map Phase with Mapper: 2
+Error: RPC call failed in Map Phase with Mapper: 1

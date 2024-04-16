@@ -26,17 +26,25 @@ class Master:
         self.n_mappers = n_mappers
         self.n_reducers = n_reducers        
         self.mapper_ids = [i+1 for i in range(n_mappers)]
-        self.latest_mapper_ids = [i+1 for i in range(n_mappers)]
         self.reducer_ids = [i+1 for i in range(n_reducers)]
 
         self.data_file = data_file
         self.k = k
         self.max_iters = max_iters
         self.centroids = self.initialize_centroids()
-        self.mapper_stubs = self.create_mapper_stubs()
-        self.reducer_stubs = self.create_reducer_stubs() 
+         
+
+        # Fault Tolerance
+        self.latest_mapper_ids = [i+1 for i in range(n_mappers)]
         self.remap_mappers_request = {}  
         self.permanent_remap_mappers_request = {}
+        self.latest_reducer_ids = [i+1 for i in range(n_reducers)]
+        self.remap_reducers_request = {}
+        self.permanent_remap_reducers_request = {}
+
+        self.mapper_stubs = self.create_mapper_stubs()
+        self.reducer_stubs = self.create_reducer_stubs()
+
         file_path = 'master_dump.txt'
         if not os.path.exists(file_path):
             with open(file_path, 'w') as f:
@@ -56,7 +64,7 @@ class Master:
         return centroids
 
     def get_random_data_point(self): 
-        #TODO: centroids should not be same
+        #TODO: centroids should not be same 
         return (sample(range(10), 1)[0], sample(range(10), 1)[0])
 
     def read_data_points(self):
@@ -79,10 +87,9 @@ class Master:
         split_indices = {mapper_id :  (i * split_size, (i + 1) * split_size) for i, mapper_id in enumerate(self.latest_mapper_ids)}
         return split_indices
 
-
     
     # Retry decorator function
-    def retry(func):
+    def retryMappers(func):
         def wrapper(*args, **kwargs):
             max_retries = 1
             retries = 0
@@ -100,10 +107,30 @@ class Master:
                         return kmeans_pb2.MapResponse(success=False, message=str(e))
                         # raise  # Re-raise the exception if max retries reached
         return wrapper
+    
+    # Retry decorator function
+    def retryReducers(func):
+        def wrapper(*args, **kwargs):
+            max_retries = 1
+            retries = 0
+            while retries < max_retries:
+                try:
+                    return func(*args, **kwargs)
+                except Exception as e:
+                    retries += 1
+                    if retries < max_retries:
+                        print("Retrying...")
+                        time.sleep(1)  # Wait for 1 second before retrying
+                    else:
+                        print("Max retries reached. Giving up on this Reducer, going to other.")
+                        # assign the task to another mapper
+                        return kmeans_pb2.ReducerResponse(success=False, message=str(e))
+                        # raise  # Re-raise the exception if max retries reached
+        return wrapper
 
     # Modified call_rpc function with retry decorator
-    @retry 
-    def call_rpc(self, id, centroids_flat, split, mapper_stubs):
+    @retryMappers
+    def call_mappers_rpc(self, id, centroids_flat, split, mapper_stubs):
         future = mapper_stubs[id].RunMap.future(
             kmeans_pb2.MapRequest(
                 mapper_id=id,
@@ -139,14 +166,50 @@ class Master:
         else:
             self.remap_mappers_request[id] = True
             raise Exception("RPC call failed")
+    
+    @retryReducers
+    def call_reducers_rpc(self, id, reducer_stubs):
+        future = reducer_stubs[id].RunReducer.future(
+            kmeans_pb2.ReducerRequest(
+                reducer_id=id,
+                mapper_addresses=[mapper_id_to_address[mapper_id] for mapper_id in self.latest_mapper_ids]
+            )
+        )
+        #  we need to create a timeout for the RPC call
+        #  if the rpc call doesn't return in 5 seconds, we will raise Exception("RPC call failed")
+        #  and assign the task to another mapper
+        # response = future.result()
+        
+        # TODO: so when this guy crashed, it raised the error directly 
+        # but did not raise the remapping flag hence it was included in the next iteration and again failed
+        # so we need a callback fucntion to execute when the future is done
+        # if the future is done and the response is not successful, then we raise the remapping flag
+        # code below
 
-    def call_rpc_wrapper(self,args):
+        try:
+            response = future.result(timeout=timeout_error_seconds)
+        except Exception as e:
+            print(f"Error: {e} and Code :{str(e.code())}")
+            if str(e.code()) == 'StatusCode.UNAVAILABLE':
+                # process unavailable status
+                print(" I am hereeeeee")
+                self.permanent_remap_reducers_request[id] = True
+                raise Exception("RPC call failed")
+            
+        if response.success:
+            print(f"Received SUCCESS from Reducer: {id}")
+            return response
+        else:
+            self.remap_reducers_request[id] = True
+            raise Exception("RPC call failed")
+
+    def call_mapper_rpc_wrapper(self,args):
         id, centroids_flat, split, mapper_stubs = args
 
         self.dump(f"Sending RPC to Mapper: {id}, Centroids: {centroids_flat}, Split: {split}")
-        print(f"Sending RPC to Mapper: {id}, Centroids: {centroids_flat}, Split: {split}, Mapper Stubs: {mapper_stubs}")
+        print(f"Sending RPC to Mapper: {id}, Centroids: {centroids_flat}, Split: {split}")
         
-        response = self.call_rpc(id, centroids_flat, split, mapper_stubs)
+        response = self.call_mappers_rpc(id, centroids_flat, split, mapper_stubs)
         
         status = "SUCCESS" if response.success else "FAILURE"
 
@@ -158,17 +221,52 @@ class Master:
 
         return response
     
+    def call_reducer_rpc_wrapper(self,args):
+        id, reducer_stubs = args
+
+        self.dump(f"Sending RPC to Reducer: {id}")
+        print(f"Sending RPC to Reducer: {id}")
+        
+        response = self.call_reducer_rpc(id, reducer_stubs)
+        
+        status = "SUCCESS" if response.success else "FAILURE"
+
+        self.dump(f"Received {status} from Reducer: {id}")
+
+        if(response.success==False):
+           errorMessage = response.message if isinstance(response.message, str) else response.details
+           self.dump(f'Error: {errorMessage} in Reduce Phase with Reducer: {id}')            
+
+        return response
+    
     def run_map_phase(self, data_splits):
         map_responses = []
 
         with ThreadPoolExecutor() as executor:
             map_responses = list(executor.map(
-                self.call_rpc_wrapper,
+                self.call_mapper_rpc_wrapper,
                 [(id, [c for centroid in self.centroids for c in centroid], data_splits[id], self.mapper_stubs)
                 for id in self.mapper_stubs]
             ))
 
         return map_responses
+
+    def run_reduce_phase(self): 
+        reduce_responses = []
+
+        with ThreadPoolExecutor() as executor:
+            reduce_responses = list(executor.map(
+                self.call_reducer_rpc_wrapper,
+                [(id, self.reducer_stubs)
+                for id in self.reducer_stubs]
+            ))
+
+        return reduce_responses
+        # self.dump(f"Sending RPC to Reducer: {id}")
+        # print(f"Sending RPC to Reducer: {id}")
+
+        # self.dump(f"Received {status} from Reducer: {id}")
+        # print(f"Received {status} from Reducer: {id}")
 
     def create_reducer_stubs(self):
         reducer_stubs = {}
@@ -178,27 +276,6 @@ class Master:
             reducer_stubs[id] = stub
         return reducer_stubs
 
-    def run_reduce_phase(self): 
-        reduce_responses = []
-        for id, stub in self.reducer_stubs.items():
-
-            self.dump(f"Sending RPC to Reducer: {id}")
-            print(f"Sending RPC to Reducer: {id}")
-
-            reduce_request = kmeans_pb2.ReducerRequest(
-                reducer_id=id,
-                mapper_addresses=[mapper_id_to_address[mapper_id] for mapper_id in self.latest_mapper_ids]
-            )
-            response = stub.RunReducer(reduce_request)
-            status = "SUCCESS" if response.success else "FAILURE"
-
-            self.dump(f"Received {status} from Reducer: {id}")
-            print(f"Received {status} from Reducer: {id}")
-
-            reduce_responses.append(response)
-            
-        return reduce_responses
-    
     def remap_mappers(self):
         new_mapper_ids = []
         # deepcopy the mapper ids
@@ -217,6 +294,25 @@ class Master:
         print(f"Remapped mappers: {new_mapper_ids}")
         self.latest_mapper_ids = new_mapper_ids
         self.mapper_stubs = self.create_mapper_stubs()
+
+    
+    def remap_reducers(self):
+        new_reducer_ids = []
+        # deepcopy the reducer ids
+        for reducer_id in self.reducer_ids:
+            new_reducer_ids.append(reducer_id)
+
+        # remove the reducer ids from the new_reducer_ids list if they are in the remap_reducers_request
+        for reducer_id in self.remap_reducers_request.keys():
+            new_reducer_ids.remove(reducer_id)
+        
+        for reducer_id in self.permanent_remap_reducers_request.keys():
+            new_reducer_ids.remove(reducer_id)
+
+        print(f"Old reducers: {self.reducer_ids}")
+        print(f"Remapped reducers: {new_reducer_ids}")
+        self.latest_reducer_ids = new_reducer_ids
+        self.reducer_stubs = self.create_reducer_stubs()
 
 
     def execute(self):       
@@ -260,10 +356,35 @@ class Master:
             time.sleep(1)
 
             reduce_responses = self.run_reduce_phase()
+
+
+            # for response in reduce_responses:
+            #     if not response.success:
+            #         print(f'Error: {response.message} in Reduce Phase')
+            #         return
+
+            remapping_flag = False
             for response in reduce_responses:
                 if not response.success:
-                    print(f'Error: {response.message} in Reduce Phase')
+                    remapping_flag = True
+                    # if response.message is a string then print it, if it is an object then print its response.message.details
+                    errorMessage = response.message if isinstance(response.message, str) else response.details
+                    print(f'Error: {errorMessage} in Map Phase')
+
+            if(remapping_flag):
+                print("Remapping reducers")
+                # decrease the iteration count, as to not count this iteration
+                iter -= 1
+                
+                # remap the mappers
+                self.remap_reducers()
+                
+                if len(self.latest_reducer_ids) == 0:
+                    print("All reducers failed. Exiting.")
                     return
+                # continue to next iteration
+                continue
+            
 
             self.dump('Reduce phase complete successfully')
             print('Reduce phase complete successfully')
@@ -285,7 +406,21 @@ class Master:
             self.latest_mapper_ids = mapper_ids
             self.mapper_stubs = self.create_mapper_stubs()
 
-            print(f"Reassigning mappers: {self.latest_mapper_ids}")        
+            print(f"Reassigning mappers: {self.latest_mapper_ids}") 
+
+            # assign the deepcopy of original reducers to latest reducers
+            reducer_ids = []
+            for reducer_id in self.reducer_ids:
+                reducer_ids.append(reducer_id)
+
+            for reducer_id in self.permanent_remap_reducers_request.keys():
+                reducer_ids.remove(reducer_id)
+
+            self.latest_reducer_ids = reducer_ids
+            self.reducer_stubs = self.create_reducer_stubs()
+
+            print(f"Reassigning reducers: {self.latest_reducer_ids}")
+
 
     def calculate_distance_from_centroids(self):
         dist = 0
