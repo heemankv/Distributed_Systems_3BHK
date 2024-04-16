@@ -35,7 +35,6 @@ class Reducer(kmeans_pb2_grpc.ReducerServiceServicer):
 
     def __random_sleeper(self):
         random_number = random.random()
-        print("Random Number for Sleeping: ", random_number)
         if random_number < probabilistic:
             print('Sleeping for 5 seconds')
             self.dump('Sleeping for 5 seconds')
@@ -47,7 +46,6 @@ class Reducer(kmeans_pb2_grpc.ReducerServiceServicer):
         # based on the variable probabilistic, the following code will sometimes execute and sometimes an error will be raised
         # get random number between 0 and 1
         random_number = random.random()
-        print("Random Number  for Random Error: ", random_number)
         if random_number < probabilistic:
             print("Random Error: ", random_number)
             raise Exception("Random Error")
@@ -63,8 +61,8 @@ class Reducer(kmeans_pb2_grpc.ReducerServiceServicer):
     def RunReducer(self, request, context):
         # self.__random_sleeper()
 
-        self.dump(f"Reducer {self.reducer_id} received request")
-        print(f"Reducer {self.reducer_id} received request")
+        self.dump(f"Reducer {self.reducer_id} received request from Master")
+        print(f"Reducer {self.reducer_id} received request from Master")
         
         try:         
             # self.__random_error()
@@ -79,27 +77,31 @@ class Reducer(kmeans_pb2_grpc.ReducerServiceServicer):
                 response = stub.GetIntermediateData(intermediate_data_request)                
                 if response.success:                 
                     pairs = self.parseIntermediateData(response.pairs)                    
-                    intermediate_data[id] = pairs  
+                    intermediate_data[id] = pairs 
+                    print(f"SUCCESS: Recieved Intermediate Data from Mapper: {id}") 
                     self.dump(f"SUCCESS: Recieved Intermediate Data from Mapper: {id}")                    
                 else:
                     self.dump(f"Failed to retrieve data from Mapper: {id}")
+                    print(f"Failed to retrieve data from Mapper: {id}")
                     raise ValueError(f"Failed to retrieve data from Mapper: {id}")  
                 time.sleep(1)        
 
             grouped_data = self.shuffle_and_sort(intermediate_data)
             new_centroids = self.calculate_new_centroids(grouped_data)
             self.write_centroids_to_file(new_centroids)
-            
+
+            self.dump("Job Completed")
+            print("Job Completed")
             
             reducerReponse = kmeans_pb2.ReducerResponse(reducer_id = request.reducer_id, success=True, message = "SUCCESS")
             self.dump(f"Reducer {self.reducer_id} sends SUCCESS response to Master")
 
-            print(new_centroids)
             for i in new_centroids.keys():
                 reducerReponse.new_centroids[i].key = 0
                 reducerReponse.new_centroids[i].values.extend(new_centroids[i])
 
-            print(f"Sending Reducer Response RPC to Master: {self.reducer_id}")
+            print(f"Sending Reducer Response RPC to Master")
+            
             # return kmeans_pb2.ReducerResponse(success=True, message = "SUCCESS", new_centroids=flattened_centroids)
             return reducerReponse
 

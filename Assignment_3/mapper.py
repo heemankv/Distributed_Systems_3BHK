@@ -34,7 +34,6 @@ class Mapper(kmeans_pb2_grpc.MapperServiceServicer):
 
     def __random_sleeper(self):
         random_number = random.random()
-        print("Random Number for Sleeping: ", random_number)
         if random_number < probabilistic:
             print('Sleeping for 5 seconds')
             self.dump('Sleeping for 5 seconds')
@@ -46,7 +45,6 @@ class Mapper(kmeans_pb2_grpc.MapperServiceServicer):
         # based on the variable probabilistic, the following code will sometimes execute and sometimes an error will be raised
         # get random number between 0 and 1
         random_number = random.random()
-        print("Random Number  for Random Error: ", random_number)
         if random_number < probabilistic:
             print("Random Error: ", random_number)
             raise Exception("Random Error")
@@ -62,17 +60,17 @@ class Mapper(kmeans_pb2_grpc.MapperServiceServicer):
             self.centroids = self._parse_centroids(request.centroids)
             index_start = request.index_start
             index_end = request.index_end
-            points = self.read_data_points(index_start, index_end)
-            # print("Centroids: ", self.centroids)   
+            points = self.read_data_points(index_start, index_end) 
             assignments = []
 
-            print(f"Mapper {self.mapper_id} working on data points from {index_start} to {index_end} resulting to {assignments} assignments.")         
-            self.dump(f"Mapper {self.mapper_id} working on data points from {index_start} to {index_end} resulting to {assignments} assignments.")
 
             for data_point in points:
                 closest_centroid_idx = self.find_closest_centroid(data_point, self.centroids)
                 # This is actually the closest centroid index and not the centroid itself
                 assignments.append((closest_centroid_idx, data_point))
+            
+            print(f"Mapper {self.mapper_id} working on data points from {index_start} to {index_end}")         
+            self.dump(f"Mapper {self.mapper_id} working on data points from {index_start} to {index_end} resulting to {assignments} assignments.")
 
             print(f"Mapper {self.mapper_id} completed mapping.")
             self.dump(f"Mapper {self.mapper_id} completed mapping.")
@@ -150,7 +148,9 @@ class Mapper(kmeans_pb2_grpc.MapperServiceServicer):
         with open(f'Data/Mappers/M{self.mapper_id}/partition_{request.reducer_id-1}.txt', 'r') as f:            
             intermediate_data = f.readlines() 
 
-        self.dump(f'Sending Intermediate Data as response to Reducer: {request.reducer_id}')          
+        print(f'Sending Intermediate Data as response to Reducer: {request.reducer_id}')
+        self.dump(f'Sending Intermediate Data as response to Reducer: {request.reducer_id}')   
+
         return kmeans_pb2.IntermediateDataResponse(success=True, pairs=intermediate_data)
 
 def serve():

@@ -85,7 +85,6 @@ class Master:
 
     def split_data_for_mappers(self):
         data_points = self.read_data_points()
-        print(f"DATA POINTS: {data_points}")
         split_size = len(data_points) // len(self.latest_mapper_ids)        
         split_indices = {mapper_id :  (i * split_size, (i + 1) * split_size) for i, mapper_id in enumerate(self.latest_mapper_ids)}
         return split_indices
@@ -217,7 +216,7 @@ class Master:
         id, centroids_flat, split, mapper_stubs = args
 
         self.dump(f"Sending RPC to Mapper: {id},Split: {split}")
-        print(f"Sending RPC to Mapper: {id}, Centroids: {centroids_flat}, Split: {split}")
+        print(f"Sending RPC to Mapper: {id}")
         
         response = self.call_mappers_rpc(id, centroids_flat, split, mapper_stubs)
         
@@ -479,11 +478,11 @@ class Master:
             for key, value in centroid.items():
                 
                 self.dump(f"Centroid {key}: {value}")
-                print(f"Centroid {key}: {value}")
-
                 self.centroids[key] = value.values 
         
         self.dump(f"New Centroids added to Disk: {self.centroids}")
+        print(f"New Centroids: {self.centroids}")
+        
         with open('Data/centroids.txt', 'w') as f:
                 f.write(str(self.centroids))                                       
 
