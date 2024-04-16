@@ -235,7 +235,7 @@ class Master:
         self.dump(f"Sending RPC to Reducer: {id}")
         print(f"Sending RPC to Reducer: {id}")
         
-        response = self.call_reducer_rpc(id, reducer_stubs)
+        response = self.call_reducers_rpc(id, reducer_stubs)
         
         status = "SUCCESS" if response.success else "FAILURE"
 

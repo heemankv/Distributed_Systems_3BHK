@@ -62,11 +62,11 @@ class Mapper(kmeans_pb2_grpc.MapperServiceServicer):
             index_end = request.index_end
             points = self.read_data_points(index_start, index_end)
             # print("Centroids: ", self.centroids)   
+            assignments = []
 
             print(f"Mapper {self.mapper_id} working on data points from {index_start} to {index_end} resulting to {assignments} assignments.")         
             self.dump(f"Mapper {self.mapper_id} working on data points from {index_start} to {index_end} resulting to {assignments} assignments.")
 
-            assignments = []
             for data_point in points:
                 closest_centroid_idx = self.find_closest_centroid(data_point, self.centroids)
                 # This is actually the closest centroid index and not the centroid itself
