@@ -333,7 +333,9 @@ class Master:
     def execute(self):       
         # TODO: Stop when the centroids converge 
         prev_centroids=None
-        for iter in range(self.max_iters):
+        iter = 0
+        while iter < self.max_iters:
+        # for iter in range(self.max_iters):
             if(prev_centroids==None):
                 pass
             else:
@@ -343,10 +345,7 @@ class Master:
                     self.dump('Centroids have converged, stopping the iterations')
                     print(f'Centroids have converged, stopping the iterations')
                     break
-
             
-                   
-
             self.dump(f'Iteration {iter + 1}, Centroids: {self.centroids}')
             print(f'Iteration {iter + 1}, Centroids: {self.centroids}')
 
@@ -368,7 +367,6 @@ class Master:
             if(remapping_flag):
                 print("Remapping mappers")
                 # decrease the iteration count, as to not count this iteration
-                iter -= 1
                 
                 # remap the mappers
                 self.remap_mappers()
@@ -402,8 +400,7 @@ class Master:
 
             if(remapping_flag):
                 print("Remapping reducers")
-                # decrease the iteration count, as to not count this iteration
-                iter -= 1
+                # decrease the iteration count, as to not count this iteration                
                 
                 # remap the mappers
                 self.remap_reducers()
@@ -453,6 +450,7 @@ class Master:
             self.reducer_stubs = self.create_reducer_stubs()
 
             print(f"Reassigning reducers: {self.latest_reducer_ids}")
+            iter+=1
 
 
     def calculate_distance_from_centroids(self):
