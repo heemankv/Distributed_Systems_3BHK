@@ -60,15 +60,22 @@ class Master:
         with open(file_path, 'a') as f:
             f.write(f"{entry}\n")
     
-    def initialize_centroids(self):        
+    # def initialize_centroids(self):        
+    #     centroids = []
+    #     count=0
+    #     # TODO: Test in actual code, working in rough.py
+    #     while(count!=self.k):
+    #         points=self.get_random_data_point()
+    #         if(points not in centroids):
+    #             centroids.append(self.get_random_data_point())     
+    #             count+=1  
+    #     return centroids
+    def initialize_centroids(self):   
+        data_points = self.read_data_points()        
+        random_indices = sample(range(len(data_points)), self.k)
         centroids = []
-        count=0
-        # TODO: Test in actual code, working in rough.py
-        while(count!=self.k):
-            points=self.get_random_data_point()
-            if(points not in centroids):
-                centroids.append(self.get_random_data_point())     
-                count+=1  
+        for i in random_indices:
+            centroids.append(data_points[i])                    
         return centroids
 
     def get_random_data_point(self): 
@@ -483,10 +490,12 @@ if __name__ == '__main__':
     load_dotenv()
     n_mappers = int(os.getenv("n_mappers"))
     n_reducers = int(os.getenv("n_reducers"))
+    k_clusters = int(os.getenv("k_clusters"))
+    max_iters = int(os.getenv("max_iters"))
     timeout_error_seconds = int(os.getenv("timeout_error_seconds"))
 
     # master = Master(mapper_ids=[1,2], reducer_ids = [1,2], data_file='Data/Input/points.txt', k=3, max_iters=1)
-    master = Master(n_mappers = n_mappers, n_reducers = n_reducers, data_file='Data/Input/points.txt', k=5, max_iters=10)
+    master = Master(n_mappers = n_mappers, n_reducers = n_reducers, data_file='Data/Input/points.txt', k=k_clusters, max_iters=max_iters)
 
     master.execute()
             
