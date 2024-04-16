@@ -285,7 +285,7 @@ class Master:
 
     def create_reducer_stubs(self):
         reducer_stubs = {}
-        for id in self.reducer_ids:
+        for id in self.latest_reducer_ids:
             channel = grpc.insecure_channel(reducer_id_to_address[id])
             stub = kmeans_pb2_grpc.ReducerServiceStub(channel)
             reducer_stubs[id] = stub
@@ -345,9 +345,6 @@ class Master:
                     break
 
             
-            prev_centroids = []
-            for item in self.centroids:
-                prev_centroids.append(item)
                    
 
             self.dump(f'Iteration {iter + 1}, Centroids: {self.centroids}')
@@ -401,7 +398,7 @@ class Master:
                     remapping_flag = True
                     # if response.message is a string then print it, if it is an object then print its response.message.details
                     errorMessage = response.message if isinstance(response.message, str) else response.details
-                    print(f'Error: {errorMessage} in Map Phase')
+                    print(f'Error: {errorMessage} in Reduce Phase')
 
             if(remapping_flag):
                 print("Remapping reducers")
@@ -421,6 +418,9 @@ class Master:
             self.dump('Reduce phase complete successfully')
             print('Reduce phase complete successfully')
 
+            prev_centroids = []
+            for item in self.centroids:
+                prev_centroids.append(item)
 
             new_centroids = {}
             for response in reduce_responses:

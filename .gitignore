@@ -17,3 +17,9 @@ __pycache__/
 
 __pycache__
 dscd_a3
+
+
+Assignment_3/master_dump.txt
+Assignment_3/Data/Mappers
+Assignment_3/Data/Reducers
+Assignment_3/Data/centroids.txt

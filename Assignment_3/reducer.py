@@ -1,3 +1,4 @@
+import random
 import grpc
 import kmeans_pb2
 import kmeans_pb2_grpc
@@ -5,6 +6,9 @@ from concurrent import futures
 import sys
 import os
 import time
+
+probabilistic = 0.3
+
 
 class Reducer(kmeans_pb2_grpc.ReducerServiceServicer):
     def __init__(self, reducer_id):
@@ -29,6 +33,23 @@ class Reducer(kmeans_pb2_grpc.ReducerServiceServicer):
         with open(file_path, 'a') as f:
             f.write(f"{entry}\n")
 
+    def __random_sleeper(self):
+        random_number = random.random()
+        print("Random Number for Sleeping: ", random_number)
+        if random_number < probabilistic:
+            print('Sleeping for 5 seconds')
+            time.sleep(5)
+            print('Woke up')
+    
+    def __random_error(self):
+        # based on the variable probabilistic, the following code will sometimes execute and sometimes an error will be raised
+        # get random number between 0 and 1
+        random_number = random.random()
+        print("Random Number  for Random Error: ", random_number)
+        if random_number < probabilistic:
+            print("Random Error: ", random_number)
+            raise Exception("Random Error")
+        
     def get_mapper_stubs(self, mapper_addresses):
         mapper_stubs = {}
         for id, address in enumerate(mapper_addresses):
@@ -38,12 +59,14 @@ class Reducer(kmeans_pb2_grpc.ReducerServiceServicer):
         return mapper_stubs
     
     def RunReducer(self, request, context):
+        self.__random_sleeper()
 
         # TODO: why mapper_addresses
         self.dump(f"Reducer {self.reducer_id} received request")
         print(f"Reducer {self.reducer_id} received request")
         
         try:         
+            # self.__random_error()
             mapper_stubs = self.get_mapper_stubs(request.mapper_addresses)
             intermediate_data = {}
             for id, stub in mapper_stubs.items(): 
